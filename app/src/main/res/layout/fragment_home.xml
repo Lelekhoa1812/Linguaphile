@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Row for Date Filter Spinner with TextView label -->
+
+<!-- Row for Date Filter Spinner with TextView label -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,12 +19,12 @@
             android:text="Filter by Date:"
             android:textSize="16sp"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="11dp" />
 
         <Spinner
             android:id="@+id/filter_date_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="156dp"
+            android:layout_height="40dp"
             android:background="@drawable/spinner"
             android:padding="4dp" />
     </LinearLayout>
@@ -42,12 +43,12 @@
             android:text="Filter by Type:"
             android:textSize="16sp"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="10dp" />
 
         <Spinner
             android:id="@+id/filter_type_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="157dp"
+            android:layout_height="40dp"
             android:background="@drawable/spinner"
             android:padding="4dp" />
     </LinearLayout>

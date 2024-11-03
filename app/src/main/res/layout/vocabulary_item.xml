@@ -1,42 +1,102 @@
-<!-- res/layout/vocabulary_item.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@color/grey">
 
-    <TextView
-        android:id="@+id/vocab_name"
+        <!-- Vocabulary Name and Options Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/vocab_name"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Vocabulary"
+                android:textStyle="italic"
+                android:textSize="24sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+                <!-- Options Button aligned to the end -->
+                <ImageView
+                    android:id="@+id/options_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end"
+                    android:contentDescription="Options"
+                    android:src="@drawable/more"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+    <!-- Vocabulary Type -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vocabulary Name"
-        android:textSize="14sp" />
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type: "
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/vocab_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vocabulary Type"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/vocab_type"
+    <!-- Vocabulary Meanings -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vocabulary Type"
-        android:textSize="14sp" />
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meanings: "
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/vocab_meanings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meanings"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/vocab_meanings"
+    <!-- Vocabulary Synonyms -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Meanings"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/vocab_synonyms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Synonyms"
-        android:textSize="14sp" />
-
-    <ImageView
-        android:id="@+id/options_button"
-        android:layout_width="19dp"
-        android:layout_height="23dp"
-        android:contentDescription="Options"
-        android:src="@drawable/more" />
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Synonyms: "
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/vocab_synonyms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Synonyms"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"/>
+    </LinearLayout>
 </LinearLayout>

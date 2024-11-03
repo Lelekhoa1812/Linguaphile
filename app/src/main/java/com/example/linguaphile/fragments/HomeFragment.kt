@@ -14,6 +14,7 @@ import com.example.linguaphile.databinding.FragmentHomeBinding
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
+import android.widget.ArrayAdapter
 
 class HomeFragment : Fragment() {
 
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
             // Navigate to update fragment with vocabulary details
             onUpdate = { vocabulary ->
             },
-            // Delete the item with showing the UNDO SnackBar enabling user to retrieve
+            // Set on delete with SnackBar and UNDO enabling data retrieving
             onDelete = { vocabulary ->
                 vocabularyViewModel.delete(vocabulary)
                 Snackbar.make(binding.root, "Vocabulary deleted", Snackbar.LENGTH_LONG)
@@ -53,17 +54,30 @@ class HomeFragment : Fragment() {
             adapter.submitList(vocabularyList)
         }
 
-        // Set up Date Filter Spinner
+        // Date Filter Spinner Options
+        val dateFilterOptions = listOf("All", "Today", "This Week", "This Month", "This Year")
+        val dateFilterAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateFilterOptions)
+        dateFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.filterDateSpinner.adapter = dateFilterAdapter
+
+        // Date Filter Spinner Selection
         binding.filterDateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                // Update filter based on the selected date range
-                filterVocabularyByDate(position)
+                if (position > 0) { // Ignore first selection
+                    filterVocabularyByDate(position)
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        // Set up Type Filter Spinner
+        // Type Filter Spinner Options
+        val typeFilterOptions = listOf("All", "Noun", "Verb", "Adjective", "Adverb")
+        val typeFilterAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, typeFilterOptions)
+        typeFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.filterTypeSpinner.adapter = typeFilterAdapter
+
+        // Type Filter Spinner Selection
         binding.filterTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedType = parent.getItemAtPosition(position).toString()
