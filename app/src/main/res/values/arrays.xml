@@ -1,0 +1,9 @@
+<!-- res/values/arrays.xml -->
+<resources>
+    <string-array name="vocabulary_types">
+        <item>Noun</item>
+        <item>Verb</item>
+        <item>Adjective</item>
+        <item>Adverb</item>
+    </string-array>
+</resources>

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Home"
+        android:icon="@drawable/home" />
+    <item
+        android:id="@+id/addVocabularyFragment"
+        android:title="Add New Vocabulary"
+        android:icon="@drawable/add" />
+    <item
+        android:id="@+id/miniGameFragment"
+        android:title="Mini Game"
+        android:icon="@drawable/console" />
+    <item
+        android:id="@+id/myProfileFragment"
+        android:title="My Profile"
+        android:icon="@drawable/user" />
+</menu>

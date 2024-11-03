@@ -1,0 +1,42 @@
+<!-- res/layout/vocabulary_item.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/vocab_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vocabulary Name"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/vocab_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vocabulary Type"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/vocab_meanings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meanings"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/vocab_synonyms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Synonyms"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/options_button"
+        android:layout_width="19dp"
+        android:layout_height="23dp"
+        android:contentDescription="Options"
+        android:src="@drawable/more" />
+</LinearLayout>

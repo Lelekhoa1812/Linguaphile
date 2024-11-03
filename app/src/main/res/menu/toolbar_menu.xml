@@ -1,0 +1,15 @@
+<!-- res/menu/toolbar_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/menu_add_vocabulary"
+        android:title="Add New Vocabulary" />
+    <item
+        android:id="@+id/menu_mini_game"
+        android:title="Mini Game" />
+    <item
+        android:id="@+id/menu_profile"
+        android:title="My Profile" />
+</menu>
