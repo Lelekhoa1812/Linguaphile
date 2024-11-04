@@ -40,9 +40,12 @@ class HomeFragment : Fragment() {
             onDelete = { vocabulary ->
                 vocabularyViewModel.delete(vocabulary)
                 Snackbar.make(binding.root, "Vocabulary deleted", Snackbar.LENGTH_LONG)
+                    .setTextColor(requireContext().getColor(R.color.white))       // Set message text color to white
+                    .setActionTextColor(requireContext().getColor(R.color.white)) // Set action text color to white
                     .setAction("UNDO") {
                         vocabularyViewModel.insert(vocabulary)
                     }.show()
+
             }
         )
 

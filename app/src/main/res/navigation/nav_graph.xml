@@ -15,7 +15,12 @@
         android:id="@+id/addVocabularyFragment"
         android:name="com.example.linguaphile.fragments.AddVocabularyFragment"
         android:label="Add New Vocabulary"
-        tools:layout="@layout/fragment_add_vocabulary" />
+        tools:layout="@layout/fragment_add_vocabulary">
+        <!-- Define action to navigate back to HomeFragment -->
+        <action
+            android:id="@+id/action_addVocabularyFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 
 <!--    <fragment-->
 <!--        android:id="@+id/miniGameFragment"-->

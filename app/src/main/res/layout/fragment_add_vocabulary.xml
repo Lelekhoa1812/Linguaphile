@@ -48,32 +48,31 @@
             android:layout_height="wrap_content"
             android:hint="Meaning 1" />
 
-        <!-- Container for additional meaning EditTexts -->
+        <!-- Container for additional meanings with delete icon -->
         <LinearLayout
             android:id="@+id/meaningLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-
         <Button
             android:id="@+id/addMeaningButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Meaning" />
 
-        <!-- Container for additional synonym EditTexts -->
+        <!-- Container for additional synonyms with delete icon -->
         <LinearLayout
             android:id="@+id/synonymLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-
         <Button
             android:id="@+id/addSynonymButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Synonym" />
 
+        <!-- Confirm button -->
         <Button
             android:id="@+id/addVocabularyButton"
             android:layout_width="match_parent"

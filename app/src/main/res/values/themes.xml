@@ -3,7 +3,7 @@
     <style name="Base.Theme.Linguaphile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Set custom colors for Material3 -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryContainer">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryContainer">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/colorAccent</item>
