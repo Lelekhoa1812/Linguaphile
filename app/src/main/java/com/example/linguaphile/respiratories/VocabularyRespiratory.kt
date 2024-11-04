@@ -29,4 +29,9 @@ class VocabularyRepository(private val vocabularyDao: VocabularyDAO) {
     fun getVocabularyByType(type: String): LiveData<List<Vocabulary>> {
         return vocabularyDao.getVocabularyByType(type)
     }
+
+    fun getVocabularyById(vocabularyId: Int): LiveData<Vocabulary> {
+        return vocabularyDao.getVocabularyById(vocabularyId)
+    }
+
 }

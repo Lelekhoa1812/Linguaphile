@@ -1,24 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--nav_graph.xml-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.linguaphile.fragments.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_updateVocabularyFragment"
+            app:destination="@id/updateVocabularyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addVocabularyFragment"
+            app:destination="@id/addVocabularyFragment" />
+    </fragment>
 
+    <!-- Add Vocabulary Fragment -->
     <fragment
         android:id="@+id/addVocabularyFragment"
         android:name="com.example.linguaphile.fragments.AddVocabularyFragment"
         android:label="Add New Vocabulary"
         tools:layout="@layout/fragment_add_vocabulary">
-        <!-- Define action to navigate back to HomeFragment -->
         <action
             android:id="@+id/action_addVocabularyFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <!-- Update Vocabulary Fragment -->
+    <fragment
+        android:id="@+id/updateVocabularyFragment"
+        android:name="com.example.linguaphile.fragments.UpdateVocabularyFragment"
+        android:label="Update Vocabulary"
+        tools:layout="@layout/fragment_update_vocabulary">
+        <argument
+            android:name="vocabularyId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_updateVocabularyFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 

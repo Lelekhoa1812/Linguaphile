@@ -42,4 +42,9 @@ class VocabularyViewModel(application: Application) : AndroidViewModel(applicati
     fun getVocabularyByType(type: String): LiveData<List<Vocabulary>> {
         return repository.getVocabularyByType(type)
     }
+
+    fun getVocabularyById(vocabularyId: Int): LiveData<Vocabulary> {
+        return repository.getVocabularyById(vocabularyId)
+    }
+
 }

@@ -4,8 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+    
+    <!-- Search Bar for Vocabulary -->
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search vocabulary..."
+        android:padding="8dp"
+        android:background="@drawable/search"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp" />
 
-<!-- Row for Date Filter Spinner with TextView label -->
+    <!-- Row for Date Filter Spinner with TextView label -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,5 +85,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
 </LinearLayout>
