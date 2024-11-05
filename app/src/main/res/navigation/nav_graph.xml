@@ -45,11 +45,12 @@
             app:destination="@id/homeFragment" />
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/miniGameFragment"-->
-<!--        android:name="com.example.linguaphile.fragments.MiniGameFragment"-->
-<!--        android:label="Mini Game"-->
-<!--        tools:layout="@layout/fragment_mini_game" />-->
+    <!-- Mini Game -->
+    <fragment
+        android:id="@+id/miniGameFragment"
+        android:name="com.example.linguaphile.fragments.MiniGameFragment"
+        android:label="Mini Game"
+        tools:layout="@layout/fragment_mini_game" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/myProfileFragment"-->

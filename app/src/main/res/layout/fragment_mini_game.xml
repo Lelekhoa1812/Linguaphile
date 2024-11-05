@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <!-- Declare variables if needed -->
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Mode Selection Layout -->
+        <LinearLayout
+            android:id="@+id/modeSelectionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a Test Mode"
+                android:textSize="24sp"
+                android:layout_marginBottom="32dp"/>
+
+            <Button
+                android:id="@+id/meaningTestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meaning Testing"
+                android:layout_margin="16dp"/>
+
+            <Button
+                android:id="@+id/synonymTestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Synonym Testing"
+                android:layout_margin="16dp"/>
+
+        </LinearLayout>
+
+        <!-- Test Layout -->
+        <LinearLayout
+            android:id="@+id/testLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/testTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meaning Test"
+                android:textSize="24sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/instructionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select the answer that best defines the word below:"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/questionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vocabulary Word"
+                android:textSize="20sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/optionButton1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 1"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/optionButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 2"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/optionButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 3"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/optionButton4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Option 4"
+                android:layout_marginBottom="8dp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>
