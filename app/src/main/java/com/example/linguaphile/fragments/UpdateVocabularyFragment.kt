@@ -21,6 +21,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.linguaphile.fragments.UpdateVocabularyFragmentArgs
 
 class UpdateVocabularyFragment : Fragment() {
+    // Setups
     private var _binding: FragmentUpdateVocabularyBinding? = null
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
@@ -28,6 +29,7 @@ class UpdateVocabularyFragment : Fragment() {
     private val meanings = mutableListOf<EditText>()
     private val synonyms = mutableListOf<EditText>()
 
+    // Init view
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +48,7 @@ class UpdateVocabularyFragment : Fragment() {
         return binding.root
     }
 
+    // Bind vocab items' data
     private fun bindVocabularyData(vocabulary: Vocabulary) {
         binding.nameEditText.setText(vocabulary.name)
         binding.typeSpinner.setSelection(getSpinnerIndex(vocabulary.type))
@@ -65,6 +68,7 @@ class UpdateVocabularyFragment : Fragment() {
         }
     }
 
+    // Obtain spinner index for the type selection
     private fun getSpinnerIndex(type: String): Int {
         val types = resources.getStringArray(R.array.vocabulary_types)
         return types.indexOf(type).takeIf { it >= 0 } ?: 0
@@ -72,26 +76,31 @@ class UpdateVocabularyFragment : Fragment() {
 
     // Add a meaning dynamically with the ability to delete
     private fun addMeaningField(text: String = "") {
+        // Initialise container for meaning
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
+        // Add new meaning
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Meaning ${meanings.size + 1}"
             setText(text)
         }
+        // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
             setImageResource(android.R.drawable.ic_delete)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+            // On click remove any views
             setOnClickListener {
                 binding.meaningLayout.removeView(container)
                 meanings.remove(newMeaning)
                 updateMeaningLabels()
             }
         }
+        // Add View for extra components
         container.addView(newMeaning)
         container.addView(deleteButton)
         binding.meaningLayout.addView(container)
@@ -100,26 +109,31 @@ class UpdateVocabularyFragment : Fragment() {
 
     // Add a synonym dynamically with the ability to delete
     private fun addSynonymField(text: String = "") {
+        // Initialise container for synonym
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
+        // Add new synonym
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Synonym ${synonyms.size + 1}"
             setText(text)
         }
+        // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
             setImageResource(android.R.drawable.ic_delete)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+            // On click remove any views
             setOnClickListener {
                 binding.synonymLayout.removeView(container)
                 synonyms.remove(newSynonym)
                 updateSynonymLabels()
             }
         }
+        // Add View for extra components
         container.addView(newSynonym)
         container.addView(deleteButton)
         binding.synonymLayout.addView(container)
@@ -130,20 +144,20 @@ class UpdateVocabularyFragment : Fragment() {
     private fun updateVocabulary() {
         val name = binding.nameEditText.text.toString().trim()
         val type = binding.typeSpinner.selectedItem.toString().trim()
-
+        // Name and Type is mandatory, reflect Toast feedback on user invalid attempt
         if (name.isBlank() || type.isBlank()) {
             Toast.makeText(context, "Name and Type are required", Toast.LENGTH_SHORT).show()
             return
         }
-
+        // Primary meaning (1) can't be saved as null
         val primaryMeaning = meanings[0].text.toString().takeIf { it.isNotBlank() } ?: run {
             Toast.makeText(context, "Primary Meaning is required", Toast.LENGTH_SHORT).show()
             return
         }
-
+        // Map additional meanings (2-4) and synonyms (1-4)
         val additionalMeanings = meanings.drop(1).mapNotNull { it.text.toString().takeIf { it.isNotBlank() } }
         val additionalSynonyms = synonyms.mapNotNull { it.text.toString().takeIf { it.isNotBlank() } }
-
+        // Bind any available features (if not null)
         val vocabulary = Vocabulary(
             id = args.vocabularyId, // Keep existing ID
             name = name,
@@ -178,6 +192,7 @@ class UpdateVocabularyFragment : Fragment() {
         }
     }
 
+    // Destroy
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

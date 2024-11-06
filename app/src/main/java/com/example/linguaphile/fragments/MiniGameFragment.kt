@@ -45,12 +45,12 @@ class MiniGameFragment : Fragment() {
     private fun showModeSelection() {
         binding.modeSelectionLayout.visibility = View.VISIBLE
         binding.testLayout.visibility = View.GONE
-        // Start meaning mode
+        // Start meaning mode (1)
         binding.meaningTestButton.setOnClickListener {
             testMode = TestMode.MEANING
             startTest()
         }
-        // Start synonym mode
+        // Start synonym mode (2)
         binding.synonymTestButton.setOnClickListener {
             testMode = TestMode.SYNONYM
             startTest()
@@ -64,66 +64,83 @@ class MiniGameFragment : Fragment() {
         // Initial values
         score = 0
         currentQuestionIndex = 0
-        // Obtain data
-        val calendar = Calendar.getInstance()
-        val endDate = calendar.time
-        calendar.add(Calendar.DAY_OF_YEAR, -7)
-        val startDate = calendar.time
-        // Fetch vocabulary items from the last 7 days
-        vocabularyViewModel.getVocabularyByDateRange(startDate, endDate).observe(viewLifecycleOwner) { vocabList ->
-            val filteredVocabList = if (testMode == TestMode.SYNONYM) {
-                // Exclude vocabularies without synonyms
-                vocabList.filter { hasSynonym(it) }
-            } else {
-                vocabList
-            }
-            // Filter data upon usages
-            questions = filteredVocabList.shuffled()
-            totalQuestions = questions.size
-            // Casing empty question list
-            if (totalQuestions == 0) {
-                // No questions available
+        // Check if allVocabulary has been loaded (for debug)
+        vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { allVocabularyList ->
+            if (allVocabularyList.isNullOrEmpty()) {
+                Log.d("MiniGameFragment", "All vocabulary list is empty. Cannot proceed.")
                 AlertDialog.Builder(requireContext())
                     .setTitle("No Vocabulary")
-                    .setMessage("No vocabulary items available for testing in the selected mode.")
+                    .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
                     .setPositiveButton("OK") { _, _ ->
                         showModeSelection()
                     }
                     .setCancelable(false)
                     .show()
-            } else { // Valid list
-                showNextQuestion()
+                return@observe
             }
+            // Set desired time range for testing
+            val calendar = Calendar.getInstance()
+            val endDate = calendar.time
+            calendar.add(Calendar.DAY_OF_YEAR, -30) // Test for this month (30 days)
+            val startDate = calendar.time
+            // Fetch vocabulary items from the last 30 days
+            vocabularyViewModel.getVocabularyByDateRange(startDate, endDate)
+                .observe(viewLifecycleOwner) { vocabList ->
+                    // Sort out vocab item without synonym from the list in Synonym test mode
+                    val filteredVocabList = if (testMode == TestMode.SYNONYM) {
+                        vocabList.filter { hasSynonym(it) }
+                    } else {
+                        vocabList
+                    }
+                    // Shuffle the question order
+                    questions = filteredVocabList.shuffled()
+                    totalQuestions = questions.size
+                    // Case no question available (in this mode), reflect message as an alert dialog
+                    if (totalQuestions == 0) {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("No Vocabulary")
+                            .setMessage("No vocabulary items available for testing in the selected mode.")
+                            .setPositiveButton("OK") { _, _ ->
+                                showModeSelection()
+                            }
+                            .setCancelable(false)
+                            .show()
+                    } else { // If valid
+                        showNextQuestion()
+                    }
+                }
         }
     }
 
     // Shows question each time and move to the next one
     private fun showNextQuestion() {
         if (currentQuestionIndex >= totalQuestions) {
-            // Test finished
-            showResultDialog()
+            showResultDialog() // Test finished
             return
         }
         // Current index of question with the content
         val currentVocab = questions[currentQuestionIndex]
         binding.questionTextView.text = currentVocab.name
-        // Initialise the correct and list of option (incorrect choices) from the vocab obtained
+        // Initialise the correct and list of options (incorrect choices) from the vocab obtained
         val correctAnswer: String
         val options = mutableListOf<String>()
         // Set parameter for the 2 modes
         if (testMode == TestMode.MEANING) {
-            correctAnswer = getAnyMeaning(currentVocab)
+            correctAnswer = getAnyMeaning(currentVocab) // Get a meaning from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomMeanings(3, currentVocab))
             binding.testTitleTextView.text = "Meaning Test"
             binding.instructionTextView.text = "Select the answer that best defines the word below:"
         } else {
-            correctAnswer = getAnySynonym(currentVocab)
+            correctAnswer = getAnySynonym(currentVocab) // Get a synonym from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomSynonyms(3, currentVocab))
             binding.testTitleTextView.text = "Synonym Test"
             binding.instructionTextView.text = "Select the answer that best matches the word below:"
         }
+        // Identify the binding item
+        Log.d("MiniGameFragment", "Correct answer: $correctAnswer") // Logs
+        Log.d("MiniGameFragment", "Incorrect options: ${options.drop(1)}") // Logs
         // Ensure options list has exactly 4 elements (answer choices)
         if (options.size < 4) {
             // Fill remaining options with placeholders or duplicates if needed
@@ -140,62 +157,60 @@ class MiniGameFragment : Fragment() {
         val optionButtons = listOf(binding.optionButton1, binding.optionButton2, binding.optionButton3, binding.optionButton4)
         optionButtons.forEach { button ->
             button.setOnClickListener {
-                if (button.text == correctAnswer) {
-                    score++
+                if (button.text == correctAnswer) { // Check if the answer matches
+                    score++ // Increment score
                 }
-                currentQuestionIndex++
-                showNextQuestion()
+                currentQuestionIndex++ // Move to next question (until exhaust)
+                showNextQuestion() // Iterate the loop again
             }
         }
     }
 
-    // Fall back with incrementing count per each question
+    // Fallback filling remaining options with placeholders or duplicates if needed
     private fun generateFallbackOptions(count: Int): List<String> {
-        // Generate placeholder or duplicate options to ensure the list size is 4
-        val fallbackOptions = mutableListOf<String>()
-        for (i in 1..count) {
-            fallbackOptions.add("Option $i")
-        }
-        return fallbackOptions
+        val placeholders = List(count) { index -> "Option ${index + 1}" }
+        Log.d("MiniGameFragment", "Fallback options added: $placeholders") // Logs
+        return placeholders
     }
 
     // If this or that vocab item has any meaning (1 to 4, any)
     private fun getAnyMeaning(vocab: Vocabulary): String {
-        return listOfNotNull(vocab.meaning1, vocab.meaning2, vocab.meaning3, vocab.meaning4).first()
-    }
-
-    // If this vocab item has more than 1 meaning (1 to 4, any)
-    private fun hasSynonym(vocab: Vocabulary): Boolean {
-        return listOfNotNull(vocab.synonym1, vocab.synonym2, vocab.synonym3, vocab.synonym4).isNotEmpty()
+        val meanings = listOfNotNull(vocab.meaning1, vocab.meaning2, vocab.meaning3, vocab.meaning4)
+        return meanings.random() // Randomly select one meaning if available
     }
 
     // If this or that vocab item has any synonym (1 to 4, each)
     private fun getAnySynonym(vocab: Vocabulary): String {
-        return listOfNotNull(vocab.synonym1, vocab.synonym2, vocab.synonym3, vocab.synonym4).first()
+        val synonyms = listOfNotNull(vocab.synonym1, vocab.synonym2, vocab.synonym3, vocab.synonym4)
+        return synonyms.random() // Randomly select one synonym if available
+    }
+
+    // Exclude vocabularies without synonyms
+    private fun hasSynonym(vocab: Vocabulary): Boolean {
+        return listOfNotNull(vocab.synonym1, vocab.synonym2, vocab.synonym3, vocab.synonym4).isNotEmpty()
     }
 
     // Set any random meaning from other item rather than this one
     private fun getRandomMeanings(count: Int, excludeVocab: Vocabulary): List<String> {
-        val allMeanings = mutableListOf<String>()
-        // Fetch all meanings from vocabularies excluding the current one
-        vocabularyViewModel.allVocabulary.value?.filter { it.id != excludeVocab.id }?.forEach { vocab ->
-            allMeanings.addAll(listOfNotNull(vocab.meaning1, vocab.meaning2, vocab.meaning3, vocab.meaning4))
-        }
-        allMeanings.shuffle()
+        val allMeanings = vocabularyViewModel.allVocabulary.value
+            ?.filter { it.id != excludeVocab.id }
+            ?.flatMap { listOfNotNull(it.meaning1, it.meaning2, it.meaning3, it.meaning4) }
+            ?.shuffled() ?: emptyList()
+        Log.d("MiniGameFragment", "Generated random meanings: $allMeanings")
         return allMeanings.take(count)
     }
 
     // Set any random synonym from other item rather than this one
     private fun getRandomSynonyms(count: Int, excludeVocab: Vocabulary): List<String> {
-        val allSynonyms = mutableListOf<String>()
-        vocabularyViewModel.allVocabulary.value?.filter { it.id != excludeVocab.id }?.forEach { vocab ->
-            allSynonyms.addAll(listOfNotNull(vocab.synonym1, vocab.synonym2, vocab.synonym3, vocab.synonym4))
-        }
-        allSynonyms.shuffle()
+        val allSynonyms = vocabularyViewModel.allVocabulary.value
+            ?.filter { it.id != excludeVocab.id }
+            ?.flatMap { listOfNotNull(it.synonym1, it.synonym2, it.synonym3, it.synonym4) }
+            ?.shuffled() ?: emptyList()
+        Log.d("MiniGameFragment", "Generated random synonyms: $allSynonyms")
         return allSynonyms.take(count)
     }
 
-    // Show result message and their corresponding feednback
+    // Show result message dialog and their corresponding feedback for user score, with option to try again (start the test again) or quit (go back to mode selection state)
     private fun showResultDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("Test Finished")
