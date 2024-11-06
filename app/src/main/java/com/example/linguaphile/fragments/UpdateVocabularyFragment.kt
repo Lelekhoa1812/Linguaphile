@@ -21,7 +21,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.linguaphile.fragments.UpdateVocabularyFragmentArgs
 
 class UpdateVocabularyFragment : Fragment() {
-    // Setups
+    // Setups parameters
     private var _binding: FragmentUpdateVocabularyBinding? = null
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
@@ -40,6 +40,21 @@ class UpdateVocabularyFragment : Fragment() {
         // Load vocabulary data
         vocabularyViewModel.getVocabularyById(args.vocabularyId).observe(viewLifecycleOwner) { vocabulary ->
             vocabulary?.let { bindVocabularyData(it) }
+        }
+        // Click listeners for adding new meanings and synonyms dynamically adjust with array size
+        binding.addMeaningButton.setOnClickListener {
+            if (meanings.size < 4) {
+                addMeaningField()
+            } else {
+                Toast.makeText(context, "Maximum 4 meanings allowed", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.addSynonymButton.setOnClickListener {
+            if (synonyms.size < 4) {
+                addSynonymField()
+            } else {
+                Toast.makeText(context, "Maximum 4 synonyms allowed", Toast.LENGTH_SHORT).show()
+            }
         }
         // Call update submission
         binding.updateVocabularyButton.setOnClickListener {
@@ -80,7 +95,7 @@ class UpdateVocabularyFragment : Fragment() {
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
-        // Add new meaning
+        // Add new meaning view
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Meaning ${meanings.size + 1}"
@@ -113,7 +128,7 @@ class UpdateVocabularyFragment : Fragment() {
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
-        // Add new synonym
+        // Add new synonym view
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Synonym ${synonyms.size + 1}"

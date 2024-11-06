@@ -18,13 +18,14 @@ import com.example.linguaphile.viewmodels.VocabularyViewModel
 import java.util.Date
 
 class AddVocabularyFragment : Fragment() {
-
+    // Setups parameters
     private var _binding: FragmentAddVocabularyBinding? = null
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
     private val meanings = mutableListOf<EditText>()
     private val synonyms = mutableListOf<EditText>()
 
+    // Init view
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,10 +64,12 @@ class AddVocabularyFragment : Fragment() {
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
+        // Add additional meanings view
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Meaning ${meanings.size + 1}"
         }
+        // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
             setImageResource(android.R.drawable.ic_delete)
             layoutParams = LinearLayout.LayoutParams(
@@ -80,6 +83,7 @@ class AddVocabularyFragment : Fragment() {
                 updateMeaningLabels()
             }
         }
+        // Add View for extra components
         container.addView(newMeaning)
         container.addView(deleteButton)
         binding.meaningLayout.addView(container)
@@ -92,10 +96,12 @@ class AddVocabularyFragment : Fragment() {
         val container = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
         }
+        // Add additional synonyms view
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             hint = "Synonym ${synonyms.size + 1}"
         }
+        // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
             setImageResource(android.R.drawable.ic_delete)
             layoutParams = LinearLayout.LayoutParams(
@@ -109,6 +115,7 @@ class AddVocabularyFragment : Fragment() {
                 updateSynonymLabels()
             }
         }
+        // Add View for extra components
         container.addView(newSynonym)
         container.addView(deleteButton)
         binding.synonymLayout.addView(container)
@@ -172,6 +179,7 @@ class AddVocabularyFragment : Fragment() {
         }
     }
 
+    // Destroy
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
