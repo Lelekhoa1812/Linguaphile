@@ -215,10 +215,11 @@ class MiniGameFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle("Test Finished")
             .setMessage("You scored $score/$totalQuestions")
+            // Try again start this mode again
             .setPositiveButton("Try Again") { _, _ ->
                 startTest()
-            }
-            .setNegativeButton("Quit") { _, _ ->
+            } // Exit return with mode selection state
+            .setNegativeButton("Exit") { _, _ ->
                 showModeSelection()
             }
             .setCancelable(false)

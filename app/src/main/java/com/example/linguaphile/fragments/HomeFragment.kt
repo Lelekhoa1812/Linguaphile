@@ -18,6 +18,7 @@ import com.example.linguaphile.databinding.FragmentHomeBinding
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.google.android.material.snackbar.Snackbar
 import androidx.navigation.fragment.findNavController
+import com.example.linguaphile.entities.Vocabulary
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -25,7 +26,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: VocabularyAdapter
     private lateinit var vocabularyViewModel: VocabularyViewModel
+    // Track selected filter states
+    private var selectedDateFilterPosition = 0
+    private var selectedTypeFilter = "All"
 
+    // Create Views
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +39,7 @@ class HomeFragment : Fragment() {
         vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
         // Set up RecyclerView with VocabularyAdapter
         adapter = VocabularyAdapter(
-            // Navigate to update fragment while passed the id parameter as an arguement
+            // Navigate to update fragment while passed the id parameter as an argument
             onUpdate = { vocabulary ->
                 val action = HomeFragmentDirections.actionHomeFragmentToUpdateVocabularyFragment(vocabulary.id)
                 findNavController().navigate(action)
@@ -43,43 +48,29 @@ class HomeFragment : Fragment() {
             onDelete = { vocabulary ->
                 vocabularyViewModel.delete(vocabulary)
                 Snackbar.make(binding.root, "Vocabulary deleted", Snackbar.LENGTH_LONG)
-                    .setTextColor(requireContext().getColor(R.color.white))
-                    .setActionTextColor(requireContext().getColor(R.color.white))
-                    .setAction("UNDO") {
-                        vocabularyViewModel.insert(vocabulary)
-                    }.show()
+                    .setTextColor(requireContext().getColor(R.color.white))       // Set text colorway
+                    .setActionTextColor(requireContext().getColor(R.color.white)) // Set text colorway
+                    .setAction("UNDO") { vocabularyViewModel.insert(vocabulary) }
+                    .show()
             }
         )
-        // Bind rv to adapter
+        // Binding RecyclerView data to the adapter
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        // In onCreateView, inside the LiveData observer for allVocabulary
-        // Set an initial empty list only once
-        adapter.submitList(emptyList())
-
-        // Observe vocabulary only once and handle multiple triggers
+        // Observe all vocabulary items with listing enabled double filtering by both date and type
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-            Log.d("HomeFragment", "Observer triggered with ${vocabularyList.size} items.")
-            vocabularyList.forEachIndexed { index, vocab ->
-                Log.d("HomeFragment", "Vocabulary item $index: ${vocab.name}")
-            }
-            if (vocabularyList.isNotEmpty()) {
-                adapter.submitList(vocabularyList) // Only set if non-empty to avoid clearing
-            }
+            applyCombinedFilter(vocabularyList) // Filtering function
         }
 
-        // Set up search bar to filter vocabulary by name and meanings
+        // Set up search bar (TextWatcher) to filter vocabulary by name or any meanings
         binding.searchBar.addTextChangedListener(object : TextWatcher {
+            // Can enhance logic to adapt filter sorting nothing if the search work doesn't match any
+            // Review previous commit history to see how this logics work
+            // This version will stop sorting with all available item upon the latest available search
             override fun afterTextChanged(s: Editable?) {
-                val query = s.toString()
-                Log.d("HomeFragment", "query: $query")
-                if (query.isEmpty()) {
-                    // Display all vocabulary items if search bar is empty
-                    vocabularyViewModel.allVocabulary.value?.let { adapter.submitList(it) }
-                } else {
-                    filterVocabulary(query)
-                }
+                applyCombinedFilter(vocabularyViewModel.allVocabulary.value) // Filtering function
             }
+            // pre-init
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
@@ -88,13 +79,15 @@ class HomeFragment : Fragment() {
         val dateFilterOptions = listOf("All", "Today", "This Week", "This Month", "This Year")
         val dateFilterAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, dateFilterOptions)
         dateFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Bind with adapted entries
         binding.filterDateSpinner.adapter = dateFilterAdapter
-
-        // Date Filter Spinner Selection
         binding.filterDateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            // Sort filtration on chosen option
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                filterVocabularyByDate(position)
+                selectedDateFilterPosition = position
+                applyCombinedFilter(vocabularyViewModel.allVocabulary.value)
             }
+            // Show all if no option is selected
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
@@ -102,61 +95,65 @@ class HomeFragment : Fragment() {
         val typeFilterOptions = listOf("All", "Noun", "Verb", "Adjective", "Adverb")
         val typeFilterAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, typeFilterOptions)
         typeFilterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Bind with adapted entries
         binding.filterTypeSpinner.adapter = typeFilterAdapter
-
-        // Type Filter Spinner Selection
         binding.filterTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            // Sort filtration on chosen option
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                filterVocabularyByType(parent.getItemAtPosition(position).toString())
+                selectedTypeFilter = parent.getItemAtPosition(position).toString()
+                applyCombinedFilter(vocabularyViewModel.allVocabulary.value)
             }
+            // Show all if no option is selected
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+        // Return root binding for all methods
         return binding.root
     }
 
-    // Filter vocabulary based on search bar input
-    private fun filterVocabulary(query: String) {
-        val queryLower = query.lowercase()//.replace(" ", "") // Uncomment for usage, meant to remove any empty string
-        val filteredList = vocabularyViewModel.allVocabulary.value?.filter { vocabulary ->
-            vocabulary.name.lowercase().contains(queryLower) ||
-                    listOfNotNull(
-                        vocabulary.meaning1, vocabulary.meaning2,
-                        vocabulary.meaning3, vocabulary.meaning4
-                    ).any { it.lowercase().contains(queryLower) }
-        }
-        adapter.submitList(filteredList)
-        adapter.notifyDataSetChanged() // Force refresh after filtering
-    }
+    // Apply both date and type filters on the vocabulary list, including search query combined
+    private fun applyCombinedFilter(vocabularyList: List<Vocabulary>?) {
+        // Casing vocab item listed is null, return, this only shows the latest available listing and not explicitly show empty listing
+        if (vocabularyList == null) return
 
-    // Filter vocabulary by selected date range
-    private fun filterVocabularyByDate(position: Int) {
+        // Filter by search query (TextWatcher), if not matching any or empty, show all
+        val query = binding.searchBar.text.toString().lowercase()
+        val filteredByQuery = vocabularyList.filter { vocab ->
+            // If the query matches any name/meanings (to lowercase), filtered them
+            // Could integrate remove empty space here)
+            vocab.name.lowercase().contains(query) ||
+                    listOfNotNull(vocab.meaning1, vocab.meaning2, vocab.meaning3, vocab.meaning4)
+                        .any { it.lowercase().contains(query) }
+        }
+
+        // Apply date filter on selection
         val now = Calendar.getInstance()
-        val startDate: Calendar = Calendar.getInstance()
-        when (position) {
-            1 -> startDate.add(Calendar.DAY_OF_YEAR, -1)       // Today
-            2 -> startDate.add(Calendar.DAY_OF_YEAR, -7)       // This week
-            3 -> startDate.add(Calendar.MONTH, -1)             // This month
-            4 -> startDate.add(Calendar.YEAR, -1)              // This year
+        val startDate = Calendar.getInstance()
+        when (selectedDateFilterPosition) {
+            1 -> startDate.add(Calendar.DAY_OF_YEAR, -1) // Today (plus yesterday since today's input is incompletance)
+            2 -> startDate.add(Calendar.DAY_OF_YEAR, -7) // This week
+            3 -> startDate.add(Calendar.MONTH, -1)       // This month
+            4 -> startDate.add(Calendar.YEAR, -1)        // This year
         }
-        vocabularyViewModel.getVocabularyByDateRange(startDate.time, now.time)
-            .observe(viewLifecycleOwner) { filteredList ->
-                adapter.submitList(filteredList)
-            }
-    }
 
-    // Filter vocabulary by selected type
-    private fun filterVocabularyByType(type: String) {
-        if (type == "All") {
-            vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-                adapter.submitList(vocabularyList)
-            }
+        // Filter by date casing all -> filter by query, which can show all at empty, else if valid, append this and that time range
+        val filteredByDate = if (selectedDateFilterPosition == 0) {
+            filteredByQuery // No date filter
         } else {
-            vocabularyViewModel.getVocabularyByType(type).observe(viewLifecycleOwner) { filteredList ->
-                adapter.submitList(filteredList)
-            }
+            filteredByQuery.filter { it.date.after(startDate.time) && it.date.before(now.time) }
         }
+
+        // Filter by type casing all -> filter by query, which can show all at empty, else if valid, append selected type
+        val finalFilteredList = if (selectedTypeFilter == "All") {
+            filteredByDate // No type filter
+        } else {
+            filteredByDate.filter { it.type == selectedTypeFilter }
+        }
+
+        // Submit final list after sorting
+        adapter.submitList(finalFilteredList)
     }
 
+    // Destroy view
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
