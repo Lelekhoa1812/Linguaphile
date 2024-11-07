@@ -54,10 +54,12 @@ class ProfileFragment : Fragment() {
         userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
         // Observe user data (casing null)
         userViewModel.getUser().observe(viewLifecycleOwner) { user ->
-            currentUser = user
             if (user != null) {
+                Log.d("Profile Fragment", "User is not null") // Logs
+                currentUser = user
                 showUserDetails(user)
             } else {
+                Log.d("Profile Fragment", "User is null") // Logs
                 showDefaultDetails()
             }
         }
@@ -99,7 +101,6 @@ class ProfileFragment : Fragment() {
         // Name and email EditText widgets
         binding.editUserName.setText(currentUser?.name ?: "")
         binding.editEmail.setText(currentUser?.email ?: "")
-
         val imageUri = currentUser?.profilePicture?.let { Uri.parse(it) }
             ?: Uri.parse("android.resource://${requireContext().packageName}/${R.drawable.user}")
         Log.d("ProfileFragment", "Displayed Image URI in edit mode: $imageUri") // Logs
@@ -121,7 +122,7 @@ class ProfileFragment : Fragment() {
         }
         // Setup updated user item
         val updatedUser = User(
-            id = currentUser?.id ?: 1,
+            id = currentUser?.id ?: 1, // Always set to 1 if there is only one user record
             name = newName,
             email = newEmail,
             profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture
