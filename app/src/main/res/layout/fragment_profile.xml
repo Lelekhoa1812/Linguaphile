@@ -60,9 +60,9 @@
 
             <ImageView
                 android:id="@+id/editProfileImageHolder"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/user"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/upload"
                 android:layout_marginBottom="16dp" />
 
             <EditText

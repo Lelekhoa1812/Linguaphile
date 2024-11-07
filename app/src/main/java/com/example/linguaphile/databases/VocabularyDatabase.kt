@@ -20,6 +20,7 @@ abstract class VocabularyDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: VocabularyDatabase? = null
 
+        // Init
         fun getDatabase(context: Context): VocabularyDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,13 +27,17 @@ class ProfileFragment : Fragment() {
     private var currentUser: User? = null
     private var selectedImageUri: Uri? = null
 
-    // Update Profile picture
+    // Update Profile picture launcher
     private val pickImageResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             selectedImageUri = result.data?.data
-            binding.editProfileImageHolder.setImageURI(selectedImageUri)
+            if (selectedImageUri != null) {
+                binding.editProfileImageHolder.visibility = View.GONE  // Hide the upload icon
+                binding.profileImageView.setImageURI(selectedImageUri) // Show the selected image
+                binding.profileImageView.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -42,7 +47,6 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        // Instantiate UserRepository
         val userDao = UserDatabase.getInstance(requireContext()).userDao()
         val repository = UserRepository(userDao)
         val factory = UserViewModelFactory(repository)
@@ -58,17 +62,13 @@ class ProfileFragment : Fragment() {
             }
         }
         // Trigger edit mode on listener
-        binding.updateDetailsButton.setOnClickListener {
-            enterEditMode()
-        }
+        binding.updateDetailsButton.setOnClickListener { enterEditMode() }
         // Confirm and update user details on data
-        binding.confirmButton.setOnClickListener {
-            updateUserDetails()
-        }
-        // Or cancel return current data
-        binding.cancelButton.setOnClickListener {
-            showUserDetails(currentUser)
-        }
+        binding.confirmButton.setOnClickListener { updateUserDetails() }
+        // Cancel update
+        binding.cancelButton.setOnClickListener { showUserDetails(currentUser) }
+        // Pick image on listener
+        binding.editProfileImageHolder.setOnClickListener { pickImageFromGallery() }
         return binding.root
     }
 
@@ -80,6 +80,9 @@ class ProfileFragment : Fragment() {
         val imageUri = user?.profilePicture?.let { Uri.parse(it) }
             ?: Uri.parse("android.resource://${requireContext().packageName}/${R.drawable.user}")
         binding.profileImageView.setImageURI(imageUri)
+        binding.profileImageView.visibility = View.VISIBLE
+        binding.editProfileImageHolder.visibility = View.GONE // Hide in view mode
+        // Name and email TextViews
         binding.userNameTextView.text = user?.name ?: "User Name"
         binding.emailTextView.text = user?.email ?: "user@example.com"
     }
@@ -93,12 +96,18 @@ class ProfileFragment : Fragment() {
     private fun enterEditMode() {
         binding.viewModeLayout.visibility = View.GONE
         binding.editModeLayout.visibility = View.VISIBLE
+        // Name and email EditText widgets
         binding.editUserName.setText(currentUser?.name ?: "")
         binding.editEmail.setText(currentUser?.email ?: "")
-        // Load current image or default
+
         val imageUri = currentUser?.profilePicture?.let { Uri.parse(it) }
             ?: Uri.parse("android.resource://${requireContext().packageName}/${R.drawable.user}")
-        binding.editProfileImageHolder.setImageURI(imageUri)
+        Log.d("ProfileFragment", "Displayed Image URI in edit mode: $imageUri") // Logs
+        binding.editProfileImageHolder.setImageResource(R.drawable.upload) // Set upload icon
+        binding.editProfileImageHolder.visibility = View.VISIBLE // Show the upload icon
+        // Bind and set selected image after chosen from gallery
+        binding.profileImageView.setImageURI(imageUri)
+        binding.profileImageView.visibility = View.VISIBLE // Show current or default profile image
     }
 
     // Update new detail entries and save
@@ -110,13 +119,12 @@ class ProfileFragment : Fragment() {
             Toast.makeText(context, "Name and Email cannot be empty", Toast.LENGTH_SHORT).show()
             return
         }
-        // Setup updated item
+        // Setup updated user item
         val updatedUser = User(
-            id = currentUser?.id ?: 0,
+            id = currentUser?.id ?: 1,
             name = newName,
             email = newEmail,
             profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture
-            ?: "android.resource://${requireContext().packageName}/${R.drawable.user}"
         )
         // Update with ViewModel
         userViewModel.updateUser(updatedUser)
