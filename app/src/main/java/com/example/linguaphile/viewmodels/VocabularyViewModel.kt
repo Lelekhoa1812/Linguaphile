@@ -5,7 +5,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.linguaphile.databases.VocabularyDatabase
 import com.example.linguaphile.entities.Vocabulary
-import com.example.linguaphile.respiratories.VocabularyRepository
+import com.example.linguaphile.repositories.VocabularyRepository
 import kotlinx.coroutines.launch
 import java.util.Date
 

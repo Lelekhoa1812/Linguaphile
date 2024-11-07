@@ -1,4 +1,4 @@
-package com.example.linguaphile.respiratories
+package com.example.linguaphile.repositories
 
 import androidx.lifecycle.LiveData
 import com.example.linguaphile.daos.VocabularyDAO

@@ -12,7 +12,7 @@
         android:title="Mini Game"
         android:icon="@drawable/console" />
     <item
-        android:id="@+id/myProfileFragment"
+        android:id="@+id/profileFragment"
         android:title="My Profile"
         android:icon="@drawable/user" />
 </menu>

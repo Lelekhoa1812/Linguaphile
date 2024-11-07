@@ -12,8 +12,10 @@ import com.example.linguaphile.daos.VocabularyDAO
 @TypeConverters(Converters::class)  // Register the converter here
 abstract class VocabularyDatabase : RoomDatabase() {
 
+    // DAO
     abstract fun vocabularyDao(): VocabularyDAO
 
+    // Database app
     companion object {
         @Volatile
         private var INSTANCE: VocabularyDatabase? = null

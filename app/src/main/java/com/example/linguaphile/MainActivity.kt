@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment,
                 R.id.addVocabularyFragment,
                 R.id.miniGameFragment,
-                R.id.myProfileFragment
+                R.id.profileFragment
             ), binding.drawerLayout
         )
 

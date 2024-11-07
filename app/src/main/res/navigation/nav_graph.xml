@@ -52,10 +52,11 @@
         android:label="Mini Game"
         tools:layout="@layout/fragment_mini_game" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/myProfileFragment"-->
-<!--        android:name="com.example.linguaphile.fragments.MyProfileFragment"-->
-<!--        android:label="My Profile"-->
-<!--        tools:layout="@layout/fragment_my_profile" />-->
+    <!-- My Profile -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.linguaphile.fragments.ProfileFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>
