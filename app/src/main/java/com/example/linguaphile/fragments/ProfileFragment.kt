@@ -87,14 +87,14 @@ class ProfileFragment : Fragment() {
         val factory = UserViewModelFactory(repository)
         // Use factory to create ViewModel
         userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
-        // Observe user data (casing null)
+        // Observe user data (casing null and default)
         userViewModel.getUser().observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 Log.d("Profile Fragment", "User is not null") // Logs
                 currentUser = user
                 showUserDetails(user)
-            } else {
-                Log.d("Profile Fragment", "User is null") // Logs
+            } else if (user == null || user.name == "User Name") {
+                Log.d("Profile Fragment", "User is null or default") // Logs
                 showDefaultDetails()
             }
         }
@@ -124,8 +124,8 @@ class ProfileFragment : Fragment() {
         binding.profileImageView.visibility = View.VISIBLE
         binding.editProfileImageHolder.visibility = View.GONE // Hide in view mode
         // Name and email TextViews
-        binding.userNameTextView.text = user?.name ?: "User Name"
-        binding.emailTextView.text = user?.email ?: "user@example.com"
+        binding.userNameTextView.text = user?.name ?: "" // "User Name"
+        binding.emailTextView.text = user?.email ?: ""   // "user@example.com"
     }
 
     // Default details passing null user item back
