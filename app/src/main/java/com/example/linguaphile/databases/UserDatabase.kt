@@ -38,7 +38,7 @@ abstract class UserDatabase : RoomDatabase() {
                 )
                     .addCallback(UserDatabaseCallback(context)) // Callback with context if there is no existed user
                     //.addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4) // Add migrations between versions if needed (REMOVED)
-                    //.fallbackToDestructiveMigration() // Reset data (REMOVED if not testing)
+                    .fallbackToDestructiveMigration() // Reset data (REMOVED if not testing)
                     .build()
                 INSTANCE = instance
                 instance
