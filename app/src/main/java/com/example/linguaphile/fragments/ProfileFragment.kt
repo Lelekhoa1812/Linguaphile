@@ -142,10 +142,12 @@ class ProfileFragment : Fragment() {
         binding.editEmail.setText(currentUser?.email ?: "")
         val imagePath = currentUser?.profilePicture
         if (imagePath != null && File(imagePath).exists()) {
+            binding.profileImageView.setImageDrawable(null) // Clear previous drawable to force refresh
             binding.profileImageView.setImageURI(Uri.fromFile(File(imagePath)))
         } else {
             binding.profileImageView.setImageResource(R.drawable.user)
         }
+        binding.profileImageView.invalidate() // Force view to refresh
         Log.d("ProfileFragment", "Displayed Image path in edit mode: $imagePath") // Logs
         binding.editProfileImageHolder.setImageResource(R.drawable.upload) // Set upload icon
         binding.editProfileImageHolder.visibility = View.VISIBLE // Show the upload icon
@@ -167,14 +169,32 @@ class ProfileFragment : Fragment() {
             id = currentUser?.id ?: 1, // Always set to 1 if there is only one user record
             name = newName,
             email = newEmail,
-//            profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture // picture uri
-            profilePicture = selectedImageUri?.path // Save the path instead of the URI
+            //profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture // Save the picture uri
+            //profilePicture = selectedImageUri?.path // Save the path instead of the URI
+            profilePicture = selectedImageUri?.path ?: currentUser?.profilePicture // Save the path or use current profile picture
         )
         // Update with ViewModel
         userViewModel.updateUser(updatedUser)
         Toast.makeText(context, "Details updated successfully", Toast.LENGTH_SHORT).show()
+        //Log.d("ProfileFragment", "Picture path now: ${updatedUser.profilePicture}") // Logs
+        currentUser = updatedUser // Update UI dynamically
         showUserDetails(updatedUser)
+        // Re-fetch user data from ViewModel to trigger LiveData update
+        // Previously, image shown after updating is not refreshed after updating since ImageView might cache the image and not reload the URI if it appears unchanged)
+        userViewModel.getUser().observe(viewLifecycleOwner) { user ->
+            if (user != null) { // Active user
+                currentUser = user
+                // Force refresh ImageView to avoid caching issues
+                binding.profileImageView.setImageDrawable(null) // Clear current image
+                showUserDetails(user)
+                binding.profileImageView.invalidate() // Use on the the ImageView to force re-drawing
+                binding.profileImageView.requestLayout() // Ensure UI refreshes properly
+            }
+        }
+        // Clear `selectedImageUri` after updating, hence, will not violating the next update
+        selectedImageUri = null
     }
+
 
     // Use intent to allow import image from gallery
     private fun pickImageFromGallery() {
