@@ -9,5 +9,6 @@
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#000000</color>
     <color name="grey">#A6FFFFFF</color>
+    <color name="ivory">#FFFFF0</color>
     <!-- Add more custom colors as needed -->
 </resources>

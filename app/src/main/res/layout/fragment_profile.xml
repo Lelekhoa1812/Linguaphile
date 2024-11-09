@@ -19,12 +19,15 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
+            <!-- Profile image -->
             <ImageView
                 android:id="@+id/profileImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/user"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFF0"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/userNameTextView"
@@ -57,6 +60,103 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:visibility="gone">
+
+            <!-- Selected Image View -->
+            <ImageView
+                android:id="@+id/selectedProfileImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/upload"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <!-- Horizontal Scroller selecting image resources -->
+            <HorizontalScrollView
+                android:id="@+id/avatarScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Beginner avatar package -->
+                    <!-- Default user img -->
+                    <ImageView
+                        android:id="@+id/avatarUser"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/user"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Cat img -->
+                    <ImageView
+                        android:id="@+id/avatarCat"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/cat"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Dog img -->
+                    <ImageView
+                        android:id="@+id/avatarDog"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/dog"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Frog img -->
+                    <ImageView
+                        android:id="@+id/avatarFrog"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/frog"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Elephant img -->
+                    <ImageView
+                        android:id="@+id/avatarElephant"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/elephant"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Kangaroo img -->
+                    <ImageView
+                        android:id="@+id/avatarKangaroo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/kangaroo"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Ox img -->
+                    <ImageView
+                        android:id="@+id/avatarOx"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ox"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                    <!-- Rabbit img -->
+                    <ImageView
+                        android:id="@+id/avatarRabbit"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/rabbit"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:onClick="onAvatarSelected" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <ImageView
                 android:id="@+id/editProfileImageHolder"

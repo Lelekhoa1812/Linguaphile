@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -30,51 +31,8 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var userViewModel: UserViewModel
     private var currentUser: User? = null
-    private var selectedImageUri: Uri? = null
+    private var selectedImageResId: Int? = R.drawable.user // Variable for Image Resource id from drawable, with default avatar
 
-    // Save the image to the app's internal storage (e.g., res/drawable) with their Uri as string, return the path
-    private fun saveImageToInternalStorage(uri: Uri): String? {
-        return try {
-            // Setup context of the stream (e.g., file, uri)
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
-            // File context
-            val fileName = "profile_picture.png"
-            val file = File(requireContext().filesDir, fileName)
-            val outputStream = FileOutputStream(file)
-            // Format bitmap context
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            file.absolutePath // Absolute path to the image
-        } catch (e: IOException) {
-            Log.e("ProfileFragment", "Error saving image: ${e.message}")
-            null
-        }
-    }
-
-    // Pick image from external storage (e.g., gallery), assert result status and set context (file, path, view)
-    private val pickImageResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        // Set data
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            val imageUri = result.data?.data
-            // Set path (uri)
-            imageUri?.let {
-                val imagePath = saveImageToInternalStorage(it)
-                // Casing image path has been defined, change the app's component view visibility
-                if (imagePath != null) {
-                    binding.editProfileImageHolder.visibility = View.GONE // Hide the upload icon
-                    binding.profileImageView.setImageURI(Uri.fromFile(File(imagePath))) // Load image from internal storage
-                    binding.profileImageView.visibility = View.VISIBLE
-                    // Parse the path
-                    selectedImageUri = Uri.parse(imagePath) // Save the path to use in updateUserDetails()
-                }
-            }
-        }
-    }
 
     // Create Views
     override fun onCreateView(
@@ -98,15 +56,67 @@ class ProfileFragment : Fragment() {
                 showDefaultDetails()
             }
         }
+        setupAvatarSelection() // Setup scroller view and enable data selection
+        // Handle avatar selection
+//        binding.avatarUser.setOnClickListener { selectAvatar(R.drawable.user) }
+//        binding.avatarCat.setOnClickListener { selectAvatar(R.drawable.cat) }
+//        binding.avatarDog.setOnClickListener { selectAvatar(R.drawable.dog) }
+//        binding.avatarRabbit.setOnClickListener { selectAvatar(R.drawable.rabbit) }
+//        binding.avatarFrog.setOnClickListener { selectAvatar(R.drawable.frog) }
+//        binding.avatarElephant.setOnClickListener { selectAvatar(R.drawable.elephant) }
+//        binding.avatarKangaroo.setOnClickListener { selectAvatar(R.drawable.kangaroo) }
+//        binding.avatarOx.setOnClickListener { selectAvatar(R.drawable.ox) }
         // Trigger edit mode on listener
         binding.updateDetailsButton.setOnClickListener { enterEditMode() }
         // Confirm and update user details on data
         binding.confirmButton.setOnClickListener { updateUserDetails() }
         // Cancel update
         binding.cancelButton.setOnClickListener { showUserDetails(currentUser) }
-        // Pick image on listener
-        binding.editProfileImageHolder.setOnClickListener { pickImageFromGallery() }
+        // Toggle visibility of scroller
+        binding.selectedProfileImageView.setOnClickListener {
+            toggleAvatarScrollerVisibility()
+        }
         return binding.root
+    }
+
+    // Implement the click handler for selecting images from the scroller, then bind data
+    private fun setupAvatarSelection() {
+        val avatarIds = listOf(
+            R.id.avatarUser, R.id.avatarCat, R.id.avatarDog,
+            R.id.avatarFrog, R.id.avatarElephant, R.id.avatarKangaroo,
+            R.id.avatarOx, R.id.avatarRabbit
+        )
+        avatarIds.forEach { id ->
+            binding.root.findViewById<ImageView>(id).setOnClickListener {
+                val drawableResource = when (id) {
+                    R.id.avatarUser -> R.drawable.user
+                    R.id.avatarCat -> R.drawable.cat
+                    R.id.avatarDog -> R.drawable.dog
+                    R.id.avatarFrog -> R.drawable.frog
+                    R.id.avatarElephant -> R.drawable.elephant
+                    R.id.avatarKangaroo -> R.drawable.kangaroo
+                    R.id.avatarOx -> R.drawable.ox
+                    R.id.avatarRabbit -> R.drawable.rabbit
+                    else -> R.drawable.user // Default case
+                }
+                selectedImageResId = drawableResource // Choose the targeted image resource
+                binding.selectedProfileImageView.setImageResource(drawableResource)
+                binding.selectedProfileImageView.visibility = View.VISIBLE
+                binding.avatarScrollView.visibility =
+                    View.GONE // Hide scroller after selection            }
+            }
+        }
+    }
+
+    // Enable and disable scroller visibility when interact UI elements
+    private fun toggleAvatarScrollerVisibility() {
+        if (binding.avatarScrollView.visibility == View.GONE) {
+            binding.avatarScrollView.visibility = View.VISIBLE
+            binding.selectedProfileImageView.visibility = View.GONE
+        } else {
+            binding.avatarScrollView.visibility = View.GONE
+            binding.selectedProfileImageView.visibility = View.VISIBLE
+        }
     }
 
     // View mode with default details and hide edit mode
@@ -115,14 +125,10 @@ class ProfileFragment : Fragment() {
         binding.viewModeLayout.visibility = View.VISIBLE
         // Parse the profilePicture string path or use default resource URI
         val imagePath = user?.profilePicture
-        // Assert image path not null then set up view with image uri, else shows default upload image
-        if (imagePath != null && File(imagePath).exists()) {
-            binding.profileImageView.setImageURI(Uri.fromFile(File(imagePath)))
-        } else {
-            binding.profileImageView.setImageResource(R.drawable.user)
-        }
-        binding.profileImageView.visibility = View.VISIBLE
-        binding.editProfileImageHolder.visibility = View.GONE // Hide in view mode
+        // Assert image path not null then set up view with corresponding animal icon user selected
+        val imageRes = user?.profilePicture?.toIntOrNull() ?: R.drawable.user
+        binding.profileImageView.setImageResource(imageRes)
+        binding.profileImageView.setBackgroundColor(resources.getColor(R.color.ivory, null))
         // Name and email TextViews
         binding.userNameTextView.text = user?.name ?: "" // "User Name"
         binding.emailTextView.text = user?.email ?: ""   // "user@example.com"
@@ -137,22 +143,11 @@ class ProfileFragment : Fragment() {
     private fun enterEditMode() {
         binding.viewModeLayout.visibility = View.GONE
         binding.editModeLayout.visibility = View.VISIBLE
-        // Name and email EditText widgets
+        // Set the EditText fields with current user data
         binding.editUserName.setText(currentUser?.name ?: "")
         binding.editEmail.setText(currentUser?.email ?: "")
-        val imagePath = currentUser?.profilePicture
-        if (imagePath != null && File(imagePath).exists()) {
-            binding.profileImageView.setImageDrawable(null) // Clear previous drawable to force refresh
-            binding.profileImageView.setImageURI(Uri.fromFile(File(imagePath)))
-        } else {
-            binding.profileImageView.setImageResource(R.drawable.user)
-        }
-        binding.profileImageView.invalidate() // Force view to refresh
-        Log.d("ProfileFragment", "Displayed Image path in edit mode: $imagePath") // Logs
-        binding.editProfileImageHolder.setImageResource(R.drawable.upload) // Set upload icon
-        binding.editProfileImageHolder.visibility = View.VISIBLE // Show the upload icon
-        // Bind and set selected image after chosen from gallery
-        binding.profileImageView.visibility = View.VISIBLE // Show current or default profile image
+        binding.avatarScrollView.visibility = View.VISIBLE
+        binding.selectedProfileImageView.visibility = View.GONE
     }
 
     // Update new detail entries and save
@@ -171,7 +166,8 @@ class ProfileFragment : Fragment() {
             email = newEmail,
             //profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture // Save the picture uri
             //profilePicture = selectedImageUri?.path // Save the path instead of the URI
-            profilePicture = selectedImageUri?.path ?: currentUser?.profilePicture // Save the path or use current profile picture
+            //profilePicture = selectedImageUri?.path ?: currentUser?.profilePicture // Save the path or use current profile picture
+            profilePicture = selectedImageResId.toString() // Set image resource id (string)
         )
         // Update with ViewModel
         userViewModel.updateUser(updatedUser)
@@ -192,16 +188,7 @@ class ProfileFragment : Fragment() {
             }
         }
         // Clear `selectedImageUri` after updating, hence, will not violating the next update
-        selectedImageUri = null
-    }
-
-
-    // Use intent to allow import image from gallery
-    private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK).apply {
-            type = "image/*"
-        }
-        pickImageResultLauncher.launch(intent)
+        selectedImageResId = null
     }
 
     // Destroy
