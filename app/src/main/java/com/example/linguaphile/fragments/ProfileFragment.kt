@@ -97,7 +97,8 @@ class ProfileFragment : Fragment() {
     // Function to handle avatar selection, dynamically adjust visibility
     private fun selectAvatar(resId: Int) {
         selectedImageResId = resId
-        binding.selectedProfileImageView.setImageResource(resId)
+        binding.selectedProfileImageView.setImageResource(resId) // Set the avatar user chose at edit mode
+        binding.selectedProfileImageView.setBackgroundColor(getBackgroundColorForImage(resId)) // Set background color directly on selection
         binding.selectedProfileImageView.visibility = View.VISIBLE
         binding.avatarScrollView.visibility = View.GONE
     }

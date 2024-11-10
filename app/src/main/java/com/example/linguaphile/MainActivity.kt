@@ -42,16 +42,20 @@ class MainActivity : AppCompatActivity() {
         val headerImageView: ImageView = headerView.findViewById(R.id.imageView)
         val headerTitle: TextView = headerView.findViewById(R.id.nav_header_title)
         val headerSubtitle: TextView = headerView.findViewById(R.id.nav_header_subtitle)
+
         // Observe user data and update header content dynamically
         userViewModel.getUser().observe(this) { user ->
             if (user != null) {
                 headerTitle.text = user.name
                 headerSubtitle.text = user.email
                 // Load profile picture if available, otherwise use default
-                if (user.profilePicture != null && File(user.profilePicture).exists()) {
-                    headerImageView.setImageURI(Uri.fromFile(File(user.profilePicture)))
+                if (user.profilePicture != null && user.profilePicture.toIntOrNull() != null) {
+                    val imageResId = user.profilePicture.toInt()
+                    headerImageView.setImageResource(imageResId)
+                    headerImageView.setBackgroundColor(getBackgroundColorForImage(imageResId))
                 } else {
                     headerImageView.setImageResource(R.drawable.user)
+                    headerImageView.setBackgroundColor(resources.getColor(R.color.ivory, null))
                 }
             }
         }
@@ -77,5 +81,29 @@ class MainActivity : AppCompatActivity() {
     // Navigate up (<-) from children fragments
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Function to get background color based on the drawable resource ID (class), dynamically update each time user update
+    private fun getBackgroundColorForImage(imageResId: Int): Int {
+        return when (imageResId) {
+            // Regular class
+            R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
+            R.drawable.jaguar, R.drawable.kangaroo, R.drawable.ox, R.drawable.rabbit -> {
+                resources.getColor(R.color.ivory, null)
+            }
+            // Rare class
+            R.drawable.bee1, R.drawable.elephant, R.drawable.monkey -> {
+                resources.getColor(R.color.green, null)
+            }
+            // Epic class
+            R.drawable.bee2, R.drawable.bear, R.drawable.dolphin -> {
+                resources.getColor(R.color.blue, null)
+            }
+            // Legendary class
+            R.drawable.bee3, R.drawable.lion, R.drawable.robot -> {
+                resources.getColor(R.color.purple, null)
+            }
+            else -> resources.getColor(R.color.ivory, null) // Default to ivory if not matched
+        }
     }
 }

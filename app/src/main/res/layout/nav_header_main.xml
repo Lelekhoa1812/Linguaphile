@@ -6,12 +6,15 @@
     android:padding="16dp"
     android:background="@color/colorTextPrimary">
 
+    <!-- Profile img resId and corresponding class background color -->
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="44dp"
-        android:layout_height="57dp"
-        android:src="@drawable/user" />
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/user"
+        android:background="@color/ivory"/>
 
+    <!-- Name as title -->
     <TextView
         android:id="@+id/nav_header_title"
         android:layout_width="wrap_content"
@@ -20,6 +23,7 @@
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
+    <!-- Email as sub-title -->
     <TextView
         android:id="@+id/nav_header_subtitle"
         android:layout_width="wrap_content"
