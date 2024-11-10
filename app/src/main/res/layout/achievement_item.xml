@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/pink"
+    android:layout_marginBottom="12dp">
+
+    <!-- Name of Task -->
+    <TextView
+        android:id="@+id/achievementName"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Achievement Name"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Description of Task -->
+    <TextView
+        android:id="@+id/achievementDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Description"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <!-- Status Image of Task -->
+    <ImageView
+        android:id="@+id/achievementStatusImage"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/no" />
+</LinearLayout>

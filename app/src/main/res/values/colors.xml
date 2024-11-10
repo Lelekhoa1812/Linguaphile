@@ -13,5 +13,6 @@
     <color name="green">#A6DFA8</color>
     <color name="blue">#6F7DCC</color>
     <color name="purple">#7A60AB</color>
+    <color name="pink">#F3D9E2</color>
     <!-- Add more custom colors as needed -->
 </resources>

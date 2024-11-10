@@ -21,8 +21,6 @@ interface VocabularyDAO {
     suspend fun deleteVocabulary(vocabulary: Vocabulary)
 
     // Get item by id
-//    @Query("SELECT * FROM vocabulary WHERE id = :id")
-//    fun getVocabularyById(id: Int): LiveData<Vocabulary>
     @Query("SELECT * FROM vocabulary WHERE id = :vocabularyId")
     fun getVocabularyById(vocabularyId: Int): LiveData<Vocabulary>
 
