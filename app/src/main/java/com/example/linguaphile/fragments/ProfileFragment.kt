@@ -68,11 +68,11 @@ class ProfileFragment : Fragment() {
             R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
             R.drawable.jaguar, R.drawable.kangaroo, R.drawable.ox, R.drawable.rabbit,
             // rare
-            R.drawable.bee1, R.drawable.elephant, R.drawable.monkey,
+            R.drawable.bee1, R.drawable.elephant, R.drawable.peacock1, R.drawable.eagle1, R.drawable.owl1, R.drawable.parrot1, R.drawable.monkey,
             // epic
             R.drawable.bee2, R.drawable.bear, R.drawable.dolphin,
             // legendary
-            R.drawable.bee3, R.drawable.lion, R.drawable.robot
+            R.drawable.bee3, R.drawable.lion, R.drawable.peacock2, R.drawable.eagle2, R.drawable.owl2, R.drawable.parrot2, R.drawable.robot
         )
         // Clear existing views to prevent duplicates
         binding.avatarLinearLayout.removeAllViews()
@@ -123,13 +123,13 @@ class ProfileFragment : Fragment() {
             R.drawable.jaguar, R.drawable.kangaroo, R.drawable.ox, R.drawable.rabbit -> {
                 resources.getColor(R.color.ivory, null) }
             // rare class
-            R.drawable.bee1, R.drawable.elephant, R.drawable.monkey -> {
+            R.drawable.bee1, R.drawable.elephant, R.drawable.peacock1, R.drawable.eagle1, R.drawable.owl1, R.drawable.parrot1, R.drawable.monkey -> {
                 resources.getColor(R.color.green, null) }
             // epic class
             R.drawable.bee2, R.drawable.bear, R.drawable.dolphin -> {
                 resources.getColor(R.color.blue, null) }
             // legendary class
-            R.drawable.bee3, R.drawable.lion, R.drawable.robot -> {
+            R.drawable.bee3, R.drawable.lion, R.drawable.peacock2, R.drawable.eagle2, R.drawable.owl2, R.drawable.parrot2, R.drawable.robot -> {
                 resources.getColor(R.color.purple, null) }
             else -> resources.getColor(R.color.ivory, null) // Default to ivory if not matched
         }

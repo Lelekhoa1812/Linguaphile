@@ -16,6 +16,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
     class AchievementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val achievementName: TextView = itemView.findViewById(R.id.achievementName)
         val achievementDescription: TextView = itemView.findViewById(R.id.achievementDescription)
+        val achievementUnlockImage: ImageView = itemView.findViewById(R.id.achievementUnlockImage)
         val achievementStatusImage: ImageView = itemView.findViewById(R.id.achievementStatusImage)
     }
 
@@ -30,11 +31,10 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
         val achievement = achievementList[position]
         holder.achievementName.text = achievement.name
         holder.achievementDescription.text = achievement.description
+        // Set possible unlocked image on this achievement
+        achievement.unlockImageResId?.let { holder.achievementUnlockImage.setImageResource(it) }
         // Set image resource dynamically on achievement task status
-        var imageResId = R.drawable.no
-        if (achievement.status == 1) { imageResId = R.drawable.yes }
-        else { imageResId = R.drawable.no }
-        holder.achievementStatusImage.setImageResource(imageResId)
+        holder.achievementStatusImage.setImageResource(achievement.status)
     }
 
     // Count total number of item
