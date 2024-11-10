@@ -1,10 +1,5 @@
 package com.example.linguaphile.fragments
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.linguaphile.R
@@ -22,9 +16,6 @@ import com.example.linguaphile.viewmodels.UserViewModel
 import com.example.linguaphile.repositories.UserRepository
 import com.example.linguaphile.databases.UserDatabase
 import com.example.linguaphile.viewmodels.UserViewModelFactory
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -44,28 +35,19 @@ class ProfileFragment : Fragment() {
         val repository = UserRepository(userDao)
         val factory = UserViewModelFactory(repository)
         // Use factory to create ViewModel
-        userViewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
+        userViewModel = ViewModelProvider(this, factory)[UserViewModel::class.java] // Replace .get method call with proper java class indexing implementation
         // Observe user data (casing null and default)
         userViewModel.getUser().observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 Log.d("Profile Fragment", "User is not null") // Logs
                 currentUser = user
                 showUserDetails(user)
-            } else if (user == null || user.name == "User Name") {
+            } else if (user == null || user.name == "User Name") { // This check is redundant but just try to ensure the program works correctly
                 Log.d("Profile Fragment", "User is null or default") // Logs
                 showDefaultDetails()
             }
         }
         setupAvatarSelection() // Setup scroller view and enable data selection
-        // Handle avatar selection
-//        binding.avatarUser.setOnClickListener { selectAvatar(R.drawable.user) }
-//        binding.avatarCat.setOnClickListener { selectAvatar(R.drawable.cat) }
-//        binding.avatarDog.setOnClickListener { selectAvatar(R.drawable.dog) }
-//        binding.avatarRabbit.setOnClickListener { selectAvatar(R.drawable.rabbit) }
-//        binding.avatarFrog.setOnClickListener { selectAvatar(R.drawable.frog) }
-//        binding.avatarElephant.setOnClickListener { selectAvatar(R.drawable.elephant) }
-//        binding.avatarKangaroo.setOnClickListener { selectAvatar(R.drawable.kangaroo) }
-//        binding.avatarOx.setOnClickListener { selectAvatar(R.drawable.ox) }
         // Trigger edit mode on listener
         binding.updateDetailsButton.setOnClickListener { enterEditMode() }
         // Confirm and update user details on data
@@ -81,32 +63,45 @@ class ProfileFragment : Fragment() {
 
     // Implement the click handler for selecting images from the scroller, then bind data
     private fun setupAvatarSelection() {
-        val avatarIds = listOf(
-            R.id.avatarUser, R.id.avatarCat, R.id.avatarDog,
-            R.id.avatarFrog, R.id.avatarElephant, R.id.avatarKangaroo,
-            R.id.avatarOx, R.id.avatarRabbit
+        val avatarResources = listOf(
+            // regular
+            R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
+            R.drawable.jaguar, R.drawable.kangaroo, R.drawable.ox, R.drawable.rabbit,
+            // rare
+            R.drawable.bee1, R.drawable.elephant, R.drawable.monkey,
+            // epic
+            R.drawable.bee2, R.drawable.bear, R.drawable.dolphin,
+            // legendary
+            R.drawable.bee3, R.drawable.lion, R.drawable.robot
         )
-        avatarIds.forEach { id ->
-            binding.root.findViewById<ImageView>(id).setOnClickListener {
-                val drawableResource = when (id) {
-                    R.id.avatarUser -> R.drawable.user
-                    R.id.avatarCat -> R.drawable.cat
-                    R.id.avatarDog -> R.drawable.dog
-                    R.id.avatarFrog -> R.drawable.frog
-                    R.id.avatarElephant -> R.drawable.elephant
-                    R.id.avatarKangaroo -> R.drawable.kangaroo
-                    R.id.avatarOx -> R.drawable.ox
-                    R.id.avatarRabbit -> R.drawable.rabbit
-                    else -> R.drawable.user // Default case
+        // Clear existing views to prevent duplicates
+        binding.avatarLinearLayout.removeAllViews()
+        avatarResources.forEach { resId -> // Match image resources with resId on pick
+            val imageView = ImageView(requireContext()).apply {
+                val layoutParams = ViewGroup.MarginLayoutParams(100, 100).apply {
+                    setMargins(8, 0, 8, 0)
                 }
-                selectedImageResId = drawableResource // Choose the targeted image resource
-                binding.selectedProfileImageView.setImageResource(drawableResource)
-                binding.selectedProfileImageView.visibility = View.VISIBLE
-                binding.avatarScrollView.visibility =
-                    View.GONE // Hide scroller after selection            }
+                this.layoutParams = layoutParams
+                setImageResource(resId)
+                setPadding(8, 8, 8, 8)
+                isClickable = true
+                setOnClickListener {
+                    selectAvatar(resId)
+                }
             }
+            // Add ImageView to the LinearLayout inside the HorizontalScrollView
+            binding.avatarLinearLayout.addView(imageView)
         }
     }
+
+    // Function to handle avatar selection, dynamically adjust visibility
+    private fun selectAvatar(resId: Int) {
+        selectedImageResId = resId
+        binding.selectedProfileImageView.setImageResource(resId)
+        binding.selectedProfileImageView.visibility = View.VISIBLE
+        binding.avatarScrollView.visibility = View.GONE
+    }
+
 
     // Enable and disable scroller visibility when interact UI elements
     private fun toggleAvatarScrollerVisibility() {
@@ -119,6 +114,26 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    // Function to get background color based on the drawable resource ID, colors are set by their class (regular, rare, epic, legendary)
+    private fun getBackgroundColorForImage(imageResId: Int): Int {
+        return when (imageResId) {
+            // regular class
+            R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
+            R.drawable.jaguar, R.drawable.kangaroo, R.drawable.ox, R.drawable.rabbit -> {
+                resources.getColor(R.color.ivory, null) }
+            // rare class
+            R.drawable.bee1, R.drawable.elephant, R.drawable.monkey -> {
+                resources.getColor(R.color.green, null) }
+            // epic class
+            R.drawable.bee2, R.drawable.bear, R.drawable.dolphin -> {
+                resources.getColor(R.color.blue, null) }
+            // legendary class
+            R.drawable.bee3, R.drawable.lion, R.drawable.robot -> {
+                resources.getColor(R.color.purple, null) }
+            else -> resources.getColor(R.color.ivory, null) // Default to ivory if not matched
+        }
+    }
+
     // View mode with default details and hide edit mode
     private fun showUserDetails(user: User?) {
         binding.editModeLayout.visibility = View.GONE
@@ -128,7 +143,7 @@ class ProfileFragment : Fragment() {
         // Assert image path not null then set up view with corresponding animal icon user selected
         val imageRes = user?.profilePicture?.toIntOrNull() ?: R.drawable.user
         binding.profileImageView.setImageResource(imageRes)
-        binding.profileImageView.setBackgroundColor(resources.getColor(R.color.ivory, null))
+        binding.profileImageView.setBackgroundColor(getBackgroundColorForImage(imageRes)) // Set corresponding background color by class
         // Name and email TextViews
         binding.userNameTextView.text = user?.name ?: "" // "User Name"
         binding.emailTextView.text = user?.email ?: ""   // "user@example.com"
@@ -146,6 +161,9 @@ class ProfileFragment : Fragment() {
         // Set the EditText fields with current user data
         binding.editUserName.setText(currentUser?.name ?: "")
         binding.editEmail.setText(currentUser?.email ?: "")
+        val imageRes = currentUser?.profilePicture?.toIntOrNull() ?: R.drawable.user
+        binding.selectedProfileImageView.setImageResource(imageRes)
+        binding.selectedProfileImageView.setBackgroundColor(getBackgroundColorForImage(imageRes)) // Set background color by class
         binding.avatarScrollView.visibility = View.VISIBLE
         binding.selectedProfileImageView.visibility = View.GONE
     }
@@ -164,15 +182,12 @@ class ProfileFragment : Fragment() {
             id = currentUser?.id ?: 1, // Always set to 1 if there is only one user record
             name = newName,
             email = newEmail,
-            //profilePicture = selectedImageUri?.toString() ?: currentUser?.profilePicture // Save the picture uri
-            //profilePicture = selectedImageUri?.path // Save the path instead of the URI
-            //profilePicture = selectedImageUri?.path ?: currentUser?.profilePicture // Save the path or use current profile picture
             profilePicture = selectedImageResId.toString() // Set image resource id (string)
         )
         // Update with ViewModel
         userViewModel.updateUser(updatedUser)
         Toast.makeText(context, "Details updated successfully", Toast.LENGTH_SHORT).show()
-        //Log.d("ProfileFragment", "Picture path now: ${updatedUser.profilePicture}") // Logs
+        Log.d("ProfileFragment", "Picture path now: ${updatedUser.profilePicture}") // Logs
         currentUser = updatedUser // Update UI dynamically
         showUserDetails(updatedUser)
         // Re-fetch user data from ViewModel to trigger LiveData update
