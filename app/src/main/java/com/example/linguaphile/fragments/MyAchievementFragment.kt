@@ -44,6 +44,7 @@ class MyAchievementFragment : Fragment() {
 
     // Generate and assert achievement milestones on the list of achievements
     private fun generateAchievements(vocabularyList: List<Vocabulary>): List<Achievement> {
+        // Trackers on achievement progression
         val totalVocab = vocabularyList.size
         val totalNouns = vocabularyList.count { it.type == "Noun" }
         val totalVerbs = vocabularyList.count { it.type == "Verb" }

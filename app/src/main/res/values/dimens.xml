@@ -1,3 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <!-- Lock icon showing hidden avatar in ProfileFragment -->
+    <dimen name="lock_icon_size">10dp</dimen>
 </resources>
