@@ -21,7 +21,7 @@ import com.example.linguaphile.viewmodels.VocabularyViewModel
 
 class MyAchievementFragment : Fragment() {
     private var _binding: FragmentMyAchievementBinding? = null
-    // Bind ViewModel and initialise adapter
+    // Bind ViewModel and initialise adapter for Vocabulary VM
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
     private lateinit var achievementAdapter: AchievementAdapter
@@ -40,7 +40,7 @@ class MyAchievementFragment : Fragment() {
         binding.recyclerViewAchievements.adapter = achievementAdapter
         // Initialize ViewModel with custom factory for MiniGame Repository
         val repository = MiniGameRepository(MiniGameDatabase.getInstance(requireContext()).miniGameDao())
-        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository)).get(MiniGameViewModel::class.java)
+        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository))[MiniGameViewModel::class.java]
         // Initialize ViewModel to observe vocabulary data
         vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
         // Get all vocab item from ViewModel observing and bin the listing to Adapter
@@ -51,9 +51,31 @@ class MyAchievementFragment : Fragment() {
         // Observe vocabulary data and completed mini-games count
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
             minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->
-                // Pass the completed games count to generateAchievements
-                val achievements = generateAchievements(vocabularyList, completedMiniGamesCount)
-                achievementAdapter.submitList(achievements)
+                // Trackers on achievement progression
+                val totalVocab = vocabularyList.size
+                val totalNouns = vocabularyList.count { it.type == "Noun" }
+                val totalVerbs = vocabularyList.count { it.type == "Verb" }
+                val totalAdjectives = vocabularyList.count { it.type == "Adjective" }
+                val totalAdverbs = vocabularyList.count { it.type == "Adverb" }
+                // Track and log all variable in advance
+                Log.d("MyAchievementFragmentToAdapter", "totVocab: $totalVocab")
+                Log.d("MyAchievementFragmentToAdapter", "totNoun: $totalNouns")
+                Log.d("MyAchievementFragmentToAdapter", "totVerb: $totalVerbs")
+                Log.d("MyAchievementFragmentToAdapter", "totalAdj: $totalAdjectives")
+                Log.d("MyAchievementFragmentToAdapter", "totAdv: $totalAdverbs")
+                Log.d("MyAchievementFragmentToAdapter", "Completed Mini Games: $completedMiniGamesCount")
+                val progressData = mapOf(
+                    5 to totalVocab, 6 to totalVocab, 7 to totalVocab, 8 to totalVocab, 9 to totalVocab, // "Studious Bee I-V"
+                    10 to totalNouns, 11 to totalNouns, 12 to totalNouns, 13 to totalNouns, 14 to totalNouns, // "Noun Expert I-V"
+                    15 to totalVerbs, 16 to totalVerbs, 17 to totalVerbs, 18 to totalVerbs, 19 to totalVerbs, // "Verb Expert I-V"
+                    20 to totalAdjectives, 21 to totalAdjectives, 22 to totalAdjectives, 23 to totalAdjectives, 24 to totalAdjectives, // "Adjective Expert I-V"
+                    25 to totalAdverbs, 26 to totalAdverbs, 27 to totalAdverbs, 28 to totalAdverbs, 29 to totalAdverbs, // "Adverb Expert I-V"
+                    30 to completedMiniGamesCount, 31 to completedMiniGamesCount, 32 to completedMiniGamesCount, 33 to completedMiniGamesCount, 34 to completedMiniGamesCount // "Hunter I-V"
+                )
+                // Submit the package of content to the adapter, consisting of 2 components
+                // 1. The achievement task context including the task name, desc, their img resource, and unlocking status
+                // 2. The mapping setter between the achievement item's id and their corresponding threshold type
+                achievementAdapter.submitList(generateAchievements(vocabularyList, completedMiniGamesCount), progressData)
             }
         }
         return binding.root
@@ -81,7 +103,7 @@ class MyAchievementFragment : Fragment() {
         // Initialise ViewModel
         minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { count ->
             // Log the value
-            Log.d("MiniGameFragment", "Completed Mini Games Count: $count")
+            Log.d("MyAchievementFragment", "Completed Mini Games Count: $count")
         }
         // List of achievement trackers with their requirements and set context (e.g., image resId)
         return listOf(

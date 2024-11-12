@@ -1,5 +1,6 @@
 package com.example.linguaphile.fragments
 
+import MiniGameViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +12,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.linguaphile.R
+import com.example.linguaphile.databases.MiniGameDatabase
 import com.example.linguaphile.databinding.FragmentProfileBinding
 import com.example.linguaphile.entities.User
 import com.example.linguaphile.viewmodels.UserViewModel
 import com.example.linguaphile.repositories.UserRepository
 import com.example.linguaphile.databases.UserDatabase
 import com.example.linguaphile.entities.Vocabulary
+import com.example.linguaphile.repositories.MiniGameRepository
+import com.example.linguaphile.viewmodels.MiniGameViewModelFactory
 import com.example.linguaphile.viewmodels.UserViewModelFactory
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 
@@ -29,7 +33,8 @@ class ProfileFragment : Fragment() {
     private var selectedImageResId: Int? = R.drawable.user // Variable for Image Resource id from drawable, with default avatar
     // Bind Vocabulary ViewModels
     private lateinit var vocabularyViewModel: VocabularyViewModel
-
+    // MiniGame ViewModel
+    private lateinit var minigameViewModel: MiniGameViewModel
 
     // Create Views
     override fun onCreateView(
@@ -37,26 +42,32 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        // DAO, repository, and factory setups
         val userDao = UserDatabase.getInstance(requireContext()).userDao()
         val repository = UserRepository(userDao)
         val factory = UserViewModelFactory(repository)
+        val miniGameRepository = MiniGameRepository(MiniGameDatabase.getInstance(requireContext()).miniGameDao())
         // Initialize the VocabularyViewModel
         vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
-        // Use factory to create ViewModel
+        // Use factory to create userViewModel
         userViewModel = ViewModelProvider(this, factory)[UserViewModel::class.java] // Replace .get method call with proper java class indexing implementation
+        // Use factory to create minigameViewModel
+        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(miniGameRepository))[MiniGameViewModel::class.java]
         // Observe user data (casing null and default)
         userViewModel.getUser().observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 Log.d("Profile Fragment", "User is not null") // Logs
                 currentUser = user
                 showUserDetails(user)
-            } else if (user == null || user.name == "User Name") { // This check is redundant but just try to ensure the program works correctly
+            } else {
                 Log.d("Profile Fragment", "User is null or default") // Logs
                 showDefaultDetails()
             }
         }
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-            setupAvatarSelection(vocabularyList)
+            minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->
+                setupAvatarSelection(vocabularyList, completedMiniGamesCount)
+            }
         }
         // Trigger edit mode on listener
         binding.updateDetailsButton.setOnClickListener { enterEditMode() }
@@ -71,7 +82,7 @@ class ProfileFragment : Fragment() {
 
     // Implement the click handler for selecting images from the horizontal scroller, then bind data
     // When avatar not met the achievement condition, from parsed Vocabulary list, signify the locking status (show a lock icon (error), set fallback opacity, prevent clicking)
-    private fun setupAvatarSelection(vocabularyList: List<Vocabulary>) {
+    private fun setupAvatarSelection(vocabularyList: List<Vocabulary>, completedMiniGames: Int) {
         val avatarResources = listOf(
             // regular
             R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
@@ -89,6 +100,11 @@ class ProfileFragment : Fragment() {
         val totalVerbs = vocabularyList.count { it.type == "Verb" }
         val totalAdjectives = vocabularyList.count { it.type == "Adjective" }
         val totalAdverbs = vocabularyList.count { it.type == "Adverb" }
+        // Initialise minigameViewModel to obtain total aced game count
+        minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { count ->
+            // Log the value
+            Log.d("MiniGameFragment", "Completed Mini Games Count: $count") // Logs
+        }
         // Debug and log all variable in advance
         Log.d("ProfileFragment", totalVocab.toString())
         Log.d("ProfileFragment", totalNouns.toString())
@@ -127,6 +143,9 @@ class ProfileFragment : Fragment() {
                 R.drawable.owl2 -> totalAdjectives < 500
                 R.drawable.parrot1 -> totalAdverbs < 100
                 R.drawable.parrot2 -> totalAdverbs < 500
+                R.drawable.monkey -> completedMiniGames < 10
+                R.drawable.dolphin -> completedMiniGames < 50
+                R.drawable.robot -> completedMiniGames < 100
                 else -> false
             }
             // Overlay lock icon if the avatar is locked
@@ -214,8 +233,8 @@ class ProfileFragment : Fragment() {
     private fun showUserDetails(user: User?) {
         binding.editModeLayout.visibility = View.GONE
         binding.viewModeLayout.visibility = View.VISIBLE
-        // Parse the profilePicture string path or use default resource URI
-        val imagePath = user?.profilePicture
+        // Parse the profilePicture string path or use default resource URI (no longer used since we use imageRes already)
+        //val imagePath = user?.profilePicture
         // Assert image path not null then set up view with corresponding animal icon user selected
         val imageRes = user?.profilePicture?.toIntOrNull() ?: R.drawable.user
         binding.profileImageView.setImageResource(imageRes)

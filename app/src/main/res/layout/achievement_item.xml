@@ -3,41 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#EAE3FA"
-    android:layout_marginBottom="12dp">
+    android:background="#F2EEFB"
+    android:layout_marginBottom="18dp">
 
-    <!-- Name of Task -->
-    <TextView
-        android:id="@+id/achievementName"
-        android:layout_width="100dp"
+    <!-- Text content block -->
+    <LinearLayout
+        android:layout_width="251dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:layout_weight="1"
-        android:text="Achievement Name"
-        android:textSize="19sp"
-        android:textStyle="bold" />
-
-    <!-- Description of Task -->
-    <TextView
-        android:id="@+id/achievementDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="Description"
-        android:textSize="15sp"
-        android:textStyle="italic" />
+        android:orientation="vertical">
+        <!-- Name of Task -->
+        <TextView
+            android:id="@+id/achievementName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Achievement Name"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+        <!-- Description of Task -->
+        <TextView
+            android:id="@+id/achievementDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </LinearLayout>
 
     <!-- Achievement Unlock Image of Task -->
     <ImageView
         android:id="@+id/achievementUnlockImage"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="5dp"/>
+        android:layout_width="39dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="2" />
 
-    <!-- Status Image of Task -->
-    <ImageView
-        android:id="@+id/achievementStatusImage"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/no" />
-
+    <!-- Status block -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="3"
+        android:layout_gravity="center_vertical">
+        <!-- Status Image of Task -->
+        <ImageView
+            android:id="@+id/achievementStatusImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/no" />
+        <!-- Threshold Status of Task -->
+        <TextView
+            android:id="@+id/statusThreshold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="0/100"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </LinearLayout>
 </LinearLayout>

@@ -32,7 +32,7 @@ class AddVocabularyFragment : Fragment() {
     ): View {
         _binding = FragmentAddVocabularyBinding.inflate(inflater, container, false)
         // Initialize the ViewModel
-        vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
+        vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
         // Initial setup for the first/mandatory meaning (Meaning1)
         meanings.add(binding.meaning1EditText)
         // Add dynamic meanings

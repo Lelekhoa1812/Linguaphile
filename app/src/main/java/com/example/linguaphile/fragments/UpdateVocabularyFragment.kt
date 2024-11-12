@@ -17,8 +17,6 @@ import com.example.linguaphile.databinding.FragmentUpdateVocabularyBinding
 import com.example.linguaphile.entities.Vocabulary
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import java.util.*
-import androidx.navigation.fragment.navArgs
-import com.example.linguaphile.fragments.UpdateVocabularyFragmentArgs
 
 class UpdateVocabularyFragment : Fragment() {
     // Setups parameters
@@ -36,7 +34,7 @@ class UpdateVocabularyFragment : Fragment() {
     ): View {
         _binding = FragmentUpdateVocabularyBinding.inflate(inflater, container, false)
         // Initialize ViewModel
-        vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
+        vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
         // Load vocabulary data
         vocabularyViewModel.getVocabularyById(args.vocabularyId).observe(viewLifecycleOwner) { vocabulary ->
             vocabulary?.let { bindVocabularyData(it) }

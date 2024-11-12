@@ -1,5 +1,6 @@
 package com.example.linguaphile.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.linguaphile.R
 import com.example.linguaphile.entities.Achievement
 
-class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementViewHolder>() {
-    private var achievementList: List<Achievement> = emptyList()
+class AchievementAdapter(
+    private var achievementList: List<Achievement> = emptyList(), // Get listing (from scratch or) from submitList
+    private var progressData: Map<Int, Int> = emptyMap() // Progress data map for each achievement by ID from submitList
+) : RecyclerView.Adapter<AchievementAdapter.AchievementViewHolder>() {
 
     // Initialise content for ViewHolder
     class AchievementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -19,6 +22,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
         val achievementDescription: TextView = itemView.findViewById(R.id.achievementDescription)
         val achievementUnlockImage: ImageView = itemView.findViewById(R.id.achievementUnlockImage)
         val achievementStatusImage: ImageView = itemView.findViewById(R.id.achievementStatusImage)
+        val achievementStatusThreshold: TextView = itemView.findViewById(R.id.statusThreshold)
     }
 
     // Create ViewHolder
@@ -54,6 +58,7 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
     }
 
     // Bind ViewHolder with data
+    @SuppressLint("SetTextI18n") // Set text content dynamically as TextView
     override fun onBindViewHolder(holder: AchievementViewHolder, position: Int) {
         val achievement = achievementList[position]
         holder.achievementName.text = achievement.name
@@ -63,8 +68,46 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
             holder.achievementUnlockImage.setImageResource(it) // Set image resource if null, skipped
             holder.achievementUnlockImage.setBackgroundColor(getBackgroundColorForImage(achievement.unlockImageResId, holder.achievementUnlockImage)) // Set background color on class
         }
-        // Set image resource dynamically on achievement task status
+        // Set image resource dynamically on achievement task status (yes or no drawable resource)
         holder.achievementStatusImage.setImageResource(achievement.status)
+        // Map the current progress to bind statusThreshold TextView by the Achievement id (set null to error signifying nullable or data failure)
+        val currentProgress = progressData[achievement.id] ?: "error"
+        // Achievement id -> their maximum threshold mapped/ Get the current progress and the maximum threshold
+        val maxProgress = when (achievement.id) {
+            5 -> 10   // "Studious Bee I"
+            6 -> 100  // "Studious Bee II"
+            7 -> 200  // "Studious Bee III"
+            8 -> 500  // "Studious Bee IV"
+            9 -> 1000 // "Studious Bee V"
+            10 -> 10  // "Noun Expert I"
+            11 -> 50  // "Noun Expert II"
+            12 -> 100 // "Noun Expert III"
+            13 -> 200 // "Noun Expert IV"
+            14 -> 500 // "Noun Expert V"
+            15 -> 10  // "Verb Expert I"
+            16 -> 50  // "Verb Expert II"
+            17 -> 100 // "Verb Expert III"
+            18 -> 200 // "Verb Expert IV"
+            19 -> 500 // "Verb Expert V"
+            20 -> 10  // "Adjective Expert I"
+            21 -> 50  // "Adjective Expert II"
+            22 -> 100 // "Adjective Expert III"
+            23 -> 200 // "Adjective Expert IV"
+            24 -> 500 // "Adjective Expert V"
+            25 -> 10  // "Adverb Expert I"
+            26 -> 50  // "Adverb Expert II"
+            27 -> 100 // "Adverb Expert III"
+            28 -> 200 // "Adverb Expert IV"
+            29 -> 500 // "Adverb Expert V"
+            30 -> 1   // "Hunter I"
+            31 -> 10  // "Hunter II"
+            32 -> 20  // "Hunter III"
+            33 -> 50  // "Hunter IV"
+            34 -> 100 // "Hunter V"
+            else -> 0 // Not available
+        }
+        // Text content on showing (current progress to be how far has you progressed on that particular task, over the maximum threshold to reach/match that task)
+        holder.achievementStatusThreshold.text = "$currentProgress/$maxProgress"
     }
 
     // Count total number of item
@@ -72,9 +115,11 @@ class AchievementAdapter : RecyclerView.Adapter<AchievementAdapter.AchievementVi
         return achievementList.size
     }
 
-    // Submit listing of achievement
-    fun submitList(list: List<Achievement>) {
-        achievementList = list
-        notifyDataSetChanged()
+    // Get the set of achievement listing and list mapper from MyAchievementFragment
+    @SuppressLint("NotifyDataSetChanged") // Notify data changing when submitting the final list to make sure changes are set on real time
+    fun submitList(list: List<Achievement>, progressData: Map<Int, Int>) {
+        achievementList = list // Store the achievement list and content in the adapter
+        this.progressData = progressData // Store the progress data (list mapper) in the adapter
+        notifyDataSetChanged() // Notify and adapt changing on real time (e.g. user progress out of this fragment and come back)
     }
 }

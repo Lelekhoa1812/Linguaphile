@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
+        vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
         // Set up RecyclerView with VocabularyAdapter
         adapter = VocabularyAdapter(
             // Navigate to update fragment while passed the id parameter as an argument
@@ -151,6 +151,7 @@ class HomeFragment : Fragment() {
 
         // Submit final list after sorting
         adapter.submitList(finalFilteredList)
+        Log.d("HomeFragment", "Final filtration $finalFilteredList")
     }
 
     // Destroy view

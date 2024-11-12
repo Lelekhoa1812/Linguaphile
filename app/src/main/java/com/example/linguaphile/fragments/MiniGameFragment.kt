@@ -1,6 +1,7 @@
 package com.example.linguaphile.fragments
 
 import MiniGameViewModel
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,7 +11,6 @@ import com.example.linguaphile.databinding.FragmentMiniGameBinding
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.example.linguaphile.entities.Vocabulary
 import androidx.appcompat.app.AlertDialog
-import androidx.navigation.fragment.findNavController
 import com.example.linguaphile.databases.MiniGameDatabase
 import com.example.linguaphile.entities.MiniGame
 import com.example.linguaphile.repositories.MiniGameRepository
@@ -43,10 +43,10 @@ class MiniGameFragment : Fragment() {
     ): View {
         _binding = FragmentMiniGameBinding.inflate(inflater, container, false)
         // Initialize vocabularyViewModel
-        vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
+        vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
         // Initialize minigameViewModel
         val repository = MiniGameRepository(MiniGameDatabase.getInstance(requireContext()).miniGameDao())
-        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository)).get(MiniGameViewModel::class.java)
+        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository))[MiniGameViewModel::class.java]
         Log.d("MiniGameFragment", "Binding initialized successfully") // Logs
         // Initially display the mode selection
         showModeSelection()
@@ -125,6 +125,7 @@ class MiniGameFragment : Fragment() {
     }
 
     // Shows question each time and move to the next one
+    @SuppressLint("SetTextI18n")
     private fun showNextQuestion() {
         if (currentQuestionIndex >= totalQuestions) {
             showResultDialog() // Test finished

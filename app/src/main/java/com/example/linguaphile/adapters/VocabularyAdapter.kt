@@ -31,7 +31,7 @@ class VocabularyAdapter(
     // Submit item list upon calling pre-search with Text Watcher
     override fun submitList(list: List<Vocabulary>?) {
         Log.d("VocabularyAdapter", "submitList called with ${list?.size ?: 0} items")
-        if (list != null && list.isNotEmpty()) {
+        if (!list.isNullOrEmpty()) {
             super.submitList(list)
         } else {
             Log.d("VocabularyAdapter", "Ignoring empty list submission to avoid clearing data.")
