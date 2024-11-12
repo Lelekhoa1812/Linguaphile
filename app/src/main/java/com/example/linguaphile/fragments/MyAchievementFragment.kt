@@ -43,11 +43,6 @@ class MyAchievementFragment : Fragment() {
         minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository))[MiniGameViewModel::class.java]
         // Initialize ViewModel to observe vocabulary data
         vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
-        // Get all vocab item from ViewModel observing and bin the listing to Adapter
-//        vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-//            val achievements = generateAchievements(vocabularyList)
-//            achievementAdapter.submitList(achievements)
-//        }
         // Observe vocabulary data and completed mini-games count
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
             minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->

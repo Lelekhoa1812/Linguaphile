@@ -20,9 +20,10 @@ class AchievementAdapter(
     class AchievementViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val achievementName: TextView = itemView.findViewById(R.id.achievementName)
         val achievementDescription: TextView = itemView.findViewById(R.id.achievementDescription)
-        val achievementUnlockImage: ImageView = itemView.findViewById(R.id.achievementUnlockImage)
-        val achievementStatusImage: ImageView = itemView.findViewById(R.id.achievementStatusImage)
-        val achievementStatusThreshold: TextView = itemView.findViewById(R.id.statusThreshold)
+        val achievementUnlockImage: ImageView = itemView.findViewById(R.id.achievementUnlockImage) // Corresponding image
+        val achievementUnlockFrame: ImageView = itemView.findViewById(R.id.achievementUnlockFrame) // Frame wrapped
+        val achievementStatusImage: ImageView = itemView.findViewById(R.id.achievementStatusImage) // Yes or No (unlocked yet?)
+        val achievementStatusThreshold: TextView = itemView.findViewById(R.id.statusThreshold)     // How far has the user progress / achieved merit
     }
 
     // Create ViewHolder
@@ -66,6 +67,7 @@ class AchievementAdapter(
         // Set possible unlocked image on this achievement
         achievement.unlockImageResId?.let {
             holder.achievementUnlockImage.setImageResource(it) // Set image resource if null, skipped
+            holder.achievementUnlockFrame.setImageResource(R.drawable.frame) // Set frame if there is the resource
             holder.achievementUnlockImage.setBackgroundColor(getBackgroundColorForImage(achievement.unlockImageResId, holder.achievementUnlockImage)) // Set background color on class
         }
         // Set image resource dynamically on achievement task status (yes or no drawable resource)

@@ -6,11 +6,11 @@
     android:background="#F2EEFB"
     android:layout_marginBottom="18dp">
 
-    <!-- Text content block -->
+    <!-- Text content block 1 -->
     <LinearLayout
-        android:layout_width="251dp"
+        android:layout_width="241dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
         <!-- Name of Task -->
@@ -31,14 +31,34 @@
             android:textStyle="italic" />
     </LinearLayout>
 
-    <!-- Achievement Unlock Image of Task -->
-    <ImageView
-        android:id="@+id/achievementUnlockImage"
-        android:layout_width="39dp"
-        android:layout_height="50dp"
+    <!-- Achievement Unlock Image with Frame block 2 -->
+    <FrameLayout
+        android:layout_width="47dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="10dp"
-        android:layout_weight="2" />
+        android:layout_marginEnd="5dp"
+        android:layout_weight="2">
+        <!-- Frame Image -->
+        <ImageView
+            android:id="@+id/achievementUnlockFrame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <!-- Achievement Unlock Image -->
+        <ImageView
+            android:id="@+id/achievementUnlockImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+<!--    &lt;!&ndash; Achievement Unlock Image &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/achievementUnlockImage"-->
+<!--        android:layout_width="39dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_weight="2"/>-->
 
     <!-- Status block -->
     <LinearLayout
