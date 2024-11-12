@@ -9,5 +9,5 @@ data class Achievement(
     val name: String,
     val description: String,
     val unlockImageResId: Int?, // The possible image can be unlocked with an achievement task
-    val status: Int // True if completed, false otherwise, 1/0
+    val status: Int // If the achievement is completed, saving the image ResId for 'yes' and 'no' icon
 )

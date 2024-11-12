@@ -1,5 +1,6 @@
 package com.example.linguaphile.fragments
 
+import MiniGameViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,12 +11,19 @@ import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.example.linguaphile.entities.Vocabulary
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import com.example.linguaphile.databases.MiniGameDatabase
+import com.example.linguaphile.entities.MiniGame
+import com.example.linguaphile.repositories.MiniGameRepository
+import com.example.linguaphile.viewmodels.MiniGameViewModelFactory
 import java.util.*
 
 class MiniGameFragment : Fragment() {
+    // Bind ViewModel
     private var _binding: FragmentMiniGameBinding? = null
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
+    private lateinit var minigameViewModel: MiniGameViewModel
+
     // Handling test mode variables
     private var testMode: TestMode? = null
     private var questions: List<Vocabulary> = listOf()
@@ -34,8 +42,12 @@ class MiniGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMiniGameBinding.inflate(inflater, container, false)
+        // Initialize vocabularyViewModel
         vocabularyViewModel = ViewModelProvider(this).get(VocabularyViewModel::class.java)
-        Log.d("MiniGameFragment", "Binding initialized successfully")
+        // Initialize minigameViewModel
+        val repository = MiniGameRepository(MiniGameDatabase.getInstance(requireContext()).miniGameDao())
+        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository)).get(MiniGameViewModel::class.java)
+        Log.d("MiniGameFragment", "Binding initialized successfully") // Logs
         // Initially display the mode selection
         showModeSelection()
         return _binding!!.root // Use _binding directly if there's an issue with accessing `binding`
@@ -71,7 +83,7 @@ class MiniGameFragment : Fragment() {
                 AlertDialog.Builder(requireContext())
                     .setTitle("No Vocabulary")
                     .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
-                    .setPositiveButton("OK") { _, _ ->
+                    .setPositiveButton("OK") { _, _ -> // Set dialog with button casing null data fetched allowing user to return without catching error
                         showModeSelection()
                     }
                     .setCancelable(false)
@@ -224,6 +236,16 @@ class MiniGameFragment : Fragment() {
             }
             .setCancelable(false)
             .show()
+        // Check if the mini-game is completed with a perfect score
+        if (score == totalQuestions) {
+            val miniGame = MiniGame(
+                completed = true,
+                score = score,
+                totalQuestions = totalQuestions
+            )
+            minigameViewModel.insertMiniGame(miniGame) // Add this aced mini game with details for incrementation
+            Log.d("MiniGameFragment", "Mini-game completed with a perfect score.")
+        }
     }
 
     // Destroy afterwards

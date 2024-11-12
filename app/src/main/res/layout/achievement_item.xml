@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#F1EAFF"
+    android:background="#EAE3FA"
     android:layout_marginBottom="12dp">
 
     <!-- Name of Task -->
@@ -27,17 +27,17 @@
         android:textStyle="italic" />
 
     <!-- Achievement Unlock Image of Task -->
-
-    <!-- Status Image of Task -->
     <ImageView
         android:id="@+id/achievementUnlockImage"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginEnd="5dp"/>
 
+    <!-- Status Image of Task -->
     <ImageView
         android:id="@+id/achievementStatusImage"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/no" />
+
 </LinearLayout>

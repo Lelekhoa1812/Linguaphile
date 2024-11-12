@@ -1,5 +1,6 @@
 package com.example.linguaphile.fragments
 
+import MiniGameViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.linguaphile.R
 import com.example.linguaphile.adapters.AchievementAdapter
+import com.example.linguaphile.databases.MiniGameDatabase
 import com.example.linguaphile.databinding.FragmentMyAchievementBinding
 import com.example.linguaphile.entities.Achievement
 import com.example.linguaphile.entities.Vocabulary
+import com.example.linguaphile.repositories.MiniGameRepository
+import com.example.linguaphile.viewmodels.MiniGameViewModelFactory
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 
 class MyAchievementFragment : Fragment() {
@@ -21,6 +25,8 @@ class MyAchievementFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var vocabularyViewModel: VocabularyViewModel
     private lateinit var achievementAdapter: AchievementAdapter
+    // MiniGame ViewModel
+    private lateinit var minigameViewModel: MiniGameViewModel
 
     // Initialise Views
     override fun onCreateView(
@@ -32,18 +38,29 @@ class MyAchievementFragment : Fragment() {
         binding.recyclerViewAchievements.layoutManager = LinearLayoutManager(requireContext())
         achievementAdapter = AchievementAdapter()
         binding.recyclerViewAchievements.adapter = achievementAdapter
-        // Initialize ViewModel to observe data
+        // Initialize ViewModel with custom factory for MiniGame Repository
+        val repository = MiniGameRepository(MiniGameDatabase.getInstance(requireContext()).miniGameDao())
+        minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository)).get(MiniGameViewModel::class.java)
+        // Initialize ViewModel to observe vocabulary data
         vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
-        // Get all vocab item from ViewModel
+        // Get all vocab item from ViewModel observing and bin the listing to Adapter
+//        vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
+//            val achievements = generateAchievements(vocabularyList)
+//            achievementAdapter.submitList(achievements)
+//        }
+        // Observe vocabulary data and completed mini-games count
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-            val achievements = generateAchievements(vocabularyList)
-            achievementAdapter.submitList(achievements)
+            minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->
+                // Pass the completed games count to generateAchievements
+                val achievements = generateAchievements(vocabularyList, completedMiniGamesCount)
+                achievementAdapter.submitList(achievements)
+            }
         }
         return binding.root
     }
 
     // Generate and assert achievement milestones on the list of achievements
-    private fun generateAchievements(vocabularyList: List<Vocabulary>): List<Achievement> {
+    private fun generateAchievements(vocabularyList: List<Vocabulary>, completedMiniGames: Int): List<Achievement> {
         // Trackers on achievement progression
         val totalVocab = vocabularyList.size
         val totalNouns = vocabularyList.count { it.type == "Noun" }
@@ -52,23 +69,27 @@ class MyAchievementFragment : Fragment() {
         val totalAdverbs = vocabularyList.count { it.type == "Adverb" }
 
         // Track and log all variable in advance
-        Log.d("MyAchievementFragment", totalVocab.toString())
-        Log.d("MyAchievementFragment", totalNouns.toString())
-        Log.d("MyAchievementFragment", totalVerbs.toString())
-        Log.d("MyAchievementFragment", totalAdjectives.toString())
-        Log.d("MyAchievementFragment", totalAdverbs.toString())
+        Log.d("MyAchievementFragment", "totVocab: $totalVocab")
+        Log.d("MyAchievementFragment", "totNoun: $totalNouns")
+        Log.d("MyAchievementFragment", "totVerb: $totalVerbs")
+        Log.d("MyAchievementFragment", "totalAdj: $totalAdjectives")
+        Log.d("MyAchievementFragment", "totAdv: $totalAdverbs")
+        Log.d("MyAchievementFragment", "Completed Mini Games: $completedMiniGames")
 
         // Track mini game completed and days logging in
-//        val completedMiniGames = vocabularyViewModel.getCompletedMiniGamesCount()
 //        val daysLoggedIn = vocabularyViewModel.getDaysLoggedIn()
-
+        // Initialise ViewModel
+        minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { count ->
+            // Log the value
+            Log.d("MiniGameFragment", "Completed Mini Games Count: $count")
+        }
         // List of achievement trackers with their requirements and set context (e.g., image resId)
         return listOf(
             // Enthusiast Achievements
-//            Achievement(1, "Enthusiast I", "Logged in for 7 days", if (vocabularyViewModel.getDaysLoggedIn() >= 7) R.drawable.yes else R.drawable.no),
-//            Achievement(2, "Enthusiast II", "Logged in for 30 days", if (vocabularyViewModel.getDaysLoggedIn() >= 30) R.drawable.yes else R.drawable.no),
-//            Achievement(3, "Enthusiast III", "Logged in for 60 days", if (vocabularyViewModel.getDaysLoggedIn() >= 60) R.drawable.yes else R.drawable.no),
-//            Achievement(4, "Enthusiast IV", "Logged in for 90 days", if (vocabularyViewModel.getDaysLoggedIn() >= 90) R.drawable.yes else R.drawable.no),
+//            Achievement(1, "Enthusiast I", "Logged in for 7 days", null, if (vocabularyViewModel.getDaysLoggedIn() >= 7) R.drawable.yes else R.drawable.no),
+//            Achievement(2, "Enthusiast II", "Logged in for 30 days", R.drawable.bear, if (vocabularyViewModel.getDaysLoggedIn() >= 30) R.drawable.yes else R.drawable.no),
+//            Achievement(3, "Enthusiast III", "Logged in for 60 days", R.drawable.jaguar, if (vocabularyViewModel.getDaysLoggedIn() >= 60) R.drawable.yes else R.drawable.no),
+//            Achievement(4, "Enthusiast IV", "Logged in for 90 days", R.drawable.lion, if (vocabularyViewModel.getDaysLoggedIn() >= 90) R.drawable.yes else R.drawable.no),
 
             // Studious Bee Achievements
             Achievement(5, "Studious Bee I", "Added 10 vocabs", null, if (totalVocab >= 10) R.drawable.yes else R.drawable.no),
@@ -106,11 +127,11 @@ class MyAchievementFragment : Fragment() {
             Achievement(29, "Adverb Expert V", "Added 500 adverbs", R.drawable.parrot2, if (totalAdverbs >= 500) R.drawable.yes else R.drawable.no),
 
             // Hunter Achievements
-//            Achievement(30, "Hunter I", "Aced 1 mini game", if (completedMiniGames >= 1) R.drawable.yes else R.drawable.no),
-//            Achievement(31, "Hunter II", "Aced 10 mini games", if (completedMiniGames >= 10) R.drawable.yes else R.drawable.no),
-//            Achievement(32, "Hunter III", "Aced 20 mini games", if (completedMiniGames >= 20) R.drawable.yes else R.drawable.no),
-//            Achievement(33, "Hunter IV", "Aced 50 mini games", if (completedMiniGames >= 50) R.drawable.yes else R.drawable.no),
-//            Achievement(34, "Hunter V", "Aced 100 mini games", if (completedMiniGames >= 100) R.drawable.yes else R.drawable.no)
+            Achievement(30, "Hunter I", "Aced 1 mini game", null, if (completedMiniGames >= 1) R.drawable.yes else R.drawable.no),
+            Achievement(31, "Hunter II", "Aced 10 mini games", R.drawable.monkey, if (completedMiniGames >= 10) R.drawable.yes else R.drawable.no),
+            Achievement(32, "Hunter III", "Aced 20 mini games", null, if (completedMiniGames >= 20) R.drawable.yes else R.drawable.no),
+            Achievement(33, "Hunter IV", "Aced 50 mini games", R.drawable.dolphin, if (completedMiniGames >= 50) R.drawable.yes else R.drawable.no),
+            Achievement(34, "Hunter V", "Aced 100 mini games", R.drawable.robot, if (completedMiniGames >= 100) R.drawable.yes else R.drawable.no)
         )
     }
 }
