@@ -1,6 +1,7 @@
 package com.example.linguaphile.adapters
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +70,13 @@ class AchievementAdapter(
             holder.achievementUnlockImage.setImageResource(it) // Set image resource if null, skipped
             holder.achievementUnlockFrame.setImageResource(R.drawable.frame) // Set frame if there is the resource
             holder.achievementUnlockImage.setBackgroundColor(getBackgroundColorForImage(achievement.unlockImageResId, holder.achievementUnlockImage)) // Set background color on class
+        }?: run {
+            // Clear the image, background and frame if the resource is null
+            holder.achievementUnlockImage.setImageDrawable(null) // clear avatar img
+            holder.achievementUnlockImage.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, android.R.color.transparent)) // Set to transparent to clear background for null imageRes
+            holder.achievementUnlockFrame.setImageDrawable(null) // Clear frame img
         }
+        Log.d("AchievementAdapter", "${achievement.name}: ${achievement.unlockImageResId}") // Logging name match img resource
         // Set image resource dynamically on achievement task status (yes or no drawable resource)
         holder.achievementStatusImage.setImageResource(achievement.status)
         // Map the current progress to bind statusThreshold TextView by the Achievement id (set null to error signifying nullable or data failure)
