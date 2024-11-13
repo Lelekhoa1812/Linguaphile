@@ -149,7 +149,7 @@ class HomeFragment : Fragment() {
             filteredByDate.filter { it.type == selectedTypeFilter }
         }
 
-        // Submit final list after sorting
+        // Submit final list after sorting ti adapter
         adapter.submitList(finalFilteredList)
         Log.d("HomeFragment", "Final filtration $finalFilteredList")
     }
