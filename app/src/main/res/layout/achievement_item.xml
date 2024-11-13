@@ -8,7 +8,7 @@
 
     <!-- Text content block 1 -->
     <LinearLayout
-        android:layout_width="241dp"
+        android:layout_width="232dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_weight="1"
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Achievement Name"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
         <!-- Description of Task -->
         <TextView
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="italic" />
     </LinearLayout>
 

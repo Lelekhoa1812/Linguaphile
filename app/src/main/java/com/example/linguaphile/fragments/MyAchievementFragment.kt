@@ -43,9 +43,9 @@ class MyAchievementFragment : Fragment() {
         minigameViewModel = ViewModelProvider(this, MiniGameViewModelFactory.Factory(repository))[MiniGameViewModel::class.java]
         // Initialize ViewModel to observe vocabulary data
         vocabularyViewModel = ViewModelProvider(this)[VocabularyViewModel::class.java]
-        // Observe vocabulary data and completed mini-games count
-        vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
-            minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->
+        // Observe vocabulary counter, completed mini-games count, and number of logged day
+        vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList -> // vocab list
+            minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount -> // completed mini-game counter
                 // Trackers on achievement progression
                 val totalVocab = vocabularyList.size
                 val totalNouns = vocabularyList.count { it.type == "Noun" }
@@ -58,26 +58,35 @@ class MyAchievementFragment : Fragment() {
                 Log.d("MyAchievementFragmentToAdapter", "totVerb: $totalVerbs")
                 Log.d("MyAchievementFragmentToAdapter", "totalAdj: $totalAdjectives")
                 Log.d("MyAchievementFragmentToAdapter", "totAdv: $totalAdverbs")
-                Log.d("MyAchievementFragmentToAdapter", "Completed Mini Games: $completedMiniGamesCount")
-                val progressData = mapOf(
-                    5 to totalVocab, 6 to totalVocab, 7 to totalVocab, 8 to totalVocab, 9 to totalVocab, // "Studious Bee I-V"
-                    10 to totalNouns, 11 to totalNouns, 12 to totalNouns, 13 to totalNouns, 14 to totalNouns, // "Noun Expert I-V"
-                    15 to totalVerbs, 16 to totalVerbs, 17 to totalVerbs, 18 to totalVerbs, 19 to totalVerbs, // "Verb Expert I-V"
-                    20 to totalAdjectives, 21 to totalAdjectives, 22 to totalAdjectives, 23 to totalAdjectives, 24 to totalAdjectives, // "Adjective Expert I-V"
-                    25 to totalAdverbs, 26 to totalAdverbs, 27 to totalAdverbs, 28 to totalAdverbs, 29 to totalAdverbs, // "Adverb Expert I-V"
-                    30 to completedMiniGamesCount, 31 to completedMiniGamesCount, 32 to completedMiniGamesCount, 33 to completedMiniGamesCount, 34 to completedMiniGamesCount // "Hunter I-V"
-                )
-                // Submit the package of content to the adapter, consisting of 2 components
-                // 1. The achievement task context including the task name, desc, their img resource, and unlocking status
-                // 2. The mapping setter between the achievement item's id and their corresponding threshold type
-                achievementAdapter.submitList(generateAchievements(vocabularyList, completedMiniGamesCount), progressData)
+                Log.d("MyAchievementFragmentToAdapter", "ComMG: $completedMiniGamesCount")
+                vocabularyViewModel.getDaysLoggedIn().observe(viewLifecycleOwner) { daysLoggedIn -> // logged day
+                    Log.d("MyAchievementFragmentToAdapter", "DayLog: $daysLoggedIn")
+                    // Map current progressData to the achievement ids
+                    val progressData = mapOf(
+                        1 to daysLoggedIn, 2 to daysLoggedIn, 3 to daysLoggedIn, 4 to daysLoggedIn, // "Enthusiast I-IV"
+                        5 to totalVocab, 6 to totalVocab, 7 to totalVocab, 8 to totalVocab, 9 to totalVocab, // "Studious Bee I-V"
+                        10 to totalNouns, 11 to totalNouns, 12 to totalNouns, 13 to totalNouns, 14 to totalNouns, // "Noun Expert I-V"
+                        15 to totalVerbs, 16 to totalVerbs, 17 to totalVerbs, 18 to totalVerbs, 19 to totalVerbs, // "Verb Expert I-V"
+                        20 to totalAdjectives, 21 to totalAdjectives, 22 to totalAdjectives, 23 to totalAdjectives, 24 to totalAdjectives, // "Adjective Expert I-V"
+                        25 to totalAdverbs, 26 to totalAdverbs, 27 to totalAdverbs, 28 to totalAdverbs, 29 to totalAdverbs, // "Adverb Expert I-V"
+                        30 to completedMiniGamesCount, 31 to completedMiniGamesCount, 32 to completedMiniGamesCount, 33 to completedMiniGamesCount, 34 to completedMiniGamesCount // "Hunter I-V"
+                    )
+                    // Submit the package of content to the adapter, consisting of 2 components
+                    // 1. The achievement task generation with context including:
+                    //     a. The task name, desc, their img resource, completed status
+                    //     b. The total number of mini-game aced
+                    //     c. Total number of day logged (when creating a vocab)
+                    // 2. The mapping setter between the achievement item's id and their corresponding threshold type
+                    achievementAdapter.submitList(
+                        generateAchievements(vocabularyList, completedMiniGamesCount, daysLoggedIn), progressData)
+                }
             }
         }
         return binding.root
     }
 
-    // Generate and assert achievement milestones on the list of achievements
-    private fun generateAchievements(vocabularyList: List<Vocabulary>, completedMiniGames: Int): List<Achievement> {
+    // Generate and assert achievement milestones on the list of achievements, fetched vocab list, completed mini-game, and day logged in counters
+    private fun generateAchievements(vocabularyList: List<Vocabulary>, completedMiniGames: Int, daysLoggedIn: Int): List<Achievement> {
         // Trackers on achievement progression
         val totalVocab = vocabularyList.size
         val totalNouns = vocabularyList.count { it.type == "Noun" }
@@ -86,27 +95,22 @@ class MyAchievementFragment : Fragment() {
         val totalAdverbs = vocabularyList.count { it.type == "Adverb" }
 
         // Track and log all variable in advance
-        Log.d("MyAchievementFragment", "totVocab: $totalVocab")
-        Log.d("MyAchievementFragment", "totNoun: $totalNouns")
-        Log.d("MyAchievementFragment", "totVerb: $totalVerbs")
-        Log.d("MyAchievementFragment", "totalAdj: $totalAdjectives")
-        Log.d("MyAchievementFragment", "totAdv: $totalAdverbs")
-        Log.d("MyAchievementFragment", "Completed Mini Games: $completedMiniGames")
-
-        // Track mini game completed and days logging in
-//        val daysLoggedIn = vocabularyViewModel.getDaysLoggedIn()
-        // Initialise ViewModel
-        minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { count ->
-            // Log the value
-            Log.d("MyAchievementFragment", "Completed Mini Games Count: $count")
-        }
+        Log.d("MyAchievementFragment", "total Vocab: $totalVocab")
+        Log.d("MyAchievementFragment", "total Noun: $totalNouns")
+        Log.d("MyAchievementFragment", "total Verb: $totalVerbs")
+        Log.d("MyAchievementFragment", "total Adj: $totalAdjectives")
+        Log.d("MyAchievementFragment", "total Adv: $totalAdverbs")
+        // Track mini game completed for Hunter achievements
+        Log.d("MyAchievementFragment", "Mini Games: $completedMiniGames")
+        // Use daysLoggedIn to check conditions for Enthusiast achievements
+        Log.d("MyAchievementFragment", "Days Logged: $daysLoggedIn")
         // List of achievement trackers with their requirements and set context (e.g., image resId)
         return listOf(
             // Enthusiast Achievements
-//            Achievement(1, "Enthusiast I", "Logged in for 7 days", null, if (vocabularyViewModel.getDaysLoggedIn() >= 7) R.drawable.yes else R.drawable.no),
-//            Achievement(2, "Enthusiast II", "Logged in for 30 days", R.drawable.bear, if (vocabularyViewModel.getDaysLoggedIn() >= 30) R.drawable.yes else R.drawable.no),
-//            Achievement(3, "Enthusiast III", "Logged in for 60 days", R.drawable.jaguar, if (vocabularyViewModel.getDaysLoggedIn() >= 60) R.drawable.yes else R.drawable.no),
-//            Achievement(4, "Enthusiast IV", "Logged in for 90 days", R.drawable.lion, if (vocabularyViewModel.getDaysLoggedIn() >= 90) R.drawable.yes else R.drawable.no),
+            Achievement(1, "Enthusiast I", "Logged in for 7 days", R.drawable.elephant, if (daysLoggedIn >= 7) R.drawable.yes else R.drawable.no),
+            Achievement(2, "Enthusiast II", "Logged in for 30 days", R.drawable.bear, if (daysLoggedIn >= 30) R.drawable.yes else R.drawable.no),
+            Achievement(3, "Enthusiast III", "Logged in for 60 days", null, if (daysLoggedIn >= 60) R.drawable.yes else R.drawable.no),
+            Achievement(4, "Enthusiast IV", "Logged in for 90 days", R.drawable.lion, if (daysLoggedIn >= 90) R.drawable.yes else R.drawable.no),
 
             // Studious Bee Achievements
             Achievement(5, "Studious Bee I", "Added 10 vocabs", null, if (totalVocab >= 10) R.drawable.yes else R.drawable.no),

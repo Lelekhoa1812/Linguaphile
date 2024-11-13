@@ -35,4 +35,9 @@ interface VocabularyDAO {
     // Get item by timeframe
     @Query("SELECT * FROM vocabulary WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     fun getVocabularyByDateRange(startDate: Date, endDate: Date): LiveData<List<Vocabulary>>
+
+    // Get distinct (all different) date to keep track on the total number of date user has logged in (by adding new vocabulary items)
+    @Query("SELECT DISTINCT date FROM vocabulary")
+    fun getDistinctDates(): LiveData<List<Date>>
+
 }

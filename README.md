@@ -118,7 +118,7 @@ The **My Achievement** fragment tracks the user's progress by displaying various
 - **Status**: An indicator image showing whether the achievement is complete (checked or unchecked).
 - **Progress Threshold**: Shows current progress over the required threshold for each achievement (e.g., `50/100`).
 
-Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
+Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements, day logins. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
 
 ## New Implementations
 (As per last update on 6th November 2024)  

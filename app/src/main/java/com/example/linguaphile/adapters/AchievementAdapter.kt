@@ -81,8 +81,13 @@ class AchievementAdapter(
         holder.achievementStatusImage.setImageResource(achievement.status)
         // Map the current progress to bind statusThreshold TextView by the Achievement id (set null to error signifying nullable or data failure)
         val currentProgress = progressData[achievement.id] ?: "error"
-        // Achievement id -> their maximum threshold mapped/ Get the current progress and the maximum threshold
+        // Achievement id -> their maximum threshold mapped
+        // Get the current progress and the maximum threshold
         val maxProgress = when (achievement.id) {
+            1 -> 7   // "Enthusiast I"
+            2 -> 30  // "Enthusiast II"
+            3 -> 60  // "Enthusiast III"
+            4 -> 90  // "Enthusiast IV"
             5 -> 10   // "Studious Bee I"
             6 -> 100  // "Studious Bee II"
             7 -> 200  // "Studious Bee III"

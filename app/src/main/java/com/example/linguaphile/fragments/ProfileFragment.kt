@@ -64,9 +64,12 @@ class ProfileFragment : Fragment() {
                 showDefaultDetails()
             }
         }
+        // Observe data from ViewModel for vocab list, completed mini-game and logged in day counters
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { vocabularyList ->
             minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { completedMiniGamesCount ->
-                setupAvatarSelection(vocabularyList, completedMiniGamesCount)
+                vocabularyViewModel.getDaysLoggedIn().observe(viewLifecycleOwner) { daysLoggedIn ->
+                        setupAvatarSelection(vocabularyList, completedMiniGamesCount, daysLoggedIn)
+                    }
             }
         }
         // Trigger edit mode on listener
@@ -82,7 +85,7 @@ class ProfileFragment : Fragment() {
 
     // Implement the click handler for selecting images from the horizontal scroller, then bind data
     // When avatar not met the achievement condition, from parsed Vocabulary list, signify the locking status (show a lock icon (error), set fallback opacity, prevent clicking)
-    private fun setupAvatarSelection(vocabularyList: List<Vocabulary>, completedMiniGames: Int) {
+    private fun setupAvatarSelection(vocabularyList: List<Vocabulary>, completedMiniGames: Int, daysLoggedIn: Int) {
         val avatarResources = listOf(
             // regular
             R.drawable.user, R.drawable.cat, R.drawable.dog, R.drawable.frog,
@@ -100,17 +103,14 @@ class ProfileFragment : Fragment() {
         val totalVerbs = vocabularyList.count { it.type == "Verb" }
         val totalAdjectives = vocabularyList.count { it.type == "Adjective" }
         val totalAdverbs = vocabularyList.count { it.type == "Adverb" }
-        // Initialise minigameViewModel to obtain total aced game count
-        minigameViewModel.getCompletedMiniGamesCount().observe(viewLifecycleOwner) { count ->
-            // Log the value
-            Log.d("MiniGameFragment", "Completed Mini Games Count: $count") // Logs
-        }
         // Debug and log all variable in advance
-        Log.d("ProfileFragment", totalVocab.toString())
-        Log.d("ProfileFragment", totalNouns.toString())
-        Log.d("ProfileFragment", totalVerbs.toString())
-        Log.d("ProfileFragment", totalAdjectives.toString())
-        Log.d("ProfileFragment", totalAdverbs.toString())
+        Log.d("ProfileFragment", "TotVocab $totalVocab")
+        Log.d("ProfileFragment", "TotNoun $totalNouns")
+        Log.d("ProfileFragment", "TotVerb $totalVerbs")
+        Log.d("ProfileFragment", "TotAdj $totalAdjectives")
+        Log.d("ProfileFragment", "TotAdv $totalAdverbs")
+        Log.d("ProfileFragment", "ComMG $completedMiniGames")
+        Log.d("ProfileFragment", "DayLog $daysLoggedIn")
 
         // Clear existing views to prevent duplicates
         binding.avatarLinearLayout.removeAllViews()
@@ -132,21 +132,24 @@ class ProfileFragment : Fragment() {
             // Check conditions for locking the avatar
             // Upper-classed avatars only unlocked only after passing corresponding achievement conditions
             val isLocked = when (resId) {
-                R.drawable.bee1 -> totalVocab < 100
+                R.drawable.bee1 -> totalVocab < 100 // Studious Bee Achievements
                 R.drawable.bee2 -> totalVocab < 500
                 R.drawable.bee3 -> totalVocab < 1000
-                R.drawable.peacock1 -> totalNouns < 100
+                R.drawable.peacock1 -> totalNouns < 100 // Noun Expert Achievements
                 R.drawable.peacock2 -> totalNouns < 500
-                R.drawable.eagle1 -> totalVerbs < 100
+                R.drawable.eagle1 -> totalVerbs < 100 // Verb Expert Achievements
                 R.drawable.eagle2 -> totalVerbs < 500
-                R.drawable.owl1 -> totalAdjectives < 100
+                R.drawable.owl1 -> totalAdjectives < 100 // Adjective Expert Achievements
                 R.drawable.owl2 -> totalAdjectives < 500
-                R.drawable.parrot1 -> totalAdverbs < 100
+                R.drawable.parrot1 -> totalAdverbs < 100 // Adverb Expert Achievements
                 R.drawable.parrot2 -> totalAdverbs < 500
-                R.drawable.monkey -> completedMiniGames < 10
+                R.drawable.monkey -> completedMiniGames < 10 // Hunter Achievements
                 R.drawable.dolphin -> completedMiniGames < 50
                 R.drawable.robot -> completedMiniGames < 100
-                else -> false
+                R.drawable.elephant -> daysLoggedIn < 7 // Enthusiast Achievements
+                R.drawable.bear -> daysLoggedIn < 30
+                R.drawable.lion -> daysLoggedIn < 90
+                else -> false // Res of image isn't locked (default)
             }
             // Overlay lock icon if the avatar is locked
             if (isLocked) {
