@@ -1,14 +1,20 @@
+Here's the updated `README.md` in the proper format:
+
+---
+
 # Linguaphile
 
-**Linguaphile** is an Android application designed for English learners to enhance their vocabulary skills. It includes features for managing vocabulary items, filtering, practicing through mini-games, and more. The app leverages modern Android architecture components such as Room, DAO, LiveData, ViewModel, and multi-fragment navigation.
+**Linguaphile** is an Android application designed for English learners to enhance their vocabulary skills. It includes features for managing vocabulary items, filtering, practicing through mini-games, tracking achievements, and managing user profiles. The app leverages modern Android architecture components such as Room, DAO, LiveData, ViewModel, and multi-fragment navigation.
 
 ## Features
 
 - **Vocabulary Management**: Add, view, update, and delete vocabulary items.
 - **Filtering Options**: Filter vocabulary items by date or type.
 - **Mini Game**: Engage in multiple-choice quizzes to test vocabulary knowledge.
+- **Achievements Tracking**: View progress and unlock achievements based on vocabulary and quiz milestones.
+- **Profile Management**: Update profile details, including setting a profile picture from unlocked avatars.
 - **Dynamic Vocabulary Editing**: Add multiple meanings and synonyms dynamically in both Add and Update Vocabulary fragments.
-- **Multi-Fragment Navigation**: Navigate between different pages, including "Home", "Add New Vocabulary", "Mini Game", and "My Profile".
+- **Multi-Fragment Navigation**: Navigate between different pages, including "Home", "Add New Vocabulary", "Mini Game", "Achievements", and "Profile".
 - **Customized Toolbar**: Each fragment has a customized toolbar displaying the fragment name and a navigation button.
 
 ## Vocabulary Entity
@@ -36,7 +42,7 @@ The app utilizes Android architecture components and a multi-fragment structure:
 - **DAO**: Data access objects to interact with the database.
 - **LiveData**: Observes and updates UI based on data changes.
 - **ViewModel**: Manages UI-related data in a lifecycle-conscious way.
-- **RecyclerView**: Displays vocabulary items in a scrollable list.
+- **RecyclerView**: Displays vocabulary items and achievements in a scrollable list.
 - **Toolbar**: Customized per fragment for easy navigation and context.
 
 ## Fragments
@@ -95,10 +101,37 @@ The **Mini Game** fragment provides a quiz feature to help users practice vocabu
 - Each question is dynamically generated with one correct answer and three random incorrect answers.
 - **Score Tracking**: The app tracks correct answers, showing the final score when the test completes.
 - **Retry Option**: After completing the quiz, users are shown a dialog with options to try again or quit to the initial mode selection screen.
-  
-### 5. Profile Fragment
 
-Currently a placeholder for future updates, the **My Profile** page will track user progress and preferences.
+### 5. My Profile Fragment
+
+The **My Profile** fragment allows users to manage their profile information, including:
+
+- **Name and Email Update**: Users can update their profile name and email.
+- **Profile Picture Selection**: Users can choose an avatar image from unlocked cartoon animal figures, achieved through completing certain tasks (achievements) in the app.
+
+### 6. My Achievement Fragment
+
+The **My Achievement** fragment tracks the user's progress by displaying various achievement tasks in a RecyclerView. Each achievement item includes:
+
+- **Achievement Name and Description**: Information about the specific achievement.
+- **Avatar Image (if unlocked)**: Displays an avatar that can be used as a profile picture once unlocked. Some achievements do not have associated images and will remain blank if not applicable. Avatar images are set with a frame and background color based on their class also.
+- **Status**: An indicator image showing whether the achievement is complete (checked or unchecked).
+- **Progress Threshold**: Shows current progress over the required threshold for each achievement (e.g., `50/100`).
+
+Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
+
+## New Implementations
+(As per last update on 6th November 2024)  
+### Room Setup for New Entities
+
+- **User Entity**: Includes user information (name, email, and avatar selection). DAO, database, repository, and ViewModel were implemented to manage user data.
+- **Achievement Entity**: Manages achievements, with corresponding DAO, database, repository, and ViewModel to track progress across vocabulary and mini-games.
+- **MiniGame Entity**: Tracks completion of mini-games, including DAO, database, repository, and ViewModel, enabling progress tracking and storing mini-game attempts for achievements.
+
+### Profile and Achievements Integration
+
+- **Profile Fragment**: Allows the user to update their profile with name, email, and avatar selection based on unlocked achievements.
+- **My Achievement Fragment and Achievement Adapter**: Binds achievement data in a RecyclerView, dynamically displaying the name, description, unlock image, status indicator, and progress threshold for each achievement.
 
 ## Getting Started
 
@@ -111,18 +144,18 @@ To run this app locally:
 
 ## Future Updates
 
-- **User Progress Tracking**: Track vocabulary knowledge over time.
-- **Expanded Mini Games**: More game types for practicing vocabulary.
-- **Profile Page**: Features for user customization and progress tracking.
+- **Enhanced User Progress Tracking**: Expand user statistics for vocabulary learning progress.
+- **More Game Types**: Introduce additional types of mini-games for vocabulary practice.
+- **Improved Profile Customization**: Add more customization features for user profiles.
 
 ## Dependencies
 
 - Room: Local database storage.
-- RecyclerView: Displays vocabulary items in a list.
+- RecyclerView: Displays vocabulary items and achievements in a list.
 - ViewModel & LiveData: Lifecycle-aware data management.
 - Navigation Components: For multi-fragment navigation.
 - Material Components: UI elements like Snackbar and toolbar.
 
 ---
 
-This documentation reflects the latest updates and improvements to **Linguaphile** as of 6th November 2024.
+This documentation reflects the latest updates and improvements to **Linguaphile** as of 13th November 2024.
