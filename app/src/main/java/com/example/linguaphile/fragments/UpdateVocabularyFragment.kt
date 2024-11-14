@@ -26,6 +26,8 @@ class UpdateVocabularyFragment : Fragment() {
     private val args: UpdateVocabularyFragmentArgs by navArgs()
     private val meanings = mutableListOf<EditText>()
     private val synonyms = mutableListOf<EditText>()
+    private var isNoteAdded = false // Toggle between state whether the note layout has been openned
+    private var noteEditText: EditText? = null // Reference to the dynamically added note EditText
 
     // Init view
     override fun onCreateView(
@@ -38,6 +40,15 @@ class UpdateVocabularyFragment : Fragment() {
         // Load vocabulary data
         vocabularyViewModel.getVocabularyById(args.vocabularyId).observe(viewLifecycleOwner) { vocabulary ->
             vocabulary?.let { bindVocabularyData(it) }
+            // Check if there is an existing note and display it
+            if (!vocabulary.note.isNullOrEmpty()) {
+                addNoteField(vocabulary.note)
+                isNoteAdded = true
+                binding.addNoteButton.visibility = View.GONE // Hide the add button when a note exists
+            } else {
+                isNoteAdded = false
+                binding.addNoteButton.visibility = View.VISIBLE // Show the add button when no note exists
+            }
         }
         // Click listeners for adding new meanings and synonyms dynamically adjust with array size
         binding.addMeaningButton.setOnClickListener {
@@ -52,6 +63,16 @@ class UpdateVocabularyFragment : Fragment() {
                 addSynonymField()
             } else {
                 Toast.makeText(context, "Maximum 4 synonyms allowed", Toast.LENGTH_SHORT).show()
+            }
+        }
+        // Add dynamic note
+        binding.addNoteButton.setOnClickListener {
+            if (!isNoteAdded) {
+                addNoteField()
+                binding.addNoteButton.visibility = View.GONE // Hide the button after adding the note
+                isNoteAdded = true
+            } else {
+                Toast.makeText(context, "Note can only be added once", Toast.LENGTH_SHORT).show()
             }
         }
         // Call update submission
@@ -153,10 +174,46 @@ class UpdateVocabularyFragment : Fragment() {
         synonyms.add(newSynonym)
     }
 
+    // Method to add or bind a note dynamically
+    private fun addNoteField(existingNote: String = "") {
+        binding.noteLayout.visibility = View.VISIBLE
+        // Create a container for the note EditText and delete button
+        val noteContainer = LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.HORIZONTAL
+        }
+        // Create the EditText for the note
+        noteEditText = EditText(requireContext()).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            hint = "Any notation for this Vocabulary?"
+            setText(existingNote) // Set existing note if present
+        }
+        // Create a delete button to remove the note
+        val deleteButton = ImageButton(requireContext()).apply {
+            setImageResource(android.R.drawable.ic_delete)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            setOnClickListener {
+                // Remove the note and reset state
+                binding.noteLayout.removeAllViews()
+                binding.noteLayout.visibility = View.GONE
+                isNoteAdded = false
+                binding.addNoteButton.visibility = View.VISIBLE // Show the add button again
+            }
+        }
+        // Add the EditText and delete button to the note container
+        noteContainer.addView(noteEditText)
+        noteContainer.addView(deleteButton)
+        binding.noteLayout.addView(noteContainer)
+    }
+
+
     // Update vocabulary in the database
     private fun updateVocabulary() {
         val name = binding.nameEditText.text.toString().trim()
         val type = binding.typeSpinner.selectedItem.toString().trim()
+        val note = noteEditText?.text.toString().trim()
         // Name and Type is mandatory, reflect Toast feedback on user invalid attempt
         if (name.isBlank() || type.isBlank()) {
             Toast.makeText(context, "Name and Type are required", Toast.LENGTH_SHORT).show()
@@ -183,9 +240,9 @@ class UpdateVocabularyFragment : Fragment() {
             synonym1 = additionalSynonyms.getOrNull(0),
             synonym2 = additionalSynonyms.getOrNull(1),
             synonym3 = additionalSynonyms.getOrNull(2),
-            synonym4 = additionalSynonyms.getOrNull(3)
+            synonym4 = additionalSynonyms.getOrNull(3),
+            note = if (note.isNotBlank()) note else null // Only set note if it's not blank
         )
-
         vocabularyViewModel.update(vocabulary)
         Toast.makeText(context, "Vocabulary updated!", Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_updateVocabularyFragment_to_homeFragment)

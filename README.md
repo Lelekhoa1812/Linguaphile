@@ -33,6 +33,7 @@ The **Vocabulary** entity includes the following attributes:
 10. **Synonym2** (String, nullable): An optional second synonym.
 11. **Synonym3** (String, nullable): An optional third synonym.
 12. **Synonym4** (String, nullable): An optional fourth synonym.
+13. **Note** (String, nullable): An optional notation for the vocabulary.
 
 ## App Architecture
 
@@ -75,6 +76,8 @@ The **Add New Vocabulary** fragment allows users to add new vocabulary items dyn
   - An "Add Meaning" button that adds up to three additional meanings. A Toast message displays if the user tries to add more than four meanings.
 - **Synonym**:
   - An "Add Synonym" button that adds up to four synonyms. A Toast message displays if the user tries to add more than four synonyms.
+- **Note**:
+  - An "Add Note" button that adding notation. A Toast message displays to restrict only 1 notation per any vocabulary item.
 
 The **Add this Vocabulary** button saves the vocabulary item to the database, storing the current Date and all entered information.
 
@@ -83,19 +86,20 @@ The **Add this Vocabulary** button saves the vocabulary item to the database, st
 The **Update Vocabulary** fragment allows users to modify an existing vocabulary item. It includes features for:
 
 - **Editing the Vocabulary Term and Type**: Pre-populated fields with the current data.
-- **Adding/Removing Meanings and Synonyms Dynamically**:
+- **Adding/Removing Meanings, Synonyms, and Note Dynamically**:
   - An "Add Meaning" button allows users to add up to three additional meanings.
   - An "Add Synonym" button allows users to add up to four synonyms.
+  - An "Add Note" button allows users to add 1 notation.
 
-Each additional meaning or synonym field added includes a delete button, allowing the user to remove it. Any changes can be saved with the **Update Vocabulary** button.
+Each additional meaning, synonym, or notation fields added includes a delete button, allowing the user to remove it. Any changes can be saved with the **Update Vocabulary** button.
 
 ### 4. Mini Game Fragment
 
 The **Mini Game** fragment provides a quiz feature to help users practice vocabulary knowledge. Users can select between two modes:
 
 #### Modes:
-1. **Meaning Testing**: Users are given a vocabulary word, and they must select the correct meaning from four options.
-2. **Synonym Testing**: Users are given a vocabulary word, and they must select the correct synonym from four options.
+1. **Meaning Testing**: Users are given a vocabulary word, and they must select the correct meaning from four options (incorrect options are taken from other vocabulary items).
+2. **Synonym Testing**: Users are given a vocabulary word, and they must select the correct synonym from four options (incorrect options are taken from other vocabulary items)..
 
 #### Quiz Format:
 - Each question is dynamically generated with one correct answer and three random incorrect answers.
@@ -133,6 +137,10 @@ Achievements are categorized into various types, such as vocabulary milestones (
 - **Profile Fragment**: Allows the user to update their profile with name, email, and avatar selection based on unlocked achievements.
 - **My Achievement Fragment and Achievement Adapter**: Binds achievement data in a RecyclerView, dynamically displaying the name, description, unlock image, status indicator, and progress threshold for each achievement.
 
+## New Implementations
+(As per last update on 13th November 2024)   
+**Adding Note as a feature of Vocabulary Entity and adapt new architecture**
+
 ## Getting Started
 
 To run this app locally:
@@ -158,4 +166,4 @@ To run this app locally:
 
 ---
 
-This documentation reflects the latest updates and improvements to **Linguaphile** as of 13th November 2024.
+This documentation reflects the latest updates and improvements to **Linguaphile** as of 14th November 2024.

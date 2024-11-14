@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,25 +17,28 @@
             android:textSize="20dp"
             android:text="Edit Vocabulary:" />
 
+        <!-- Name -->
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter vocabulary name" />
 
+        <!-- Type -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20dp"
             android:text="Type:" />
-
+        <!-- Type Spinner -->
         <Spinner
             android:id="@+id/typeSpinner"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:entries="@array/vocabulary_types" />
 
+        <!-- Meaning -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,6 +46,7 @@
             android:textSize="20dp"
             android:text="Meaning:" />
 
+        <!-- Mandatory Meaning 1 -->
         <EditText
             android:id="@+id/meaning1EditText"
             android:layout_width="match_parent"
@@ -71,6 +76,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Synonym" />
+
+        <!-- Container for additional note with delete icon -->
+        <LinearLayout
+            android:id="@+id/noteLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+        </LinearLayout>
+        <Button
+            android:id="@+id/addNoteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Note" />
 
         <!-- Confirm button -->
         <Button

@@ -17,5 +17,6 @@ data class Vocabulary(
     val synonym1: String? = null,
     val synonym2: String? = null,
     val synonym3: String? = null,
-    val synonym4: String? = null
+    val synonym4: String? = null,
+    val note: String? = null
 )
