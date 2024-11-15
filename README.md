@@ -2,7 +2,7 @@
 
 **APK Download**
 Current version of Linguaphile app can be downloaded from the following Google Drive url in APK package:
-https://drive.google.com/file/d/1ZOSQSAQMeVR-GXiNdOGqlay1j1QlqEb2/view?usp=sharing  
+https://drive.google.com/drive/folders/16mASHiR5m6m1S3CV2gK4dCGoGPgOIxTX?usp=sharing  
 
 **Linguaphile** is an Android application designed for English learners to enhance their vocabulary skills. It includes features for managing vocabulary items, filtering, practicing through mini-games, tracking achievements, and managing user profiles. The app leverages modern Android architecture components such as Room, DAO, LiveData, ViewModel, and multi-fragment navigation.
 

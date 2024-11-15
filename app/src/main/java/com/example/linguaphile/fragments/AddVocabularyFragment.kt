@@ -24,7 +24,7 @@ class AddVocabularyFragment : Fragment() {
     private lateinit var vocabularyViewModel: VocabularyViewModel
     private val meanings = mutableListOf<EditText>()
     private val synonyms = mutableListOf<EditText>()
-    private var isNoteAdded = false // Toggle between state whether the note layout has been openned
+    private var isNoteAdded = false // Toggle between state whether the note layout has been opened
     private var noteEditText: EditText? = null // Reference to the dynamically added note EditText
 
     // Init view
@@ -61,8 +61,8 @@ class AddVocabularyFragment : Fragment() {
                 val noteContainer = LinearLayout(requireContext()).apply {
                     orientation = LinearLayout.HORIZONTAL
                 }
-                // Add note TextView
-                val noteEditText = EditText(requireContext()).apply {
+                // Create and assign noteEditText
+                noteEditText = EditText(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                     hint = "Any notation for this Vocabulary?"
                 }
@@ -73,7 +73,7 @@ class AddVocabularyFragment : Fragment() {
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
-//                    .apply { // Optional: Applying some unique stylings
+//                    .apply { // Optional: Applying some unique styling
 //                        setMargins(8, 0, 0, 0) // Add margins for positioning
 //                    }
 //                    setPadding(16, 16, 16, 16) // Add padding for better touch area
@@ -81,6 +81,7 @@ class AddVocabularyFragment : Fragment() {
                         // Clear the note EditText and hide the note layout
                         binding.noteLayout.removeAllViews()
                         binding.noteLayout.visibility = View.GONE
+                        noteEditText = null // Reset the reference to null
                         isNoteAdded = false // Revert state
                     }
                 }
@@ -170,7 +171,7 @@ class AddVocabularyFragment : Fragment() {
         // Get the vocabulary name and type
         val name = binding.nameEditText.text.toString().trim()
         val type = binding.typeSpinner.selectedItem.toString().trim()
-        val note = noteEditText?.text.toString().trim() // Get text from the dynamically created EditText
+        val note = noteEditText?.text?.toString()?.trim() ?: "" // Case null, set as empty string to avoid type mismatch and automatically convert null to 'null' string
 
         // Validate required fields
         if (name.isBlank() || type.isBlank()) {
@@ -199,7 +200,7 @@ class AddVocabularyFragment : Fragment() {
             synonym2 = additionalSynonyms.getOrNull(1),
             synonym3 = additionalSynonyms.getOrNull(2),
             synonym4 = additionalSynonyms.getOrNull(3),
-            note = if (note.isNotBlank()) note else null // Only set note if it's not blank
+            note = if (note.isNullOrBlank()) null else note // Ensure proper handling of null/blank note
         )
         // Insert vocabulary into the database
         vocabularyViewModel.insert(vocabulary)

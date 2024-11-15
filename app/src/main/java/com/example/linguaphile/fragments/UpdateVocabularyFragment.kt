@@ -1,6 +1,7 @@
 package com.example.linguaphile.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ class UpdateVocabularyFragment : Fragment() {
     private val args: UpdateVocabularyFragmentArgs by navArgs()
     private val meanings = mutableListOf<EditText>()
     private val synonyms = mutableListOf<EditText>()
-    private var isNoteAdded = false // Toggle between state whether the note layout has been openned
+    private var isNoteAdded = false // Toggle between state whether the note layout has been opened
     private var noteEditText: EditText? = null // Reference to the dynamically added note EditText
 
     // Init view
@@ -41,7 +42,8 @@ class UpdateVocabularyFragment : Fragment() {
         vocabularyViewModel.getVocabularyById(args.vocabularyId).observe(viewLifecycleOwner) { vocabulary ->
             vocabulary?.let { bindVocabularyData(it) }
             // Check if there is an existing note and display it
-            if (!vocabulary.note.isNullOrEmpty()) {
+            if (!(vocabulary.note.isNullOrEmpty())) {
+                Log.d("UpdateVocabularyFragment", "note: ${vocabulary.note}")
                 addNoteField(vocabulary.note)
                 isNoteAdded = true
                 binding.addNoteButton.visibility = View.GONE // Hide the add button when a note exists
@@ -198,6 +200,7 @@ class UpdateVocabularyFragment : Fragment() {
                 // Remove the note and reset state
                 binding.noteLayout.removeAllViews()
                 binding.noteLayout.visibility = View.GONE
+                noteEditText = null // Set reference to null to ensure it's not used in submission
                 isNoteAdded = false
                 binding.addNoteButton.visibility = View.VISIBLE // Show the add button again
             }
@@ -213,7 +216,7 @@ class UpdateVocabularyFragment : Fragment() {
     private fun updateVocabulary() {
         val name = binding.nameEditText.text.toString().trim()
         val type = binding.typeSpinner.selectedItem.toString().trim()
-        val note = noteEditText?.text.toString().trim()
+        val note = noteEditText?.text?.toString()?.trim() ?: ""
         // Name and Type is mandatory, reflect Toast feedback on user invalid attempt
         if (name.isBlank() || type.isBlank()) {
             Toast.makeText(context, "Name and Type are required", Toast.LENGTH_SHORT).show()

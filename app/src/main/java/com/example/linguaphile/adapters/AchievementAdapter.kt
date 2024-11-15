@@ -130,7 +130,7 @@ class AchievementAdapter(
     }
 
     // Get the set of achievement listing and list mapper from MyAchievementFragment
-    @SuppressLint("NotifyDataSetChanged") // Notify data changing when submitting the final list to make sure changes are set on real time
+    @SuppressLint("NotifyDataSetChanged") // Notify data changing when submitting the final list to make sure changes are set on real time. This also refresh RecyclerView
     fun submitList(list: List<Achievement>, progressData: Map<Int, Int>) {
         achievementList = list // Store the achievement list and content in the adapter
         this.progressData = progressData // Store the progress data (list mapper) in the adapter

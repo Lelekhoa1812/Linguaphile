@@ -47,6 +47,9 @@ class HomeFragment : Fragment() {
             // Delete item with SnackBar widget and UNDO option enabling retrieval
             onDelete = { vocabulary ->
                 vocabularyViewModel.delete(vocabulary)
+                // Filtering function will hide changes to the deleted item since they kept previous result on filter trigger
+                // Hence, recall to dynamically update list with deletion
+                applyCombinedFilter(vocabularyViewModel.allVocabulary.value)
                 Snackbar.make(binding.root, "Vocabulary deleted", Snackbar.LENGTH_LONG)
                     .setTextColor(requireContext().getColor(R.color.white))       // Set text colorway
                     .setActionTextColor(requireContext().getColor(R.color.white)) // Set text colorway
@@ -68,7 +71,7 @@ class HomeFragment : Fragment() {
             // Review previous commit history to see how this logics work
             // This version will stop sorting with all available item upon the latest available search
             override fun afterTextChanged(s: Editable?) {
-                applyCombinedFilter(vocabularyViewModel.allVocabulary.value) // Filtering function
+                applyCombinedFilter(vocabularyViewModel.allVocabulary.value) // Filtering function parsing all vobab VM
             }
             // pre-init
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -149,7 +152,7 @@ class HomeFragment : Fragment() {
             filteredByDate.filter { it.type == selectedTypeFilter }
         }
 
-        // Submit final list after sorting ti adapter
+        // Submit final list after sorting to adapter
         adapter.submitList(finalFilteredList)
         Log.d("HomeFragment", "Final filtration $finalFilteredList")
     }
