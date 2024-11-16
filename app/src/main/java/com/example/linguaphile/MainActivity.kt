@@ -71,7 +71,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.addVocabularyFragment,
                 R.id.miniGameFragment,
                 R.id.profileFragment,
-                R.id.myAchievementFragment
+                R.id.myAchievementFragment,
+                R.id.myTranslatorFragment
             ), binding.drawerLayout
         )
         // Set up the navigation UI with the toolbar and drawer

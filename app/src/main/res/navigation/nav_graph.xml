@@ -65,4 +65,11 @@
         android:name="com.example.linguaphile.fragments.MyAchievementFragment"
         android:label="My Achievement"
         tools:layout="@layout/fragment_my_achievement" />
+
+    <!-- My Translator -->
+    <fragment
+        android:id="@+id/myTranslatorFragment"
+        android:name="com.example.linguaphile.fragments.MyTranslatorFragment"
+        android:label="My Translator"
+        tools:layout="@layout/fragment_my_translator" />
 </navigation>

@@ -54,6 +54,7 @@ dependencies {
 
     // Room dependencies
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.translate)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
@@ -65,10 +66,13 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
 
     // LifeCycle dependencies (to keep track on logged day LiveData)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+
+    // Google Translate
+    implementation("com.google.mlkit:translate:17.0.0")
 }

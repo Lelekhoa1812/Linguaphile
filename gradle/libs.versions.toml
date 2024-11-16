@@ -13,6 +13,8 @@ navigationUiKtx = "2.8.3"
 roomCommon = "2.6.1"
 roomKtx = "2.6.1"
 adapters = "3.2.0-alpha11"
+translate = "17.0.3"
+common = "18.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,6 +29,8 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-adapters = { group = "androidx.databinding", name = "adapters", version.ref = "adapters" }
+translate = { group = "com.google.mlkit", name = "translate", version.ref = "translate" }
+common = { group = "com.google.mlkit", name = "common", version.ref = "common" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

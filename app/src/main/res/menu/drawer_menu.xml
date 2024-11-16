@@ -19,4 +19,9 @@
         android:id="@+id/myAchievementFragment"
         android:title="My Achievement"
         android:icon="@drawable/goal" />
+
+    <item
+        android:id="@+id/myTranslatorFragment"
+        android:title="My Translator"
+        android:icon="@drawable/translator" />
 </menu>

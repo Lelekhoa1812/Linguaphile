@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <!-- ScrollView to contain the translation UI elements -->
+    <ScrollView
+        android:layout_above="@id/optionsLl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Translated form block -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Text input field for the source text -->
+            <EditText
+                android:id="@+id/sourceLanguageEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter word to be translated from..."
+                android:minHeight="100dp"
+                android:gravity="top"
+                android:textSize="18sp" />
+            <!-- Text output field for the translated text -->
+            <TextView
+                android:id="@+id/targetLanguageTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Language selection and translation controls block-->
+    <LinearLayout
+        android:id="@+id/optionsLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/translateBtn"
+        android:gravity="center">
+        <!-- Source language Spinner button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sourceLanguageChooseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="English"
+            android:layout_weight="1"
+            app:cornerRadius="10dp" />
+        <!-- Arrow icon between source and target language buttons -->
+        <ImageView
+            android:src="@drawable/arrow_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <!-- Target language Spinner button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/targetLanguageChooseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vietnamese"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+    <!-- Process translation -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/translateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:text="Translate"
+        app:cornerRadius="10dp" />
+</RelativeLayout>

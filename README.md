@@ -1,10 +1,10 @@
 # Linguaphile
 
 **APK Download**
-Current version of Linguaphile app can be downloaded from the following Google Drive url in APK package:
-https://drive.google.com/drive/folders/16mASHiR5m6m1S3CV2gK4dCGoGPgOIxTX?usp=sharing  
+Current version of the app **Linguaphile(1.0).apk** can be downloaded from the following Google Drive URL in APK package:
+[Download APK](https://drive.google.com/drive/folders/16mASHiR5m6m1S3CV2gK4dCGoGPgOIxTX?usp=sharing)
 
-**Linguaphile** is an Android application designed for English learners to enhance their vocabulary skills. It includes features for managing vocabulary items, filtering, practicing through mini-games, tracking achievements, and managing user profiles. The app leverages modern Android architecture components such as Room, DAO, LiveData, ViewModel, and multi-fragment navigation.
+**Linguaphile** is an Android application designed for English learners to enhance their vocabulary skills. It includes features for managing vocabulary items, filtering, practicing through mini-games, tracking achievements, managing user profile and translating vocabularies. The app leverages modern Android architecture components such as Room, DAO, LiveData, ViewModel, within multi-fragment navigation framework and integrating Google's ML Kit for offline language translation.
 
 ## Features
 
@@ -14,8 +14,9 @@ https://drive.google.com/drive/folders/16mASHiR5m6m1S3CV2gK4dCGoGPgOIxTX?usp=sha
 - **Achievements Tracking**: View progress and unlock achievements based on vocabulary and quiz milestones.
 - **Profile Management**: Update profile details, including setting a profile picture from unlocked avatars.
 - **Dynamic Vocabulary Editing**: Add multiple meanings and synonyms dynamically in both Add and Update Vocabulary fragments.
-- **Multi-Fragment Navigation**: Navigate between different pages, including "Home", "Add New Vocabulary", "Mini Game", "Achievements", and "Profile".
+- **Multi-Fragment Navigation**: Navigate between different pages, including "Home", "Add New Vocabulary", "Mini Game", "Achievements", "My Profile", and "My Translator" features.
 - **Customized Toolbar**: Each fragment has a customized toolbar displaying the fragment name and a navigation button.
+- **Integrated Translator**: A feature powered by Google ML Kit to translate text from one language to another.
 
 ## Vocabulary Entity
 
@@ -35,6 +36,12 @@ The **Vocabulary** entity includes the following attributes:
 12. **Synonym4** (String, nullable): An optional fourth synonym.
 13. **Note** (String, nullable): An optional notation for the vocabulary.
 
+## Other Entities
+
+- **User Entity**: Includes user information (name, email, and avatar selection). DAO, database, repository, and ViewModel were implemented to manage user data.
+- **Achievement Entity**: Manages achievements, with corresponding DAO, database, repository, and ViewModel to track progress across vocabulary and mini-games.
+- **MiniGame Entity**: Tracks completion of mini-games, including DAO, database, repository, and ViewModel, enabling progress tracking and storing mini-game attempts for achievements.
+
 ## App Architecture
 
 The app utilizes Android architecture components and a multi-fragment structure:
@@ -45,6 +52,7 @@ The app utilizes Android architecture components and a multi-fragment structure:
 - **ViewModel**: Manages UI-related data in a lifecycle-conscious way.
 - **RecyclerView**: Displays vocabulary items and achievements in a scrollable list.
 - **Toolbar**: Customized per fragment for easy navigation and context.
+- **Google Translate ML**: This feature uses Google's ML Kit for on-device translation of any languages, which supports offline use after model download.
 
 ## Fragments
 
@@ -124,22 +132,24 @@ The **My Achievement** fragment tracks the user's progress by displaying various
 
 Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements, day logins. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
 
-## New Implementations
-(As per last update on 6th November 2024)  
-### Room Setup for New Entities
-
-- **User Entity**: Includes user information (name, email, and avatar selection). DAO, database, repository, and ViewModel were implemented to manage user data.
-- **Achievement Entity**: Manages achievements, with corresponding DAO, database, repository, and ViewModel to track progress across vocabulary and mini-games.
-- **MiniGame Entity**: Tracks completion of mini-games, including DAO, database, repository, and ViewModel, enabling progress tracking and storing mini-game attempts for achievements.
-
-### Profile and Achievements Integration
+### 7. Profile and Achievements Integration
 
 - **Profile Fragment**: Allows the user to update their profile with name, email, and avatar selection based on unlocked achievements.
 - **My Achievement Fragment and Achievement Adapter**: Binds achievement data in a RecyclerView, dynamically displaying the name, description, unlock image, status indicator, and progress threshold for each achievement.
 
-## New Implementations
-(As per last update on 13th November 2024)   
-**Adding Note as a feature of Vocabulary Entity and adapt new architecture**
+### 8. My Translator Fragment
+
+The **My Translator** fragment allows users to input any word or text in a source language and translate it into a selected target language. This feature uses **Google's ML Kit for on-device translation**, which supports offline use after model download. Key Features of My Translator fragment:
+
+- **Source Language Selection**: Choose from a list of supported languages for input.
+- **Target Language Selection**: Choose from a list of supported languages for translation output.
+- **Text Translation**: Input text in the source language and get the translated output in the target language.
+- **Offline Translation Support**: Once the models are downloaded, translation can be performed offline.
+- **User Interface**:
+  - Editable text input for the source language.
+  - Display area for the translated text.
+  - Language selection buttons using `PopupMenu`.
+  - Progress dialog showing the status during translation.
 
 ## Getting Started
 
@@ -158,12 +168,22 @@ To run this app locally:
 
 ## Dependencies
 
-- Room: Local database storage.
-- RecyclerView: Displays vocabulary items and achievements in a list.
-- ViewModel & LiveData: Lifecycle-aware data management.
-- Navigation Components: For multi-fragment navigation.
-- Material Components: UI elements like Snackbar and toolbar.
+- **Room**: Local database storage and data managements.
+- **RecyclerView**: Displays vocabulary items and achievements in a list.
+- **ViewModel & LiveData**: Lifecycle-aware data management.
+- **Navigation Components**: For multi-fragment navigation.
+- **Material Components**: UI elements like Snackbar and toolbar.
+- **Google ML Kit**: Implemented for language translation.
+- **Material Components**: For enhanced UI elements.
+
+### Integrating ML Kit in the App:
+
+- Ensure `implementation "com.google.mlkit:translate:<version>"` is added to `build.gradle.kts`.  
+- Ensure these rules are added to `proguard-rules.pro`:
+`-keep class com.google.mlkit.** { *; }`
+`-keep class com.google.android.gms.** { *; }`
+- Ensure `maven { url = uri("https://maven.google.com") }` is added to `settings.gradle.kts` within `dependencyResolutionManagement`'s `repositories` tag.
 
 ---
 
-This documentation reflects the latest updates and improvements to **Linguaphile** as of 14th November 2024.
+This documentation reflects the latest updates and improvements to **Linguaphile** as of 16th November 2024.

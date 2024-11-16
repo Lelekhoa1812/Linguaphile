@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Rule to use google MLKit
+# General rule for ML Kit
+-keep class com.google.mlkit.** { *; }
+-keep class com.google.android.gms.** { *; }

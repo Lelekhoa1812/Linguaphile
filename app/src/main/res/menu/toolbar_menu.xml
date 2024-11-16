@@ -15,4 +15,7 @@
     <item
         android:id="@+id/menu_my_achievement"
         android:title="My Achievement" />
+    <item
+        android:id="@+id/menu_my_translator"
+        android:title="My Translator" />
 </menu>
