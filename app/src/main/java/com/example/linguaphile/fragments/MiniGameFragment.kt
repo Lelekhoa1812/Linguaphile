@@ -11,6 +11,7 @@ import com.example.linguaphile.databinding.FragmentMiniGameBinding
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.example.linguaphile.entities.Vocabulary
 import androidx.appcompat.app.AlertDialog
+import com.example.linguaphile.R
 import com.example.linguaphile.databases.MiniGameDatabase
 import com.example.linguaphile.entities.MiniGame
 import com.example.linguaphile.repositories.MiniGameRepository
@@ -81,8 +82,8 @@ class MiniGameFragment : Fragment() {
             if (allVocabularyList.isNullOrEmpty()) {
                 Log.d("MiniGameFragment", "All vocabulary list is empty. Cannot proceed.")
                 AlertDialog.Builder(requireContext())
-                    .setTitle("No Vocabulary")
-                    .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
+                    .setTitle(R.string.mgFragmentNullTitle)
+                    .setMessage(R.string.mgFragmentNullDesc)
                     .setPositiveButton("OK") { _, _ -> // Set dialog with button casing null data fetched allowing user to return without catching error
                         showModeSelection()
                     }
@@ -110,8 +111,8 @@ class MiniGameFragment : Fragment() {
                     // Case no question available (in this mode), reflect message as an alert dialog
                     if (totalQuestions == 0) {
                         AlertDialog.Builder(requireContext())
-                            .setTitle("No Vocabulary")
-                            .setMessage("No vocabulary items available for testing in the selected mode.")
+                            .setTitle(R.string.mgFragmentNullTitle)
+                            .setMessage(R.string.mgFragmentModeNullDesc)
                             .setPositiveButton("OK") { _, _ ->
                                 showModeSelection()
                             }
@@ -142,14 +143,14 @@ class MiniGameFragment : Fragment() {
             correctAnswer = getAnyMeaning(currentVocab) // Get a meaning from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomMeanings(3, currentVocab))
-            binding.testTitleTextView.text = "Meaning Test"
-            binding.instructionTextView.text = "Select the answer that best defines the word below:"
+            binding.testTitleTextView.text = R.string.mgFragmentMeaningSet.toString()
+            binding.instructionTextView.text = R.string.mgFragmentMeaningSetDesc.toString()
         } else {
             correctAnswer = getAnySynonym(currentVocab) // Get a synonym from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomSynonyms(3, currentVocab))
-            binding.testTitleTextView.text = "Synonym Test"
-            binding.instructionTextView.text = "Select the answer that best matches the word below:"
+            binding.testTitleTextView.text = R.string.mgFragmentSynonymSet.toString()
+            binding.instructionTextView.text = R.string.mgFragmentSynonymSetDesc.toString()
         }
         // Identify the binding item
         Log.d("MiniGameFragment", "Correct answer: $correctAnswer") // Logs
@@ -226,13 +227,13 @@ class MiniGameFragment : Fragment() {
     // Show result message dialog and their corresponding feedback for user score, with option to try again (start the test again) or quit (go back to mode selection state)
     private fun showResultDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Test Finished")
-            .setMessage("You scored $score/$totalQuestions")
+            .setTitle(R.string.mgFragmentFinishTitle)
+            .setMessage("${R.string.mgFragmentFinishDesc} $score/$totalQuestions")
             // Try again start this mode again
-            .setPositiveButton("Try Again") { _, _ ->
+            .setPositiveButton(R.string.mgFragmentTryAgain) { _, _ ->
                 startTest()
             } // Exit return with mode selection state
-            .setNegativeButton("Exit") { _, _ ->
+            .setNegativeButton(R.string.mgFragmentExit) { _, _ ->
                 showModeSelection()
             }
             .setCancelable(false)

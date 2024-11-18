@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select a Test Mode"
+                android:text="@string/mgFragmentSelectModeText"
                 android:textSize="24sp"
                 android:layout_marginBottom="32dp"/>
 
@@ -29,14 +29,14 @@
                 android:id="@+id/meaningTestButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meaning Testing"
+                android:text="@string/mgFragmentMeaningSetBtn"
                 android:layout_margin="16dp"/>
 
             <Button
                 android:id="@+id/synonymTestButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Synonym Testing"
+                android:text="@string/mgFragmentSynonymSetBtn"
                 android:layout_margin="16dp"/>
 
         </LinearLayout>
@@ -54,7 +54,7 @@
                 android:id="@+id/testTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meaning Test"
+                android:text="@string/mgFragmentMeaningModeText"
                 android:textSize="24sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"/>
@@ -63,7 +63,7 @@
                 android:id="@+id/instructionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select the answer that best defines the word below:"
+                android:text="@string/mgFragmentMeaningModeDesc"
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp"/>
 
@@ -71,7 +71,7 @@
                 android:id="@+id/questionTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vocabulary Word"
+                android:text="@string/mgFragmentVocab"
                 android:textSize="20sp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="24dp"/>

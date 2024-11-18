@@ -14,23 +14,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="Edit Vocabulary:" />
+            android:textSize="20sp"
+            android:text="@string/addFragmentNewVocabText" />
 
         <!-- Name -->
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter vocabulary name" />
+            android:text="@string/addFragmentNameHint" />
 
         <!-- Type -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="Type:" />
+            android:textSize="20sp"
+            android:text="@string/addFragmentType" />
         <!-- Type Spinner -->
         <Spinner
             android:id="@+id/typeSpinner"
@@ -43,15 +43,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="Meaning:" />
-
+            android:textSize="20sp"
+            android:text="@string/addFragmentMeaningText" />
         <!-- Mandatory Meaning 1 -->
         <EditText
             android:id="@+id/meaning1EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Meaning 1" />
+            android:hint="@string/addFragmentMeaningHint1" />
 
         <!-- Container for additional meanings with delete icon -->
         <LinearLayout
@@ -63,7 +62,7 @@
             android:id="@+id/addMeaningButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Meaning" />
+            android:text="@string/addFragmentMeaningBtn" />
 
         <!-- Container for additional synonyms with delete icon -->
         <LinearLayout
@@ -75,7 +74,7 @@
             android:id="@+id/addSynonymButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Synonym" />
+            android:text="@string/addFragmentSynonymBtn" />
 
         <!-- Container for additional note with delete icon -->
         <LinearLayout
@@ -89,13 +88,13 @@
             android:id="@+id/addNoteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Note" />
+            android:text="@string/addFragmentNoteBtn" />
 
         <!-- Confirm button -->
         <Button
             android:id="@+id/updateVocabularyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update Vocabulary" />
+            android:text="@string/updateFragmentConfirmBtn" />
     </LinearLayout>
 </ScrollView>

@@ -42,7 +42,7 @@ class AddVocabularyFragment : Fragment() {
             if (meanings.size < 4) {
                 addMeaningField()
             } else {
-                Toast.makeText(context, "Maximum 4 meanings allowed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentMeaningMax, Toast.LENGTH_SHORT).show()
             }
         }
         // Add dynamic synonyms
@@ -50,7 +50,7 @@ class AddVocabularyFragment : Fragment() {
             if (synonyms.size < 4) {
                 addSynonymField()
             } else {
-                Toast.makeText(context, "Maximum 4 synonyms allowed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentSynonymMax, Toast.LENGTH_SHORT).show()
             }
         }
         // Add dynamic note
@@ -64,7 +64,7 @@ class AddVocabularyFragment : Fragment() {
                 // Create and assign noteEditText
                 noteEditText = EditText(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                    hint = "Any notation for this Vocabulary?"
+                    hint = R.string.addFragmentNoteHint.toString()
                 }
                 // Create a delete button to hide the note layout
                 val deleteButton = ImageButton(requireContext()).apply {
@@ -92,7 +92,7 @@ class AddVocabularyFragment : Fragment() {
                 binding.noteLayout.addView(noteContainer)
                 isNoteAdded = true
             } else { // Note already added, handle removal, deny adding any extra note on limitation of 1 allowed
-                Toast.makeText(context, "Note can only being added once", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentNoteMax, Toast.LENGTH_SHORT).show()
             }
         }
         // Submit vocabulary and navigate back to HomeFragment
@@ -111,7 +111,7 @@ class AddVocabularyFragment : Fragment() {
         // Add additional meanings view
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "Meaning ${meanings.size + 1}"
+            hint = "${R.string.addFragmentMeaningHint0} ${meanings.size + 1}"
         }
         // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
@@ -143,7 +143,7 @@ class AddVocabularyFragment : Fragment() {
         // Add additional synonyms view
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "Synonym ${synonyms.size + 1}"
+            hint = "${R.string.addFragmentSynonymHint0} ${synonyms.size + 1}"
         }
         // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
@@ -175,12 +175,12 @@ class AddVocabularyFragment : Fragment() {
 
         // Validate required fields
         if (name.isBlank() || type.isBlank()) {
-            Toast.makeText(context, "Name and Type are required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.addFragmentNameAndTypeNull, Toast.LENGTH_SHORT).show()
             return
         }
         // Validate primary meaning
         val primaryMeaning = meanings[0].text.toString().takeIf { it.isNotBlank() } ?: run {
-            Toast.makeText(context, "Primary Meaning is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.addFragmentMeaningNeed, Toast.LENGTH_SHORT).show()
             return
         }
         // Collect additional meanings and synonyms and drop indentation if one is removed
@@ -205,7 +205,7 @@ class AddVocabularyFragment : Fragment() {
         // Insert vocabulary into the database
         vocabularyViewModel.insert(vocabulary)
         // Notify user
-        Toast.makeText(context, "Vocabulary added!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.addFragmentVocabAdded, Toast.LENGTH_SHORT).show()
         // Navigate back to HomeFragment if data are valid (just extra validation)
         if (name.isNotBlank() && type.isNotBlank() && meanings[0].text.toString().isNotBlank()) {
             findNavController().navigate(R.id.action_addVocabularyFragment_to_homeFragment)
@@ -215,14 +215,14 @@ class AddVocabularyFragment : Fragment() {
     // Dynamically control the insert and deletion of new meaning data
     private fun updateMeaningLabels() {
         meanings.forEachIndexed { index, editText ->
-            editText.hint = "Meaning ${index + 1}"
+            editText.hint = "${R.string.addFragmentMeaningHint0} ${index + 1}"
         }
     }
 
     // Dynamically control the insert and deletion of new synonym data
     private fun updateSynonymLabels() {
         synonyms.forEachIndexed { index, editText ->
-            editText.hint = "Synonym ${index + 1}"
+            editText.hint = "${R.string.addFragmentSynonymHint0} ${index + 1}"
         }
     }
 

@@ -57,14 +57,14 @@ class UpdateVocabularyFragment : Fragment() {
             if (meanings.size < 4) {
                 addMeaningField()
             } else {
-                Toast.makeText(context, "Maximum 4 meanings allowed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentMeaningMax, Toast.LENGTH_SHORT).show()
             }
         }
         binding.addSynonymButton.setOnClickListener {
             if (synonyms.size < 4) {
                 addSynonymField()
             } else {
-                Toast.makeText(context, "Maximum 4 synonyms allowed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentSynonymMax, Toast.LENGTH_SHORT).show()
             }
         }
         // Add dynamic note
@@ -74,7 +74,7 @@ class UpdateVocabularyFragment : Fragment() {
                 binding.addNoteButton.visibility = View.GONE // Hide the button after adding the note
                 isNoteAdded = true
             } else {
-                Toast.makeText(context, "Note can only be added once", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.addFragmentNoteMax, Toast.LENGTH_SHORT).show()
             }
         }
         // Call update submission
@@ -119,7 +119,7 @@ class UpdateVocabularyFragment : Fragment() {
         // Add new meaning view
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "Meaning ${meanings.size + 1}"
+            hint = "${R.string.addFragmentMeaningHint0} ${meanings.size + 1}"
             setText(text)
         }
         // Delete button per each synonym container
@@ -152,7 +152,7 @@ class UpdateVocabularyFragment : Fragment() {
         // Add new synonym view
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "Synonym ${synonyms.size + 1}"
+            hint = "${R.string.addFragmentSynonymHint0} ${synonyms.size + 1}"
             setText(text)
         }
         // Delete button per each synonym container
@@ -186,7 +186,7 @@ class UpdateVocabularyFragment : Fragment() {
         // Create the EditText for the note
         noteEditText = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "Any notation for this Vocabulary?"
+            hint = R.string.addFragmentNoteHint.toString()
             setText(existingNote) // Set existing note if present
         }
         // Create a delete button to remove the note
@@ -219,12 +219,12 @@ class UpdateVocabularyFragment : Fragment() {
         val note = noteEditText?.text?.toString()?.trim() ?: ""
         // Name and Type is mandatory, reflect Toast feedback on user invalid attempt
         if (name.isBlank() || type.isBlank()) {
-            Toast.makeText(context, "Name and Type are required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.addFragmentNameAndTypeNull, Toast.LENGTH_SHORT).show()
             return
         }
         // Primary meaning (1) can't be saved as null
         val primaryMeaning = meanings[0].text.toString().takeIf { it.isNotBlank() } ?: run {
-            Toast.makeText(context, "Primary Meaning is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.addFragmentMeaningNeed, Toast.LENGTH_SHORT).show()
             return
         }
         // Map additional meanings (2-4) and synonyms (1-4)
@@ -247,21 +247,21 @@ class UpdateVocabularyFragment : Fragment() {
             note = if (note.isNotBlank()) note else null // Only set note if it's not blank
         )
         vocabularyViewModel.update(vocabulary)
-        Toast.makeText(context, "Vocabulary updated!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.updateFragmentVocabUpdated, Toast.LENGTH_SHORT).show()
         findNavController().navigate(R.id.action_updateVocabularyFragment_to_homeFragment)
     }
 
     // Update labels for meanings after adding or deleting
     private fun updateMeaningLabels() {
         meanings.forEachIndexed { index, editText ->
-            editText.hint = "Meaning ${index + 1}"
+            editText.hint = "${R.string.addFragmentMeaningHint0} ${index + 1}"
         }
     }
 
     // Update labels for synonyms after adding or deleting
     private fun updateSynonymLabels() {
         synonyms.forEachIndexed { index, editText ->
-            editText.hint = "Synonym ${index + 1}"
+            editText.hint = "${R.string.addFragmentSynonymHint0} ${index + 1}"
         }
     }
 

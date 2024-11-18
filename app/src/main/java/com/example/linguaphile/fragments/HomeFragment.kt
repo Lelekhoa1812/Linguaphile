@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
                 // Filtering function will hide changes to the deleted item since they kept previous result on filter trigger
                 // Hence, recall to dynamically update list with deletion
                 applyCombinedFilter(vocabularyViewModel.allVocabulary.value)
-                Snackbar.make(binding.root, "Vocabulary deleted", Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.root, R.string.homeFragmentVocabDeleted, Snackbar.LENGTH_LONG)
                     .setTextColor(requireContext().getColor(R.color.white))       // Set text colorway
                     .setActionTextColor(requireContext().getColor(R.color.white)) // Set text colorway
                     .setAction("UNDO") { vocabularyViewModel.insert(vocabulary) }

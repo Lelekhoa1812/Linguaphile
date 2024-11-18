@@ -1,11 +1,54 @@
 <resources>
     <string name="app_name">Linguaphile</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <!-- Add and Update Vocab Fragment -->
+    <string name="addFragmentNewVocabText">New Vocabulary:</string>
+    <string name="addFragmentNameHint">Enter vocabulary name</string>
+    <string name="addFragmentType">Type:</string>
+    <string name="addFragmentNameAndTypeNull">Name and Type are required</string>
+    <string name="addFragmentMeaningText">Meaning:</string>
+    <string name="addFragmentMeaningHint1">Meaning 1</string>
+    <string name="addFragmentMeaningHint0">Meaning</string>
+    <string name="addFragmentMeaningMax">Maximum 4 meanings allowed</string>
+    <string name="addFragmentMeaningNeed">Primary Meaning is required</string>
+    <string name="addFragmentMeaningBtn">Add Meaning</string>
+    <string name="addFragmentSynonymHint0">Synonym</string>
+    <string name="addFragmentSynonymMax">Maximum 4 synonyms allowed</string>
+    <string name="addFragmentSynonymBtn">Add Synonym</string>
+    <string name="addFragmentNoteBtn">Add Note</string>
+    <string name="addFragmentNoteHint">Any notation for this Vocabulary?</string>
+    <string name="addFragmentNoteMax">Note can only being added once</string>
+    <string name="addFragmentVocabAdded">Vocabulary added!</string>
+    <string name="updateFragmentVocabUpdated">Vocabulary updated!</string>
+    <string name="addFragmentConfirmBtn">Add this Vocabulary</string>
+    <string name="updateFragmentConfirmBtn">Update Vocabulary</string>
+
+    <!-- Home Fragment -->
+    <string name="homeFragmentSearchHint">Search vocabulary…</string>
+    <string name="homeFragmentFilterDateText">Filter by Date:</string>
+    <string name="homeFragmentFilterTypeText">Filter by Type:</string>
+    <string name="homeFragmentVocabDeleted">Vocabulary deleted</string>
+
+    <!-- MiniGame Fragment -->
+    <string name="mgFragmentSelectModeText">Select a Test Mode</string>
+    <string name="mgFragmentMeaningSetBtn">Meaning Testing</string>
+    <string name="mgFragmentSynonymSetBtn">Synonym Testing</string>
+    <string name="mgFragmentMeaningSet">Meaning Test</string>
+    <string name="mgFragmentSynonymSet">Synonym Test</string>
+    <string name="mgFragmentMeaningSetDesc">Select the answer that best defines the word below:</string>
+    <string name="mgFragmentSynonymSetDesc">Select the answer that best matches the word below:</string>
+    <string name="mgFragmentMeaningModeText">Meaning Test</string>
+    <string name="mgFragmentMeaningModeDesc">Select the answer that best defines the word below:</string>
+    <string name="mgFragmentVocab">Vocabulary Word</string>
+    <string name="mgFragmentNullTitle">No Vocabulary</string>
+    <string name="mgFragmentNullDesc">No vocabulary items available for testing. Please add vocabulary first.</string>
+    <string name="mgFragmentModeNullDesc">No vocabulary items available for testing. Please add vocabulary first.</string>
+    <string name="mgFragmentFinishTitle">Test Finished</string>
+    <string name="mgFragmentFinishDesc">You scored</string>
+    <string name="mgFragmentTryAgain">Try Again</string>
+    <string name="mgFragmentExit">Exit</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
