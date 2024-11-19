@@ -22,7 +22,7 @@
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/addFragmentNameHint" />
+            android:hint="@string/addFragmentNameHint" />
 
         <!-- Type  -->
         <TextView
@@ -50,7 +50,7 @@
             android:id="@+id/meaning1EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/addFragmentMeaningHint1" />
+            android:hint="Meaning 1" />
         <!-- Container for additional meanings with delete icon -->
         <LinearLayout
             android:id="@+id/meaningLayout"

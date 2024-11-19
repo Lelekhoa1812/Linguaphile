@@ -31,7 +31,7 @@
                 android:id="@+id/userNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name"
+                android:text="@string/profileFragmentUNTitle"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp" />
 
@@ -39,7 +39,7 @@
                 android:id="@+id/emailTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="user@example.com"
+                android:text="@string/profileFragmentEmailTitle"
                 android:textSize="16sp"
                 android:layout_marginBottom="16dp" />
 
@@ -47,7 +47,7 @@
                 android:id="@+id/updateDetailsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update My Details" />
+                android:text="@string/profileFragmentUpdateBtn"/>
         </LinearLayout>
 
         <!-- Edit mode layout -->
@@ -89,14 +89,14 @@
                 android:id="@+id/editUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter new user name"
+                android:text="@string/profileFragmentUNHint"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter new email"
+                android:text="@string/profileFragmentEmailHint"
                 android:layout_marginBottom="16dp" />
 
             <LinearLayout
@@ -109,14 +109,14 @@
                     android:id="@+id/confirmButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Confirm"
+                    android:text="@string/profileFragmentConfirmBtn"
                     android:layout_marginEnd="8dp" />
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cancel" />
+                    android:text="@string/profileFragmentCancelBtn" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

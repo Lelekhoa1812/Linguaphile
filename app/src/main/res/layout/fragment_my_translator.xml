@@ -22,7 +22,7 @@
                 android:id="@+id/sourceLanguageEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter word to be translated from..."
+                android:hint="@string/mtFragmentEnterWordHint"
                 android:minHeight="100dp"
                 android:gravity="top"
                 android:textSize="18sp" />
@@ -76,6 +76,6 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
-        android:text="Translate"
+        android:text="@string/mtFragmentConfirmBtn"
         app:cornerRadius="10dp" />
 </RelativeLayout>

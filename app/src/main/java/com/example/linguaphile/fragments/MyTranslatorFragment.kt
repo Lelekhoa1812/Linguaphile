@@ -85,7 +85,7 @@ class MyTranslatorFragment : Fragment() {
         sourceLanguageText = sourceLanguageEt.text.toString().trim()
         Log.d(TAG, "validateData: sourceLanguageText: $sourceLanguageText")
         if (sourceLanguageText.isEmpty()) {
-            showToast("Enter text to translate...")
+            showToast(R.string.mtFragmentEnterTextToast.toString())
         } else {
             startTranslation() // If valid data, process to submit data and start translation
         }
@@ -93,7 +93,7 @@ class MyTranslatorFragment : Fragment() {
 
     // Start translation process by building ML translator model
     private fun startTranslation() {
-        progressDialog.setMessage("Processing language model...")
+        progressDialog.setMessage(R.string.mtFragmentProcessMsg.toString())
         progressDialog.show() // Show dialog of progression loader
         // Build translator option from source and target language on their code
         translatorOptions = TranslatorOptions.Builder()
@@ -110,7 +110,7 @@ class MyTranslatorFragment : Fragment() {
         translator.downloadModelIfNeeded(downloadConditions)
             .addOnSuccessListener { // If able to load ML
                 Log.d(TAG, "startTranslation: model ready, start translation...")
-                progressDialog.setMessage("Translating...") // Set dialog on loading
+                progressDialog.setMessage(R.string.mtFragmentProcessDialogMsg.toString()) // Set dialog on loading
                 // Bind the source translated text
                 translator.translate(sourceLanguageText)
                     .addOnSuccessListener { translatedText -> // If success
@@ -120,13 +120,13 @@ class MyTranslatorFragment : Fragment() {
                     .addOnFailureListener { e -> // If failed, catch error
                         progressDialog.dismiss()
                         Log.e(TAG, "startTranslation: ", e)
-                        showToast("Failed to translate due to ${e.message}") // Show toast on catch exception error
+                        showToast("${R.string.mtFragmentFailureMsg} ${e.message}") // Show toast on catch exception error
                     }
             } // If not able to load ML
             .addOnFailureListener { e ->
                 progressDialog.dismiss()
                 Log.e(TAG, "startTranslation: ", e)
-                showToast("Failed due to ${e.message}") // Show toast on catch exception error
+                showToast("${R.string.mtFragmentFailureMsg} ${e.message}") // Show toast on catch exception error
             }
     }
 

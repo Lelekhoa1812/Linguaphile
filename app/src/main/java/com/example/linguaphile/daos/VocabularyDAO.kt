@@ -37,7 +37,8 @@ interface VocabularyDAO {
     fun getVocabularyByDateRange(startDate: Date, endDate: Date): LiveData<List<Vocabulary>>
 
     // Get distinct (all different) date to keep track on the total number of date user has logged in (by adding new vocabulary items)
-    @Query("SELECT DISTINCT date FROM vocabulary")
+    // The use of date(date / 1000, 'unixepoch') ensures that only the date part (year, month, day) is considered
+    @Query("SELECT DISTINCT date(date / 1000, 'unixepoch') FROM vocabulary")
     fun getDistinctDates(): LiveData<List<Date>>
 
 }

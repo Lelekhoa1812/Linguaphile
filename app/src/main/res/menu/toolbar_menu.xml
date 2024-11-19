@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_home"
-        android:title="Home" />
+        android:title="@string/navBarHome" />
     <item
         android:id="@+id/menu_add_vocabulary"
-        android:title="Add New Vocabulary" />
+        android:title="@string/navBarAddVocab" />
     <item
         android:id="@+id/menu_mini_game"
-        android:title="Mini Game" />
+        android:title="@string/navBarMG" />
     <item
         android:id="@+id/menu_profile"
-        android:title="My Profile" />
+        android:title="@string/navBarMP" />
     <item
         android:id="@+id/menu_my_achievement"
-        android:title="My Achievement" />
+        android:title="@string/navBarMA" />
     <item
         android:id="@+id/menu_my_translator"
-        android:title="My Translator" />
+        android:title="@string/navBarMT" />
 </menu>

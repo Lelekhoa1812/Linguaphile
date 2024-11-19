@@ -3,7 +3,16 @@
     <string name="action_settings">Settings</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <!-- Add and Update Vocab Fragment -->
+
+    <!-- Nav Bar -->
+    <string name="navBarHome">Home</string>
+    <string name="navBarAddVocab">Add New Vocabulary</string>
+    <string name="navBarMG">Mini Game</string>
+    <string name="navBarMP">My Profile</string>
+    <string name="navBarMA">My Achievement</string>
+    <string name="navBarMT">My Translator</string>
+
+    <!-- Add and Update Vocabulary Fragment -->
     <string name="addFragmentNewVocabText">New Vocabulary:</string>
     <string name="addFragmentNameHint">Enter vocabulary name</string>
     <string name="addFragmentType">Type:</string>
@@ -49,6 +58,26 @@
     <string name="mgFragmentFinishDesc">You scored</string>
     <string name="mgFragmentTryAgain">Try Again</string>
     <string name="mgFragmentExit">Exit</string>
+
+    <!-- MyTranslator Fragment -->
+    <string name="mtFragmentEnterWordHint">Enter word to be translated from…</string>
+    <string name="mtFragmentConfirmBtn">Translate</string>
+    <string name="mtFragmentEnterTextToast">Enter text to translate…</string>
+    <string name="mtFragmentProcessMsg">Processing language model…</string>
+    <string name="mtFragmentProcessDialogMsg">Translating…</string>
+    <string name="mtFragmentFailureMsg">Failure due to…</string>
+
+    <!-- Profile Fragment -->
+    <string name="profileFragmentUNTitle">User Name</string>
+    <string name="profileFragmentUNHint">Enter new user name</string>
+    <string name="profileFragmentEmailTitle">user@example.com</string>
+    <string name="profileFragmentEmailHint">Enter new email</string>
+    <string name="profileFragmentUpdateBtn">Update My Details</string>
+    <string name="profileFragmentConfirmBtn">Confirm</string>
+    <string name="profileFragmentCancelBtn">Cancel</string>
+    <string name="profileFragmentLockedAvatarToast">Avatar is locked, progress with your achievements to unlock.</string>
+    <string name="profileFragmentNameEmailNull">Name and Email cannot be empty</string>
+    <string name="profileFragmentSuccessMsg">Details updated successfully</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

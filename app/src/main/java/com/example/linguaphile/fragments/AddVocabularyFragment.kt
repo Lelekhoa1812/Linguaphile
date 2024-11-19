@@ -64,7 +64,7 @@ class AddVocabularyFragment : Fragment() {
                 // Create and assign noteEditText
                 noteEditText = EditText(requireContext()).apply {
                     layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                    hint = R.string.addFragmentNoteHint.toString()
+                    hint = "Any notation for this Vocabulary?"
                 }
                 // Create a delete button to hide the note layout
                 val deleteButton = ImageButton(requireContext()).apply {
@@ -111,7 +111,7 @@ class AddVocabularyFragment : Fragment() {
         // Add additional meanings view
         val newMeaning = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "${R.string.addFragmentMeaningHint0} ${meanings.size + 1}"
+            hint = "Meaning ${meanings.size + 1}"
         }
         // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
@@ -143,7 +143,7 @@ class AddVocabularyFragment : Fragment() {
         // Add additional synonyms view
         val newSynonym = EditText(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-            hint = "${R.string.addFragmentSynonymHint0} ${synonyms.size + 1}"
+            hint = "Synonym ${synonyms.size + 1}"
         }
         // Delete button per each synonym container
         val deleteButton = ImageButton(requireContext()).apply {
@@ -215,14 +215,14 @@ class AddVocabularyFragment : Fragment() {
     // Dynamically control the insert and deletion of new meaning data
     private fun updateMeaningLabels() {
         meanings.forEachIndexed { index, editText ->
-            editText.hint = "${R.string.addFragmentMeaningHint0} ${index + 1}"
+            editText.hint = "Meaning ${index + 1}"
         }
     }
 
     // Dynamically control the insert and deletion of new synonym data
     private fun updateSynonymLabels() {
         synonyms.forEachIndexed { index, editText ->
-            editText.hint = "${R.string.addFragmentSynonymHint0} ${index + 1}"
+            editText.hint = "Synonym ${index + 1}"
         }
     }
 

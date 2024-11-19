@@ -178,7 +178,7 @@ class ProfileFragment : Fragment() {
                 frameLayout.addView(lockOverlay) // Add the lock icon on overlay
                 // Reflect Toast on listener to locked item
                 imageView.setOnClickListener {
-                    Toast.makeText(context, "Avatar is locked, progress with your achievements to unlock.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.profileFragmentLockedAvatarToast, Toast.LENGTH_SHORT).show()
                 }
             } else { // This is regular images set without locking
                 imageView.isClickable = true
@@ -232,7 +232,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    // View mode with default details and hide edit mode
+    // ViewMode with default details and hide edit mode
     private fun showUserDetails(user: User?) {
         binding.editModeLayout.visibility = View.GONE
         binding.viewModeLayout.visibility = View.VISIBLE
@@ -252,7 +252,7 @@ class ProfileFragment : Fragment() {
         showUserDetails(null)
     }
 
-    // View mode with editing holders (EditText) and hide view mode
+    // ViewMode with editing holders (EditText) and hide view mode
     private fun enterEditMode() {
         binding.viewModeLayout.visibility = View.GONE
         binding.editModeLayout.visibility = View.VISIBLE
@@ -272,19 +272,21 @@ class ProfileFragment : Fragment() {
         val newEmail = binding.editEmail.text.toString().trim()
         // Notify if entries are not set
         if (newName.isBlank() || newEmail.isBlank()) {
-            Toast.makeText(context, "Name and Email cannot be empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.profileFragmentNameEmailNull, Toast.LENGTH_SHORT).show()
             return
         }
+        // Use the currently set avatar if no new selection is made, else if nothing made (possibly initially), set the user avatar
+        val finalImageResId = selectedImageResId ?: currentUser?.profilePicture?.toIntOrNull() ?: R.drawable.user
         // Setup updated user item
         val updatedUser = User(
             id = currentUser?.id ?: 1, // Always set to 1 if there is only one user record
             name = newName,
             email = newEmail,
-            profilePicture = selectedImageResId.toString() // Set image resource id (string)
+            profilePicture = finalImageResId.toString() // Set image resource id (string)
         )
         // Update with ViewModel
         userViewModel.updateUser(updatedUser)
-        Toast.makeText(context, "Details updated successfully", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.profileFragmentSuccessMsg, Toast.LENGTH_SHORT).show()
         Log.d("ProfileFragment", "Picture path now: ${updatedUser.profilePicture}") // Logs
         currentUser = updatedUser // Update UI dynamically
         showUserDetails(updatedUser)
