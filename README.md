@@ -114,6 +114,10 @@ The **Mini Game** fragment provides a quiz feature to help users practice vocabu
 - **Score Tracking**: The app tracks correct answers, showing the final score when the test completes.
 - **Retry Option**: After completing the quiz, users are shown a dialog with options to try again or quit to the initial mode selection screen.
 
+#### Show Incorrect Answers:  
+- All incorrect answer will be append as a list.
+- User can trigger button to show all incorrect answer they have made, user will be redirected to ShowIncorrectAnswer (SIA) fragment where it shows all incorrect Vocabulary listing (similar to HomeFragment but without filtration methods and option actions). 
+
 ### 5. My Profile Fragment
 
 The **My Profile** fragment allows users to manage their profile information, including:
@@ -151,6 +155,11 @@ The **My Translator** fragment allows users to input any word or text in a sourc
   - Language selection buttons using `PopupMenu`.
   - Progress dialog showing the status during translation.
 
+### 9. Show Incorrect Answer Fragment (SIA)
+
+- The **SIA** fragment will list out all incorrect vocabulary as RecyclerView items, obtained from the SimpleVocabularyAdapter (differed to the original VocabularyAdapter by removing onDelete and onUpdate action with the options button).
+- This fragment is quite similar to the Home fragment, however, since on applicable, **SIA** will remove all filtration usages and other actions (e.g., navigation to other fragments).
+
 ## Getting Started
 
 To run this app locally:
@@ -186,4 +195,4 @@ To run this app locally:
 
 ---
 
-This documentation reflects the latest updates and improvements to **Linguaphile** as of 16th November 2024.
+This documentation reflects the latest updates and improvements to **Linguaphile** as of 20th November 2024.

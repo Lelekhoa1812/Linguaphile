@@ -89,14 +89,14 @@
                 android:id="@+id/editUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/profileFragmentUNHint"
+                android:hint="Enter new user name"
                 android:layout_marginBottom="8dp" />
 
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/profileFragmentEmailHint"
+                android:hint="Enter new email"
                 android:layout_marginBottom="16dp" />
 
             <LinearLayout

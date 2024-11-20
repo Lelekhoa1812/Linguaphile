@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -14,34 +13,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.linguaphile.R
 import com.example.linguaphile.entities.Vocabulary
 
-class VocabularyAdapter(
-    private val onUpdate: (Vocabulary) -> Unit, // Handle Unit action on Update
-    private val onDelete: (Vocabulary) -> Unit  // Handle Unit action on Delete
-) : ListAdapter<Vocabulary, VocabularyAdapter.VocabularyViewHolder>(VocabularyDiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VocabularyViewHolder {
+// Different adapter class to VocabularyAdapter to simply binding and list out Vocabulary RecyclerView item for SIA fragment without any filtration and update/delete on action
+class SimpleVocabularyAdapter(
+) : ListAdapter<Vocabulary, SimpleVocabularyAdapter.SimpleVocabularyViewHolder>(VocabularyDiffCallback()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleVocabularyViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.vocabulary_item, parent, false)
-        Log.d("VocabularyAdapter", "Creating view holder") // Logs
-        return VocabularyViewHolder(view)
+            .inflate(R.layout.incorrect_vocabulary_item, parent, false)
+        Log.d("SimpleVocabularyAdapter", "Creating view holder") // Logs
+        return SimpleVocabularyViewHolder(view)
     }
-    override fun onBindViewHolder(holder: VocabularyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SimpleVocabularyViewHolder, position: Int) {
         val vocabulary = getItem(position)
-        Log.d("VocabularyAdapter", "Binding vocabulary item at position $position: ${vocabulary.name}") // Logs
-        holder.bind(vocabulary, onUpdate, onDelete) // Handle update and delete action on vocabulary item selected
+        Log.d("SimpleVocabularyAdapter", "Binding vocabulary item at position $position: ${vocabulary.name}") // Logs
+        holder.bind(vocabulary) // Bind data
     }
 
-    // Get the vocab list obtained from HomeFragment submission
+    // Get the vocab list obtained from MiniGameFragment submission
     override fun submitList(list: List<Vocabulary>?) {
-        Log.d("VocabularyAdapter", "submitList called with ${list?.size ?: 0} items")
+        Log.d("SimpleVocabularyAdapter", "submitList called with ${list?.size ?: 0} items")
         if (!list.isNullOrEmpty()) {
             super.submitList(list)
         } else {
-            Log.d("VocabularyAdapter", "Ignoring empty list submission to avoid clearing data.")
+            Log.d("SimpleVocabularyAdapter", "Ignoring empty list submission to avoid clearing data.")
         }
     }
 
-    // Bind data with styling for each vocabulary items taken from the final list
-    class VocabularyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    // Bind data with styling for all listed vocabulary item, similarly to the normal VocabularyAdapter, only that we not binding option button and onDelete, onUpdate btn
+    class SimpleVocabularyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView.findViewById(R.id.vocab_name)
         private val typeTextView: TextView = itemView.findViewById(R.id.vocab_type)
         private val meaningTextView: TextView = itemView.findViewById(R.id.vocab_meanings)
@@ -49,11 +47,10 @@ class VocabularyAdapter(
         private val synonymBlock: LinearLayout = itemView.findViewById(R.id.synonymBlock)
         private val noteTextView: TextView = itemView.findViewById(R.id.vocab_note)
         private val noteBlock: LinearLayout = itemView.findViewById(R.id.noteBlock)
-        private val optionsButton: View = itemView.findViewById(R.id.options_button)
 
         @SuppressLint("SetTextI18n")
-        fun bind(vocabulary: Vocabulary, onUpdate: (Vocabulary) -> Unit, onDelete: (Vocabulary) -> Unit) {
-            Log.d("VocabularyAdapter", "Binding vocabulary: ${vocabulary.name}") // Logs
+        fun bind(vocabulary: Vocabulary) {
+            Log.d("SimpleVocabularyAdapter", "Binding vocabulary: ${vocabulary.name}") // Logs
             nameTextView.text = vocabulary.name
             typeTextView.text = vocabulary.type
             meaningTextView.text = listOfNotNull( // If any afterward meaning is null or empty, don't append to the list
@@ -63,24 +60,12 @@ class VocabularyAdapter(
             else { // There exist at least 1 synonym
                 synonymBlock.visibility = View.VISIBLE // Enable the synonym block
                 synonymTextView.text = listOfNotNull( // If any afterward synonym is null or empty, don't append to the list
-                vocabulary.synonym1, vocabulary.synonym2, vocabulary.synonym3, vocabulary.synonym4
-            ).joinToString(", ") }
+                    vocabulary.synonym1, vocabulary.synonym2, vocabulary.synonym3, vocabulary.synonym4
+                ).joinToString(", ") }
             if (vocabulary.note.isNullOrEmpty()) { noteBlock.visibility = View.GONE } // Only show note if this vocab item doesn't null this field
             else { // There exist at least 1 note
                 noteBlock.visibility = View.VISIBLE // Enable the note block
                 noteTextView.text = vocabulary.note } // If note is null or empty, don't append
-            // Option button shows option menu (update/delete)
-            optionsButton.setOnClickListener {
-                val popup = PopupMenu(itemView.context, optionsButton)
-                popup.inflate(R.menu.vocabulary_item_menu)
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.action_update -> onUpdate(vocabulary)
-                        R.id.action_delete -> onDelete(vocabulary)
-                    }
-                    true
-                }
-                popup.show()
             }
         }
     }
@@ -95,4 +80,4 @@ class VocabularyAdapter(
             return oldItem == newItem
         }
     }
-}
+

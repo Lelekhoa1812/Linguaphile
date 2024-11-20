@@ -1,0 +1,23 @@
+<!-- fragment_show_incorrect_answer.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <!-- ScrollView to contain the translation UI elements -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="650dp">
+        <!-- RecyclerView for displaying vocabulary items -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+    </ScrollView>
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/siaFragmentReturnBtn" />
+</LinearLayout>

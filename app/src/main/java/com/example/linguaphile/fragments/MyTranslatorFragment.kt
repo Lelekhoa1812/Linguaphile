@@ -93,7 +93,7 @@ class MyTranslatorFragment : Fragment() {
 
     // Start translation process by building ML translator model
     private fun startTranslation() {
-        progressDialog.setMessage(R.string.mtFragmentProcessMsg.toString())
+        progressDialog.setMessage("Processing language model…")
         progressDialog.show() // Show dialog of progression loader
         // Build translator option from source and target language on their code
         translatorOptions = TranslatorOptions.Builder()
@@ -110,7 +110,7 @@ class MyTranslatorFragment : Fragment() {
         translator.downloadModelIfNeeded(downloadConditions)
             .addOnSuccessListener { // If able to load ML
                 Log.d(TAG, "startTranslation: model ready, start translation...")
-                progressDialog.setMessage(R.string.mtFragmentProcessDialogMsg.toString()) // Set dialog on loading
+                progressDialog.setMessage("Translating…") // Set dialog on loading
                 // Bind the source translated text
                 translator.translate(sourceLanguageText)
                     .addOnSuccessListener { translatedText -> // If success

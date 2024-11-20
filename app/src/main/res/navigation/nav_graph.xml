@@ -50,7 +50,11 @@
         android:id="@+id/miniGameFragment"
         android:name="com.example.linguaphile.fragments.MiniGameFragment"
         android:label="Mini Game"
-        tools:layout="@layout/fragment_mini_game" />
+        tools:layout="@layout/fragment_mini_game">
+        <action
+            android:id="@+id/action_mini_game_fragment_to_show_incorrect_answer_fragment"
+            app:destination="@id/showIncorrectAnswerFragment" />
+    </fragment>
 
     <!-- My Profile -->
     <fragment
@@ -72,4 +76,17 @@
         android:name="com.example.linguaphile.fragments.MyTranslatorFragment"
         android:label="My Translator"
         tools:layout="@layout/fragment_my_translator" />
+
+    <!-- Show Incorrect Answer -->
+    <fragment
+        android:id="@+id/showIncorrectAnswerFragment"
+        android:name="com.example.linguaphile.fragments.ShowIncorrectAnswerFragment"
+        android:label="Show Incorrect Answers"
+        tools:layout="@layout/fragment_show_incorrect_answer">
+        <!-- Passes incorrect question of vocabulary entity from Mini Game to SIA and set nav action -->
+        <argument
+            android:name="incorrectQuestions"
+            app:argType="com.example.linguaphile.entities.Vocabulary[]" />
+    </fragment>
+
 </navigation>

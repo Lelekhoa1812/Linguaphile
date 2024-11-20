@@ -11,6 +11,7 @@ import com.example.linguaphile.databinding.FragmentMiniGameBinding
 import com.example.linguaphile.viewmodels.VocabularyViewModel
 import com.example.linguaphile.entities.Vocabulary
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.example.linguaphile.R
 import com.example.linguaphile.databases.MiniGameDatabase
 import com.example.linguaphile.entities.MiniGame
@@ -31,6 +32,12 @@ class MiniGameFragment : Fragment() {
     private var currentQuestionIndex = 0
     private var score = 0
     private var totalQuestions = 0
+
+    // Used to append the vocabs that user incorrectly answered in a list (can be null)
+    private val incorrectQuestionList = mutableListOf<Vocabulary>()
+
+    // Only allow the Result dialog showing once, else may capture error for overlapping when user simultaneously clicking the last option button
+    private var dialogTriggered = false
 
     // Enum class choices of Meaning and Synonym test
     private enum class TestMode {
@@ -74,6 +81,8 @@ class MiniGameFragment : Fragment() {
     private fun startTest() {
         binding.modeSelectionLayout.visibility = View.GONE
         binding.testLayout.visibility = View.VISIBLE
+        // For avoiding duplication of vocabulary item data binding in SIA fragment
+        incorrectQuestionList.clear() // Clear the incorrect question listing each time restart the test so the list passes to SIA fragment won't trigger duplication
         // Initial values
         score = 0
         currentQuestionIndex = 0
@@ -83,7 +92,7 @@ class MiniGameFragment : Fragment() {
                 Log.d("MiniGameFragment", "All vocabulary list is empty. Cannot proceed.")
                 AlertDialog.Builder(requireContext())
                     .setTitle(R.string.mgFragmentNullTitle)
-                    .setMessage(R.string.mgFragmentNullDesc)
+                    .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
                     .setPositiveButton("OK") { _, _ -> // Set dialog with button casing null data fetched allowing user to return without catching error
                         showModeSelection()
                     }
@@ -112,7 +121,7 @@ class MiniGameFragment : Fragment() {
                     if (totalQuestions == 0) {
                         AlertDialog.Builder(requireContext())
                             .setTitle(R.string.mgFragmentNullTitle)
-                            .setMessage(R.string.mgFragmentModeNullDesc)
+                            .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
                             .setPositiveButton("OK") { _, _ ->
                                 showModeSelection()
                             }
@@ -143,14 +152,14 @@ class MiniGameFragment : Fragment() {
             correctAnswer = getAnyMeaning(currentVocab) // Get a meaning from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomMeanings(3, currentVocab))
-            binding.testTitleTextView.text = R.string.mgFragmentMeaningSet.toString()
-            binding.instructionTextView.text = R.string.mgFragmentMeaningSetDesc.toString()
+            binding.testTitleTextView.text = "Meaning Testing"
+            binding.instructionTextView.text = "Select the answer that best defines the word below:"
         } else {
             correctAnswer = getAnySynonym(currentVocab) // Get a synonym from any of the chosen vocab
             options.add(correctAnswer)
             options.addAll(getRandomSynonyms(3, currentVocab))
-            binding.testTitleTextView.text = R.string.mgFragmentSynonymSet.toString()
-            binding.instructionTextView.text = R.string.mgFragmentSynonymSetDesc.toString()
+            binding.testTitleTextView.text = "Synonym Testing"
+            binding.instructionTextView.text = "Select the answer that best matches the word below:"
         }
         // Identify the binding item
         Log.d("MiniGameFragment", "Correct answer: $correctAnswer") // Logs
@@ -173,6 +182,8 @@ class MiniGameFragment : Fragment() {
             button.setOnClickListener {
                 if (button.text == correctAnswer) { // Check if the answer matches
                     score++ // Increment score
+                } else {
+                    incorrectQuestionList.add(currentVocab) // Add to incorrect list when the answer is wrong.
                 }
                 currentQuestionIndex++ // Move to next question (until exhaust)
                 showNextQuestion() // Iterate the loop again
@@ -226,18 +237,33 @@ class MiniGameFragment : Fragment() {
 
     // Show result message dialog and their corresponding feedback for user score, with option to try again (start the test again) or quit (go back to mode selection state)
     private fun showResultDialog() {
-        AlertDialog.Builder(requireContext())
+        val dialogBuilder = AlertDialog.Builder(requireContext())
             .setTitle(R.string.mgFragmentFinishTitle)
-            .setMessage("${R.string.mgFragmentFinishDesc} $score/$totalQuestions")
+            .setMessage("You scored $score/$totalQuestions")
             // Try again start this mode again
             .setPositiveButton(R.string.mgFragmentTryAgain) { _, _ ->
+                dialogTriggered = false // Enable dialog again since resetting
                 startTest()
             } // Exit return with mode selection state
             .setNegativeButton(R.string.mgFragmentExit) { _, _ ->
+                dialogTriggered = false // Enable dialog again since resetting
                 showModeSelection()
             }
-            .setCancelable(false)
-            .show()
+        // Only show the "Show All Incorrect Answers" button if there are incorrect answers.
+        if (incorrectQuestionList.isNotEmpty()) {
+            dialogBuilder.setNeutralButton("Your Incorrect Answer") { _, _ ->
+                // Navigate to the ShowIncorrectAnswerFragment and pass the incorrect questions.
+                val action = MiniGameFragmentDirections.actionMiniGameFragmentToShowIncorrectAnswerFragment(
+                    incorrectQuestions = incorrectQuestionList.toTypedArray()
+                )
+                findNavController().navigate(action) // Navigate from nav_graph.xml
+                dialogTriggered = false // Enable dialog again since resetting
+            }
+        }
+        if (!dialogTriggered) {
+            dialogBuilder.setCancelable(false).show() // Deny cancellation (x) on this dialog and show the dialog built
+            dialogTriggered = true // Disable dialog from now on
+        }
         // Check if the mini-game is completed with a perfect score
         if (score == totalQuestions) {
             val miniGame = MiniGame(

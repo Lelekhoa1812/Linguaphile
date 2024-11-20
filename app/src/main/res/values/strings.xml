@@ -12,6 +12,13 @@
     <string name="navBarMA">My Achievement</string>
     <string name="navBarMT">My Translator</string>
 
+    <!-- Vocabulary RecyclerView item -->
+    <string name="vrName">Vocabulary</string>
+    <string name="vrType">Type: </string>
+    <string name="vrMeaning">Meanings: </string>
+    <string name="vrSynonym">Synonyms: </string>
+    <string name="vrNote">Notes: </string>
+
     <!-- Add and Update Vocabulary Fragment -->
     <string name="addFragmentNewVocabText">New Vocabulary:</string>
     <string name="addFragmentNameHint">Enter vocabulary name</string>
@@ -58,6 +65,7 @@
     <string name="mgFragmentFinishDesc">You scored</string>
     <string name="mgFragmentTryAgain">Try Again</string>
     <string name="mgFragmentExit">Exit</string>
+    <string name="mgFragmentSAIABtn">Show All Incorrect Answer</string>
 
     <!-- MyTranslator Fragment -->
     <string name="mtFragmentEnterWordHint">Enter word to be translated from…</string>
@@ -78,6 +86,9 @@
     <string name="profileFragmentLockedAvatarToast">Avatar is locked, progress with your achievements to unlock.</string>
     <string name="profileFragmentNameEmailNull">Name and Email cannot be empty</string>
     <string name="profileFragmentSuccessMsg">Details updated successfully</string>
+
+    <!-- ShowIncorrectAnswer Fragment -->
+    <string name="siaFragmentReturnBtn">Return</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

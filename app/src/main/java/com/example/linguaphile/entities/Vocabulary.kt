@@ -3,7 +3,10 @@ package com.example.linguaphile.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "vocabulary")
 data class Vocabulary(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -19,4 +22,4 @@ data class Vocabulary(
     val synonym3: String? = null,
     val synonym4: String? = null,
     val note: String? = null
-)
+) : Parcelable
