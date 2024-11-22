@@ -31,7 +31,7 @@
                 android:text="@string/vrName"
                 android:textStyle="italic"
                 android:textSize="24sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/darkBlue"/>
 
             <!-- Options Button aligned to the end -->
             <ImageView
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vrType"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_type"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="Vocabulary Type"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/darkBlue"/>
         </LinearLayout>
 
         <!-- Vocabulary Meanings -->
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meanings: "
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_meanings"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="Meanings"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/darkBlue"/>
         </LinearLayout>
 
         <!-- Vocabulary Synonyms -->
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:text="Synonyms: "
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_synonyms"
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:text="Synonyms"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/darkBlue"/>
         </LinearLayout>
 
         <!-- Vocabulary Notes -->
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:text="Notes: "
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_note"
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:text="Notes"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/darkBlue"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

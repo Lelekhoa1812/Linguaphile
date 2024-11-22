@@ -3,14 +3,14 @@
     <color name="colorPrimary">#E91E63</color>
     <color name="colorPrimary2">#710227</color>
     <color name="darkBlue">#000835</color>
-    <color name="dynamicFilter">#000835</color>
+    <color name="dynamicFilter">#FFFFF0</color>
     <color name="lessDarkBlue">#15226A</color>
     <color name="colorPrimaryDark">#4D005A</color>
     <color name="colorPrimaryDarkSurface">#94A4FD</color>
     <color name="colorAccent">#9C27B0</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextPrimary">#000000</color>
     <color name="colorTextSecondary">#000000</color>
     <color name="grey">#A6FFFFFF</color>
     <color name="ivory">#FFFFF0</color>

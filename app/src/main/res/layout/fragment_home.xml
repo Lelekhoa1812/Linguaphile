@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="@string/homeFragmentFilterDateText"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/dynamicFilter"
             android:layout_marginEnd="11dp" />
 
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@string/homeFragmentFilterTypeText"
             android:textSize="16sp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/dynamicFilter"
             android:layout_marginEnd="10dp" />
 
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
