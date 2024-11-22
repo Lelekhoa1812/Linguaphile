@@ -85,7 +85,7 @@ class MyTranslatorFragment : Fragment() {
         sourceLanguageText = sourceLanguageEt.text.toString().trim()
         Log.d(TAG, "validateData: sourceLanguageText: $sourceLanguageText")
         if (sourceLanguageText.isEmpty()) {
-            showToast(R.string.mtFragmentEnterTextToast.toString())
+            showToast("Enter text to translate…")
         } else {
             startTranslation() // If valid data, process to submit data and start translation
         }
@@ -120,13 +120,13 @@ class MyTranslatorFragment : Fragment() {
                     .addOnFailureListener { e -> // If failed, catch error
                         progressDialog.dismiss()
                         Log.e(TAG, "startTranslation: ", e)
-                        showToast("${R.string.mtFragmentFailureMsg} ${e.message}") // Show toast on catch exception error
+                        showToast("Failure due to… ${e.message}") // Show toast on catch exception error
                     }
             } // If not able to load ML
             .addOnFailureListener { e ->
                 progressDialog.dismiss()
                 Log.e(TAG, "startTranslation: ", e)
-                showToast("${R.string.mtFragmentFailureMsg} ${e.message}") // Show toast on catch exception error
+                showToast("Failure due to… ${e.message}") // Show toast on catch exception error
             }
     }
 
