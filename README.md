@@ -174,7 +174,13 @@ To run this app locally:
 - **Enhanced User Progress Tracking**: Expand user statistics for vocabulary learning progress.
 - **More Game Types**: Introduce additional types of mini-games for vocabulary practice.
 - **Improved Profile Customization**: Add more customization features for user profiles.
-- **Integrating With IOS**: Enable cross-platform section and IOS's UI-based implementation to allow the app also usuable with IOS operated devices.
+- **Integrating With IOS**: Enable cross-platform section and IOS's UI-based implementation to allow the app also usable with IOS operated devices.
+
+## TODO
+
+- **Theme Mode Toggling**: Ensure colorway consistency for both dark and light theme mode.
+- **Multi-language Operation**: Define different string resources or define a standard translatable string resource to be automatically translated by Android.
+- **IOS Integration**: Deploy native Kotlin app with IOS based components under KMM structure.
 
 ## Dependencies
 
