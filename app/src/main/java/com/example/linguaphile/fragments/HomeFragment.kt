@@ -51,8 +51,8 @@ class HomeFragment : Fragment() {
                 // Hence, recall to dynamically update list with deletion
                 applyCombinedFilter(vocabularyViewModel.allVocabulary.value)
                 Snackbar.make(binding.root, R.string.homeFragmentVocabDeleted, Snackbar.LENGTH_LONG)
-                    .setTextColor(requireContext().getColor(R.color.white))       // Set text colorway
-                    .setActionTextColor(requireContext().getColor(R.color.white)) // Set text colorway
+                    .setTextColor(requireContext().getColor(R.color.colorUNDOText))       // Set text colorway for title
+                    .setActionTextColor(requireContext().getColor(R.color.colorUNDOText)) // Set text colorway for UNDO btn
                     .setAction("UNDO") { vocabularyViewModel.insert(vocabulary) }
                     .show()
             }

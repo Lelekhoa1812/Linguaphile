@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/homeFragmentSearchHint"
+        android:textColor="@color/colorTextRV"
         android:padding="8dp"
         android:background="@drawable/search"
         android:drawableStart="@android:drawable/ic_menu_search"
@@ -44,6 +45,7 @@
                 android:id="@+id/filter_date_spinner"
                 android:layout_width="156dp"
                 android:layout_height="40dp"
+                android:textColor="@color/colorTextRV"
                 android:background="@drawable/spinner"
                 android:padding="4dp" />
         </androidx.cardview.widget.CardView>
@@ -76,6 +78,7 @@
                 android:id="@+id/filter_type_spinner"
                 android:layout_width="157dp"
                 android:layout_height="40dp"
+                android:textColor="@color/colorTextRV"
                 android:background="@drawable/spinner"
                 android:padding="4dp" />
         </androidx.cardview.widget.CardView>

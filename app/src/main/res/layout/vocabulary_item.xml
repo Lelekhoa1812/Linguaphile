@@ -29,9 +29,9 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/vrName"
+                android:textColor="@color/colorTextRV"
                 android:textStyle="italic"
-                android:textSize="24sp"
-                android:textColor="@color/darkBlue"/>
+                android:textSize="24sp"/>
 
             <!-- Options Button aligned to the end -->
             <ImageView
@@ -40,7 +40,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="end"
                 android:contentDescription="Options"
-                android:src="@drawable/more"
+                android:textColor="@color/colorTextRV"                android:src="@drawable/more"
                 android:padding="8dp"/>
         </LinearLayout>
 
@@ -54,16 +54,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/vrType"
+                android:textColor="@color/colorTextRV"
                 android:textSize="16sp"
-                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vocabulary Type"
-                android:textSize="16sp"
-                android:textColor="@color/darkBlue"/>
+                android:textColor="@color/colorTextRV"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Vocabulary Meanings -->
@@ -76,16 +76,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meanings: "
+                android:textColor="@color/colorTextRV"
                 android:textSize="16sp"
-                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_meanings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Meanings"
-                android:textSize="16sp"
-                android:textColor="@color/darkBlue"/>
+                android:textColor="@color/colorTextRV"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Vocabulary Synonyms -->
@@ -100,16 +100,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Synonyms: "
+                android:textColor="@color/colorTextRV"
                 android:textSize="16sp"
-                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_synonyms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Synonyms"
-                android:textSize="16sp"
-                android:textColor="@color/darkBlue"/>
+                android:textColor="@color/colorTextRV"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Vocabulary Notes -->
@@ -124,16 +124,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notes: "
+                android:textColor="@color/colorTextRV"
                 android:textSize="16sp"
-                android:textColor="@color/darkBlue"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/vocab_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notes"
-                android:textSize="16sp"
-                android:textColor="@color/darkBlue"/>
+                android:textColor="@color/colorTextRV"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

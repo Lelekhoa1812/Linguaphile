@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Achievement Name"
+            android:textColor="@color/colorTextRV"
             android:textSize="20sp"
             android:textStyle="bold" />
         <!-- Description of Task -->
@@ -27,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
+            android:textColor="@color/colorTextRV"
             android:textSize="16sp"
             android:textStyle="italic" />
     </LinearLayout>
@@ -81,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="0/100"
+            android:textColor="@color/colorTextRV"
             android:textSize="18sp"
             android:textStyle="italic" />
     </LinearLayout>

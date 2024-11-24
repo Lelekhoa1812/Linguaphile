@@ -2,8 +2,15 @@
 <resources>
     <color name="colorPrimary">#E91E63</color>
     <color name="colorPrimary2">#710227</color>
+    <!-- Used for RecyclerView components (achievement and vocabulary) -->
+    <color name="colorTextRV">#210027</color>
     <color name="darkBlue">#000835</color>
+    <!-- Used for filter TextView in HomeFragment -->
     <color name="dynamicFilter">#FFFFF0</color>
+    <!-- Used for UNDO button selection in HomeFragment -->
+    <color name="colorUNDOText">#210027</color>
+    <!-- Used for Alert Dialog button selection in MiniGameFragment -->
+    <color name="colorAlertDialogBtn">#FFFFF0</color>
     <color name="lessDarkBlue">#15226A</color>
     <color name="colorPrimaryDark">#4D005A</color>
     <color name="colorPrimaryDarkSurface">#94A4FD</color>

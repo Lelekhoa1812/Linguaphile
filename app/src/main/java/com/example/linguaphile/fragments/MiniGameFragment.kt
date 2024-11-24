@@ -90,14 +90,16 @@ class MiniGameFragment : Fragment() {
         vocabularyViewModel.allVocabulary.observe(viewLifecycleOwner) { allVocabularyList ->
             if (allVocabularyList.isNullOrEmpty()) {
                 Log.d("MiniGameFragment", "All vocabulary list is empty. Cannot proceed.")
-                AlertDialog.Builder(requireContext())
+                val dialogBuilder = AlertDialog.Builder(requireContext())
                     .setTitle(R.string.mgFragmentNullTitle)
                     .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
                     .setPositiveButton("OK") { _, _ -> // Set dialog with button casing null data fetched allowing user to return without catching error
                         showModeSelection()
                     }
                     .setCancelable(false)
-                    .show()
+                val dialog = dialogBuilder.create()
+                dialog.show()
+                styleDialogButtons(dialog) // Apply button color
                 return@observe
             }
             // Set desired time range for testing
@@ -119,14 +121,16 @@ class MiniGameFragment : Fragment() {
                     totalQuestions = questions.size
                     // Case no question available (in this mode), reflect message as an alert dialog
                     if (totalQuestions == 0) {
-                        AlertDialog.Builder(requireContext())
+                        val dialogBuilder = AlertDialog.Builder(requireContext())
                             .setTitle(R.string.mgFragmentNullTitle)
                             .setMessage("No vocabulary items available for testing. Please add vocabulary first.")
                             .setPositiveButton("OK") { _, _ ->
                                 showModeSelection()
                             }
                             .setCancelable(false)
-                            .show()
+                        val dialog = dialogBuilder.create()
+                        dialog.show()
+                        styleDialogButtons(dialog) // Apply button color
                     } else { // If valid
                         showNextQuestion()
                     }
@@ -261,7 +265,10 @@ class MiniGameFragment : Fragment() {
             }
         }
         if (!dialogTriggered) {
-            dialogBuilder.setCancelable(false).show() // Deny cancellation (x) on this dialog and show the dialog built
+            dialogBuilder.setCancelable(false) // Deny cancellation (x) on this dialog
+            val dialog = dialogBuilder.create()
+            dialog.show() //  Show the dialog built
+            styleDialogButtons(dialog) // Apply button color
             dialogTriggered = true // Disable dialog from now on
         }
         // Check if the mini-game is completed with a perfect score
@@ -274,6 +281,13 @@ class MiniGameFragment : Fragment() {
             minigameViewModel.insertMiniGame(miniGame) // Add this aced mini game with details for incrementation
             Log.d("MiniGameFragment", "Mini-game completed with a perfect score.")
         }
+    }
+
+    // Provide styling (e.g., text color for button by each AlertDialog created
+    private fun styleDialogButtons(dialog: AlertDialog) {
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(resources.getColor(R.color.colorAlertDialogBtn, null))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(resources.getColor(R.color.colorAlertDialogBtn, null))
+        dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.setTextColor(resources.getColor(R.color.colorAlertDialogBtn, null))
     }
 
     // Destroy afterwards
