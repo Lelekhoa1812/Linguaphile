@@ -178,7 +178,6 @@ To run this app locally:
 
 ## TODO
 
-- **Theme Mode Toggling**: Ensure colorway consistency for both dark and light theme mode.
 - **Multi-language Operation**: Define different string resources or define a standard translatable string resource to be automatically translated by Android.
 - **IOS Integration**: Deploy native Kotlin app with IOS based components under KMM structure.
 
