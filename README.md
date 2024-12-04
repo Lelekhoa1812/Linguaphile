@@ -73,6 +73,10 @@ Each item also has a 3-dot button, providing:
 - **Update**: Opens the "Update Vocabulary" fragment.
 - **Delete**: Deletes the vocabulary item with an **UNDO** option in a Snackbar.
 
+![Home Page](img/home.JPG "Linguaphile Home Page")
+
+![Tool Bar](toolbar/home.JPG "Linguaphile Tool Bar")
+
 ### 2. Add New Vocabulary Fragment
 
 The **Add New Vocabulary** fragment allows users to add new vocabulary items dynamically. Features include:
@@ -88,6 +92,8 @@ The **Add New Vocabulary** fragment allows users to add new vocabulary items dyn
   - An "Add Note" button that adding notation. A Toast message displays to restrict only 1 notation per any vocabulary item.
 
 The **Add this Vocabulary** button saves the vocabulary item to the database, storing the current Date and all entered information.
+
+![New Vocabulary Page](img/new.JPG "Linguaphile New Vocabulary Page")
 
 ### 3. Update Vocabulary Fragment
 
@@ -118,12 +124,18 @@ The **Mini Game** fragment provides a quiz feature to help users practice vocabu
 - All incorrect answer will be append as a list.
 - User can trigger button to show all incorrect answer they have made, user will be redirected to ShowIncorrectAnswer (SIA) fragment where it shows all incorrect Vocabulary listing (similar to HomeFragment but without filtration methods and option actions). 
 
+![MiniGame Page](img/minigame.JPG "Linguaphile MiniGame Page")
+
+![Testing Sample](img/test.JPG "Linguaphile Sample Testing")
+
 ### 5. My Profile Fragment
 
 The **My Profile** fragment allows users to manage their profile information, including:
 
 - **Name and Email Update**: Users can update their profile name and email.
 - **Profile Picture Selection**: Users can choose an avatar image from unlocked cartoon animal figures, achieved through completing certain tasks (achievements) in the app.
+
+![My Profile Page](img/profile.JPG "Linguaphile My Profile Page")
 
 ### 6. My Achievement Fragment
 
@@ -135,6 +147,8 @@ The **My Achievement** fragment tracks the user's progress by displaying various
 - **Progress Threshold**: Shows current progress over the required threshold for each achievement (e.g., `50/100`).
 
 Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements, day logins. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
+
+![My Achievement Page](img/achievement.JPG "Linguaphile My Achievement Page")
 
 ### 7. Profile and Achievements Integration
 
@@ -154,6 +168,8 @@ The **My Translator** fragment allows users to input any word or text in a sourc
   - Display area for the translated text.
   - Language selection buttons using `PopupMenu`.
   - Progress dialog showing the status during translation.
+
+![My Translator Page](img/translate.JPG "Linguaphile My Translator Page")
 
 ### 9. Show Incorrect Answer Fragment (SIA)
 
