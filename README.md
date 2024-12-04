@@ -73,9 +73,10 @@ Each item also has a 3-dot button, providing:
 - **Update**: Opens the "Update Vocabulary" fragment.
 - **Delete**: Deletes the vocabulary item with an **UNDO** option in a Snackbar.
 
-![Home Page](img/home.JPG "Linguaphile Home Page")
+<img src="img/home.JPG" alt="Linguaphile Home Page" style="width: 70%; max-width: 500px;">
 
-![Tool Bar](img/toolbar.JPG "Linguaphile Tool Bar")
+<img src="img/toolbar.JPG" alt="Linguaphile Tool Bar" style="width: 70%; max-width: 500px;">
+
 
 ### 2. Add New Vocabulary Fragment
 
@@ -93,7 +94,7 @@ The **Add New Vocabulary** fragment allows users to add new vocabulary items dyn
 
 The **Add this Vocabulary** button saves the vocabulary item to the database, storing the current Date and all entered information.
 
-![New Vocabulary Page](img/new.JPG "Linguaphile New Vocabulary Page")
+<img src="img/new.JPG" alt="Linguaphile New Vocabulary Page" style="width: 70%; max-width: 500px;">
 
 ### 3. Update Vocabulary Fragment
 
@@ -124,9 +125,9 @@ The **Mini Game** fragment provides a quiz feature to help users practice vocabu
 - All incorrect answer will be append as a list.
 - User can trigger button to show all incorrect answer they have made, user will be redirected to ShowIncorrectAnswer (SIA) fragment where it shows all incorrect Vocabulary listing (similar to HomeFragment but without filtration methods and option actions). 
 
-![MiniGame Page](img/minigame.JPG "Linguaphile MiniGame Page")
+<img src="img/minigame.JPG" alt="Linguaphile MiniGame Page" style="width: 70%; max-width: 500px;">
 
-![Testing Sample](img/test.JPG "Linguaphile Sample Testing")
+<img src="img/test.JPG" alt="Linguaphile Sample Testing" style="width: 70%; max-width: 500px;">
 
 ### 5. My Profile Fragment
 
@@ -135,7 +136,7 @@ The **My Profile** fragment allows users to manage their profile information, in
 - **Name and Email Update**: Users can update their profile name and email.
 - **Profile Picture Selection**: Users can choose an avatar image from unlocked cartoon animal figures, achieved through completing certain tasks (achievements) in the app.
 
-![My Profile Page](img/profile.JPG "Linguaphile My Profile Page")
+<img src="img/profile.JPG" alt="Linguaphile My Profile Page" style="width: 70%; max-width: 500px;">
 
 ### 6. My Achievement Fragment
 
@@ -148,7 +149,7 @@ The **My Achievement** fragment tracks the user's progress by displaying various
 
 Achievements are categorized into various types, such as vocabulary milestones (e.g., adding a certain number of nouns, verbs, etc.) and mini-game achievements, day logins. Users can track their progress visually and see which achievements are unlocked as they progress on My Achievement page.
 
-![My Achievement Page](img/achievement.JPG "Linguaphile My Achievement Page")
+<img src="img/achievement.JPG" alt="Linguaphile My Achievement Page" style="width: 70%; max-width: 500px;">
 
 ### 7. Profile and Achievements Integration
 
@@ -169,7 +170,7 @@ The **My Translator** fragment allows users to input any word or text in a sourc
   - Language selection buttons using `PopupMenu`.
   - Progress dialog showing the status during translation.
 
-![My Translator Page](img/translate.JPG "Linguaphile My Translator Page")
+<img src="img/translate.JPG" alt="Linguaphile My Translator Page" style="width: 70%; max-width: 500px;">
 
 ### 9. Show Incorrect Answer Fragment (SIA)
 
@@ -217,4 +218,4 @@ To run this app locally:
 
 ---
 
-This documentation reflects the latest updates and improvements to **Linguaphile** as of 21th November 2024.
+This documentation reflects the latest updates and improvements to **Linguaphile** as of 4th December 2024.
