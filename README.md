@@ -75,7 +75,7 @@ Each item also has a 3-dot button, providing:
 
 ![Home Page](img/home.JPG "Linguaphile Home Page")
 
-![Tool Bar](toolbar/home.JPG "Linguaphile Tool Bar")
+![Tool Bar](img/toolbar.JPG "Linguaphile Tool Bar")
 
 ### 2. Add New Vocabulary Fragment
 
